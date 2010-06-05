@@ -1,0 +1,9 @@
+#ifndef __ORIONSOCKET_ERR_
+#define __ORIONSOCKET_ERR_
+
+#define ORIONSOCKET_OK                  0x00
+#define ORIONSOCKET_ERR_UNKNOWN         0x01
+#define ORIONSOCKET_ERR_ALLOC           0x02
+#define ORIONSOCKET_ERR_HTTPREQUEST     0X03
+
+#endif // __ORIONSOCKET_ERR_
