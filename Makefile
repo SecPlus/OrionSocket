@@ -15,10 +15,10 @@
 
 
 
-pkgdatadir = $(datadir)/apisocket
-pkgincludedir = $(includedir)/apisocket
-pkglibdir = $(libdir)/apisocket
-pkglibexecdir = $(libexecdir)/apisocket
+pkgdatadir = $(datadir)/orionsocket
+pkgincludedir = $(includedir)/orionsocket
+pkglibdir = $(libdir)/orionsocket
+pkglibexecdir = $(libexecdir)/orionsocket
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -35,7 +35,7 @@ subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	install-sh missing
+	depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -106,8 +106,9 @@ AUTOHEADER = ${SHELL} /home/i4k/programacao/orionsocket/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/i4k/programacao/orionsocket/missing --run automake-1.11
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=none
+CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
+CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
@@ -115,7 +116,9 @@ DEPDIR = .deps
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
+EGREP = /bin/grep -E
 EXEEXT = 
+GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -128,11 +131,11 @@ LTLIBOBJS =
 MAKEINFO = ${SHELL} /home/i4k/programacao/orionsocket/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
-PACKAGE = apisocket
+PACKAGE = orionsocket
 PACKAGE_BUGREPORT = tiago4orion@gmail.com
-PACKAGE_NAME = apisocket
-PACKAGE_STRING = apisocket 0.1
-PACKAGE_TARNAME = apisocket
+PACKAGE_NAME = orionsocket
+PACKAGE_STRING = orionsocket 0.1
+PACKAGE_TARNAME = orionsocket
 PACKAGE_VERSION = 0.1
 PATH_SEPARATOR = :
 SET_MAKE = 
