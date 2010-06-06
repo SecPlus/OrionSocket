@@ -1,6 +1,8 @@
 AM_CFLAGS=-Wall -Werror
 
-bin_PROGRAMS=orionTCPConnectTest orionHTTPRequestTest
 
-orionTCPConnectTest_SOURCES = test_orionTCPConnect.c socket.c
-orionHTTPRequestTest_SOURCES = test_orionHTTPRequest.c socket.c
+lib_LTLIBRARIES = liborionsocket-0.1.la
+liborionsocket_0_1_la_SOURCES = socket.c
+
+library_includedir=$(includedir)/orion/socket
+library_include_HEADERS=socket.h err.h

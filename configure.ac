@@ -4,9 +4,10 @@
 AC_PREREQ([2.63])
 AC_INIT([orionsocket], [0.1], [tiago4orion@gmail.com])
 AM_INIT_AUTOMAKE
+LT_INIT
 AC_CONFIG_SRCDIR([src/socket.c])
 AC_CONFIG_HEADERS([config.h])
-
+AC_CONFIG_MACRO_DIR([m4])
 # Checks for programs.
 AC_PROG_CC
 
