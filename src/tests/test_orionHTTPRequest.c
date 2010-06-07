@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "socket.h"
+#include <orion/socket/socket.h>
 
 int main(int argc, char** argv)
 {
     httpRequest *req = NULL;
     address victim;
-    int i;
+    int i, code;
     
     char *response = NULL;
-    const char* domain = "www.omeuip.com.br";
+    const char* domain = "67.205.42.197";
     bzero(victim.domain, DNS_MAXLENGTH);
     strncpy(victim.domain, domain, strlen(domain));
     
@@ -23,24 +23,26 @@ int main(int argc, char** argv)
         return 1;    
     }
     
+    orionHTTPRequestInit(req);
+    
     req->victim = &victim;
     req->method = METHOD_GET;
-    req->path = "/";
-    req->header = NULL;
-    req->headerLen = 0;
-    req->paramLen = 0;
-
+    strcpy(req->path, "/");
+    
     setHttpHeader(req, "Host", victim.domain);
     setHttpHeader(req, "User-Agent", "Anakin");
                 
-    i = orionHTTPRequest(req, &response);
+    code = orionHTTPRequest(req, &response);
+    printf("Code: %d\n", code);
     
-    printf("%d\n", i);
-    printf("%s\n", response);
+    if (code == ORIONSOCKET_OK)
+    {
+        printf("%d\n", i);
+        printf("%s\n", response);
+        free(response);  
+    }  
     
-    free(response);
-    
-    httpRequestCleanup(req);
+    orionHTTPRequestCleanup(req);
     
     return 0;
 }

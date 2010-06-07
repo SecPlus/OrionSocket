@@ -28,53 +28,74 @@ int orionTCPConnect(address addr)
     struct hostent *addr_host;
     struct sockaddr_in target;
     char* ip = NULL;
-    addr_host = gethostbyname(addr.domain);
-    if (!addr_host)
-    {
-        switch (h_errno)
-        {
-        case HOST_NOT_FOUND:
-            fprintf(stderr, "[ERROR] gethostbyname(): Host não encontrado.\n");
-            break;
-        case NO_ADDRESS:
-            fprintf(stderr, "[ERROR] gethostbyname(): O nome solicitado é válido mas não possui um endereço de internet...\n");
-            break;
-        case TRY_AGAIN:
-            fprintf(stderr, "[ERROR] gethostbyname(): Problemas ao obter o endereço do Host!!!\n"
-                            "Voce pode tentar novamente...\n"
-                            "Esse problema é raro...\n"
-                            "Não posso lhe ajudar muito...\n"
-                            "Esse erro ocorreu na chamada da funcao gethostbyname()\n"
-                            "Essa funcao utiliza um banco de dados locais de resolucao de nomes\n"
-                            "para encontrar o dominio.\n"
-                            "Verifique se possui os arquivos default do resolver, como:\n"
-                            "- /etc/hosts\n"
-                            "- /etc/networks\n"
-                            "- /etc/protocols\n"
-                            "- /etc/services\n"
-                            "...\n"
-                            "Verifique o header '/usr/include/netdb.h'\n");
-            break;
-        case NO_RECOVERY:
-            fprintf(stderr, "[ERROR] gethostbyname(): Erro irrecuperável... Muito explicativo não é? ¬¬\n");
-            break;
-        default:
-            fprintf(stderr, "[ERROR] gethostbyname(): Uwnknow Error Code: %d\n", h_errno);
-            break;    
-        }
-        
-        return -1;        
-    }
     
-    // Converte um endereço de internet (struct in_addr *) em ASCII
-    ip = inet_ntoa(*(struct in_addr *)addr_host->h_addr);
-    if (*ip == -1)
+    if (strlen(addr.domain) == 0 && strlen(addr.ip) == 0)
     {
-        fprintf(stderr, "[ERROR] inet_ntoa(): Não foi possivel obter o endereco IP.\n");
+        fprintf(stderr, "Domínio e IP não podem ser vazios.\n");
         return -1;
     }
+    
+    if (addr.port <= 0 || addr.port > 65535)
+    {
+        fprintf(stderr, "Porta inválida.\n");
+        return -1;
+    } 
+    
+    if (strlen(addr.domain) > 0)
+    {
+        addr_host = gethostbyname(addr.domain);
+        if (!addr_host)
+        {
+            switch (h_errno)
+            {
+            case HOST_NOT_FOUND:
+                fprintf(stderr, "[ERROR] gethostbyname(): Host não encontrado.\n");
+                break;
+            case NO_ADDRESS:
+                fprintf(stderr, "[ERROR] gethostbyname(): O nome solicitado é válido mas não possui um endereço de internet...\n");
+                break;
+            case TRY_AGAIN:
+                fprintf(stderr, "[ERROR] gethostbyname(): Problemas ao obter o endereço do Host!!!\n"
+                                "Voce pode tentar novamente...\n"
+                                "Esse problema é raro...\n"
+                                "Não posso lhe ajudar muito...\n"
+                                "Esse erro ocorreu na chamada da funcao gethostbyname()\n"
+                                "Essa funcao utiliza um banco de dados locais de resolucao de nomes\n"
+                                "para encontrar o dominio.\n"
+                                "Verifique se possui os arquivos default do resolver, como:\n"
+                                "- /etc/hosts\n"
+                                "- /etc/networks\n"
+                                "- /etc/protocols\n"
+                                "- /etc/services\n"
+                                "...\n"
+                                "Verifique o header '/usr/include/netdb.h'\n");
+                break;
+            case NO_RECOVERY:
+                fprintf(stderr, "[ERROR] gethostbyname(): Erro irrecuperável... Muito explicativo não é? ¬¬\n");
+                break;
+            default:
+                fprintf(stderr, "[ERROR] gethostbyname(): Uwnknow Error Code: %d\n", h_errno);
+                break;    
+            }
+            
+            return -1;        
+        }
+        
+        // Converte um endereço de internet (struct in_addr *) em ASCII
+        ip = inet_ntoa(*(struct in_addr *)addr_host->h_addr);
+        if (*ip == -1)
+        {
+            fprintf(stderr, "[ERROR] inet_ntoa(): Não foi possivel obter o endereco IP.\n");
+            return -1;
+        }
+    } else {
+        ip = strdup(addr.ip);
+        bzero(ip, IP_MAXLENGTH);
+        strcpy(ip, addr.ip);
+    }
+        
     // Cria o socket
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sockfd = socket(ORION_TCP_FAMILY, ORION_TCP_SOCKETTYPE, 0);
     if (sockfd < 0)
     {
         fprintf(stderr, "[ERROR] Erro ao criar socket.\n");
@@ -98,11 +119,11 @@ int orionTCPConnect(address addr)
         return -1;
     }
     
-    target.sin_family = AF_INET;
+    target.sin_family = ORION_TCP_FAMILY;
     target.sin_port = htons(addr.port);
     
     // Converte om endereco de internet de ASCII para binário
-    if (inet_pton(AF_INET, ip, &target.sin_addr) < 0)
+    if (inet_pton(ORION_TCP_FAMILY, ip, &target.sin_addr) < 0)
     {
         perror("[ERROR] Erro ao setar o endereço remoto.\n");
         return errno;
@@ -224,7 +245,41 @@ void assemblyHttpRequest(httpRequest* req, char* reqBuffer)
     strcat(reqBuffer, "\n");
 }
 
-uint8_t setHttpHeader(httpRequest *req, const char* name, const char* value)
+void orionHTTPRequestInit(httpRequest *req)
+{
+    bzero(req->address.domain, DNS_MAXLENGTH);
+    bzero(req->address.ip, IP_MAXLENGTH);
+    req->address.port = 80; // Default port
+    bzero(req->path, URL_MAXLENGTH);
+    req->method = METHOD_GET;
+    req->header = NULL;
+    req->headerLen = 0;
+    req->param = NULL;
+    req->paramLen = 0;
+    req->options = 0;
+}
+
+void orionHTTPRequestCleanup(httpRequest *req)
+{
+    int i;
+    for (i = 0; i < req->headerLen; i++)
+    {
+        free(req->header[i].name);
+        free(req->header[i].value);
+    }
+    
+    free(req->header);
+    
+    free(req);
+}
+
+
+//
+// Adiciona um Header à requisição HTTP da estrutura httpRequest
+// @param httpRequest*   req
+// @param const char* name
+// @param const char* value
+_uint8 setHttpHeader(httpRequest *req, const char* name, const char* value)
 {
     _uint8 len;
         
@@ -252,6 +307,26 @@ uint8_t setHttpHeader(httpRequest *req, const char* name, const char* value)
     return ORIONSOCKET_OK;    
 }
 
+_uint8 orionSetHttpDomain(httpRequest *req, const char* domain)
+{
+    if (req == NULL)
+    {
+        fprintf(stderr, "Estrutura httpRequest não inicializada.\n");
+        return ORIONSOCKET_INVALIDHTTPREQUEST;
+    }
+    
+    if (strlen(domain) == 0)
+    {
+        fprintf(stderr, "Host não pode ser vazio.\n");
+        return ORIONSOCKET_INVALIDHOST;
+    }
+    
+    bzero(req->address.domain, DNS_MAXLENGTH);
+    strncpy(req->address.domain, domain, strlen(domain));
+    
+    return ORIONSOCKET_OK;
+}   
+
 // Estabelece uma conexão única no host passado em httpRequest *
 // Retorna o conteudo da página.
 // 
@@ -266,9 +341,9 @@ _uint8 orionHTTPRequest(httpRequest *req, char** response)
     
     assemblyHttpRequest(req, reqBuffer);
     
-    printf("%s\n", reqBuffer);
+    DEBUG_HTTPREQUEST(req);
     
-    sockfd = orionTCPConnect(*(req->victim));
+    sockfd = orionTCPConnect(req->address);
     
     if (sockfd < 0)
     {
@@ -300,16 +375,3 @@ _uint8 orionHTTPRequest(httpRequest *req, char** response)
     return ORIONSOCKET_OK;
 }
 
-void httpRequestCleanup(httpRequest *req)
-{
-    int i;
-    for (i = 0; i < req->headerLen; i++)
-    {
-        free(req->header[i].name);
-        free(req->header[i].value);
-    }
-    
-    free(req->header);
-    
-    free(req);
-}

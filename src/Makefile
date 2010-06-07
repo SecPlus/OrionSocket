@@ -73,9 +73,9 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-liborionsocket_0_1_la_LIBADD =
-am_liborionsocket_0_1_la_OBJECTS = socket.lo
-liborionsocket_0_1_la_OBJECTS = $(am_liborionsocket_0_1_la_OBJECTS)
+liborionsocket_la_LIBADD =
+am_liborionsocket_la_OBJECTS = socket.lo
+liborionsocket_la_OBJECTS = $(am_liborionsocket_la_OBJECTS)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -89,8 +89,8 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(liborionsocket_0_1_la_SOURCES)
-DIST_SOURCES = $(liborionsocket_0_1_la_SOURCES)
+SOURCES = $(liborionsocket_la_SOURCES)
+DIST_SOURCES = $(liborionsocket_la_SOURCES)
 HEADERS = $(library_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -206,8 +206,8 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 AM_CFLAGS = -Wall -Werror
-lib_LTLIBRARIES = liborionsocket-0.1.la
-liborionsocket_0_1_la_SOURCES = socket.c
+lib_LTLIBRARIES = liborionsocket.la
+liborionsocket_la_SOURCES = socket.c
 library_includedir = $(includedir)/orion/socket
 library_include_HEADERS = socket.h err.h
 all: all-am
@@ -275,8 +275,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-liborionsocket-0.1.la: $(liborionsocket_0_1_la_OBJECTS) $(liborionsocket_0_1_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(liborionsocket_0_1_la_OBJECTS) $(liborionsocket_0_1_la_LIBADD) $(LIBS)
+liborionsocket.la: $(liborionsocket_la_OBJECTS) $(liborionsocket_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(liborionsocket_la_OBJECTS) $(liborionsocket_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
