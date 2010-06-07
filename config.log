@@ -515,7 +515,6 @@ on localhost.localdomain
 config.status:1001: creating Makefile
 config.status:1001: creating src/Makefile
 config.status:1001: creating config.h
-config.status:1223: config.h is unchanged
 config.status:1275: executing depfiles commands
 config.status:1275: executing libtool commands
 
