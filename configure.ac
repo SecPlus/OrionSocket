@@ -1,7 +1,6 @@
 # Configure Script
 # --
 
-AC_PREREQ([2.63])
 AC_INIT([orionsocket], [0.1], [tiago4orion@gmail.com])
 AM_INIT_AUTOMAKE
 LT_INIT

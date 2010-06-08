@@ -41,7 +41,7 @@ typedef struct
     _uint8 cookieLen;   /* Number of cookies    */
 
     _uint16 options;    /* Extra Options        */
-} orionHttpRequest;
+} orion_httpRequest;
 
 typedef struct
 {
@@ -53,7 +53,7 @@ typedef struct
 
     nameValue *cookie;  /* Set Cookie           */
     _uint8 cookieLen;   /* Number of cookies    */ 
-} orionHttpResponse;
+} orion_httpResponse;
 
 
 #endif // __ORIONSOCKET_HTTP_H_

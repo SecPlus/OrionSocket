@@ -5,4 +5,4 @@ lib_LTLIBRARIES = liborionsocket.la
 liborionsocket_la_SOURCES = socket.c
 
 library_includedir=$(includedir)/orion/socket
-library_include_HEADERS=socket.h err.h http.h types.h
+library_include_HEADERS=socket.h err.h http.h types.h api.h
