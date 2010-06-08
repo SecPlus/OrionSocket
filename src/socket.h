@@ -56,7 +56,7 @@
                                 printf("DEBUGGING HTTP REQUEST:\n"); \
                                 printf("Host: %s\n", req->host); \
                                 printf("Port: %d\n", req->port); \
-                                printf("Method: %s\n", _getStrMethod(req->method)); \
+                                printf("Method: %s\n", orion_getStrMethod(req->method)); \
                                 int _orionIntdebug; \
                                 for (_orionIntdebug = 0; _orionIntdebug < req->headerLen; _orionIntdebug++) \
                                     printf("%s: %s\n", req->header[_orionIntdebug].name, req->header[_orionIntdebug].value); \

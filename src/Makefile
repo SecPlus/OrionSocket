@@ -186,7 +186,7 @@ sysconfdir = ${prefix}/etc
 target_alias = 
 top_builddir = ..
 top_srcdir = ..
-AM_CFLAGS = -Wall -Werror
+AM_CFLAGS = -Wall -Werror -ggdb
 lib_LTLIBRARIES = liborionsocket.la
 liborionsocket_la_SOURCES = socket.c 	\
 							http.c 		\
