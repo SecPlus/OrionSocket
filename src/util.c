@@ -1,5 +1,5 @@
 /*
-   OrionSocket - Types
+   OrionSocket - Util implementation
    --------------------------------
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
@@ -19,22 +19,35 @@
    limitations under the License.
 
  */
- 
-#ifndef __ORIONSOCKET_TYPES_H_
-#define __ORIONSOCKET_TYPES_H_
+#include "util.h"
+#include "socket.h"
+#include <stdlib.h>
 
-#include <stdint.h>
-
-typedef uint8_t _uint8;
-typedef uint16_t _uint16;
-typedef uint32_t _uint32;
-
-// Structure Name-Value.
-typedef struct 
+void * orion_realloc(void *ptr, size_t size)
 {
-    char* name;
-    char* value;
-} nameValue;
+	if (ptr)
+		return realloc(ptr, size);
+	else
+		return malloc(size);
+}
 
-#endif // __ORIONSOCKET_TYPES_H_
+const char* orion_getStrMethod(_uint8 method)
+{
+    switch (method)
+    {
+    case METHOD_GET:
+        return "GET";
+    case METHOD_POST:
+        return "POST";
+    case METHOD_TRACE:
+        return "TRACE";
+    case METHOD_PUT:
+        return "PUT";
+    case METHOD_DELETE:
+        return "DELETE";
+    default:
+        return "UNKNOWN";
+    }
+}
+
 

@@ -57,7 +57,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 liborionsocket_la_LIBADD =
-am_liborionsocket_la_OBJECTS = socket.lo
+am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo
 liborionsocket_la_OBJECTS = $(am_liborionsocket_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -188,9 +188,18 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CFLAGS = -Wall -Werror
 lib_LTLIBRARIES = liborionsocket.la
-liborionsocket_la_SOURCES = socket.c
+liborionsocket_la_SOURCES = socket.c 	\
+							http.c 		\
+							util.c
+
 library_includedir = $(includedir)/orion/socket
-library_include_HEADERS = socket.h err.h http.h types.h api.h
+library_include_HEADERS = socket.h 		\
+						err.h 			\
+						http.h 			\
+						types.h 		\
+						api.h			\
+						util.h 
+
 all: all-am
 
 .SUFFIXES:
@@ -260,7 +269,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/http.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/socket.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

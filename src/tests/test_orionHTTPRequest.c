@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <orion/socket/socket.h>
+#include <orion/socket/http.h>
 
 int main(int argc, char** argv)
 {
