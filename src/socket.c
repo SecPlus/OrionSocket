@@ -339,7 +339,7 @@ _uint8 orionHTTPRequest(httpRequest *req, char** response)
     memset(reqBuffer, '\0', sizeof(char) * HTTP_REQUEST_MAXLENGTH);
     memset(temp, '\0', sizeof(char) * HTTP_RESPONSE_LENGTH);
     
-    assemblyHttpRequest(req, reqBuffer);
+    orionAssemblyHttpRequest(req, reqBuffer);
     
     DEBUG_HTTPREQUEST(req);
     
