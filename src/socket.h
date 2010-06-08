@@ -1,3 +1,24 @@
+/*
+   OrionSocket - Socket Implementation
+   --------------------------------
+
+   Author: Tiago Natel de Moura <tiago4orion@gmail.com>
+
+   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+ */
 #ifndef __ORIONSOCKET_
 #define __ORIONSOCKET_
 
@@ -6,6 +27,8 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
+
+#include "http.h"
 
 #define ORIONSOCKET_OK              0x00
 
@@ -30,63 +53,26 @@
 #ifdef ORIONSOCKET_DEBUG
 #define DEBUG_HTTPREQUEST(req)  do {  \
                                 printf("DEBUGGING HTTP REQUEST:\n"); \
-                                printf("Host: %s\n", req->address.domain); \
-                                printf("Port: %d\n", req->address.port); \
+                                printf("Host: %s\n", req->host); \
+                                printf("Port: %d\n", req->port); \
                                 printf("Method: %s\n", _getStrMethod(req->method)); \
                                 int _orionIntdebug; \
                                 for (_orionIntdebug = 0; _orionIntdebug < req->headerLen; _orionIntdebug++) \
                                     printf("%s: %s\n", req->header[_orionIntdebug].name, req->header[_orionIntdebug].value); \
-                                for (_orionIntdebug = 0; _orionIntdebug < req->paramLen; _orionIntdebug++) \
-                                    printf("%s=%s&", req->param[_orionIntdebug].name, req->param[_orionIntdebug].value); \
+                                if (req->cookieLen > 0) \
+                                    printf("Cookie: "); \
+                                for (_orionIntdebug = 0; _orionIntdebug < req->cookieLen; _orionIntdebug++) \
+                                    printf("%s=%s; &", req->cookie[_orionIntdebug].name, req->cookie[_orionIntdebug].value); \
                                 } while(0) 
 #else
 #define DEBUG_HTTPREQUEST(req)
 #endif
 
-typedef uint8_t _uint8;
-typedef uint16_t _uint16;
-typedef uint32_t _uint32;
-    
-// Estrutura Nome-Valor.
-// Usada por toda a API.
-typedef struct 
-{
-    char* name;
-    char* value;
-} nameValue;
-
-// Armazena as informações do alvo
-typedef struct 
-{
-    char domain[DNS_MAXLENGTH];
-    char ip[IP_MAXLENGTH];
-    _uint16 port;   // 0..65535
-} address;
-
-typedef struct
-{
-    address address;
-    _uint8 method;
-    char path[URL_MAXLENGTH];
-    nameValue *header;
-    uint8_t headerLen;
-    nameValue *param;
-    _uint16 paramLen;
-    _uint16 options;
-} httpRequest;
-
-typedef struct
-{
-    address address;
-    char *data;
-} rawRequest;
-
-extern void orionHTTPRequestInit(httpRequest *req);
-extern void orionHTTPRequestCleanup(httpRequest *req);
-extern _uint8 orionSetHttpDomain(httpRequest *req, const char* domain);
-extern _uint8 orionSetHttpHeader(httpRequest *req, const char* name, const char* value);
-extern void orionAssemblyHttpRequest(httpRequest *req, char* reqBuffer);
-extern int orionTCPConnect(address);
-extern _uint8 orionHTTPRequest(httpRequest *req, char** response);
+extern void orionHttpRequestInit(orionHttpRequest *req);
+extern void orionHttpRequestCleanup(orionHttpRequest *req);
+extern _uint8 orionSetHttpRequestHeader(orionHttpRequest *req, const char* name, const char* value);
+extern void orionAssemblyHttpRequest(orionHttpRequest *req, char* reqBuffer);
+extern int orionTCPConnect(const char* host, _uint16 port);
+extern _uint8 orionHttpRequestPerform(orionHttpRequest *req, char** response);
 
 #endif // __APISOCKET_

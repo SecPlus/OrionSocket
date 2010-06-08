@@ -5,44 +5,39 @@
 
 int main(int argc, char** argv)
 {
-    httpRequest *req = NULL;
-    address victim;
-    int i, code;
+    orionHttpRequest *req = NULL;
+    int code;
     
     char *response = NULL;
-    const char* domain = "67.205.42.197";
-    bzero(victim.domain, DNS_MAXLENGTH);
-    strncpy(victim.domain, domain, strlen(domain));
+    const char* domain = "www.omeuip.com.br";
     
-    victim.port = 80;
-    
-    req = (httpRequest *) malloc(sizeof(httpRequest));
+    req = (orionHttpRequest *) malloc(sizeof(orionHttpRequest));
     if (req == NULL)
     {
         fprintf(stderr, "[ERROR] Não foi possivel alocar memória.\n");
         return 1;    
     }
     
-    orionHTTPRequestInit(req);
+    orionHttpRequestInit(req);
     
-    req->victim = &victim;
+    req->host = strdup(domain);
     req->method = METHOD_GET;
-    strcpy(req->path, "/");
-    
-    setHttpHeader(req, "Host", victim.domain);
-    setHttpHeader(req, "User-Agent", "Anakin");
+    req->path = strdup("/");
+        
+    orionSetHttpRequestHeader(req, "Host", domain);
+    orionSetHttpRequestHeader(req, "User-Agent", "Anakin");
                 
-    code = orionHTTPRequest(req, &response);
+    code = orionHttpRequestPerform(req, &response);
     printf("Code: %d\n", code);
     
     if (code == ORIONSOCKET_OK)
     {
-        printf("%d\n", i);
+        printf("%d\n", code);
         printf("%s\n", response);
         free(response);  
     }  
     
-    orionHTTPRequestCleanup(req);
+    orionHttpRequestCleanup(req);
     
     return 0;
 }
