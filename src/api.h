@@ -1,5 +1,5 @@
 /*
-   OrionSocket - Error Codes
+   OrionSocket - API Header
    --------------------------------
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
@@ -19,13 +19,19 @@
    limitations under the License.
 
  */
-#ifndef __ORIONSOCKET_ERR_
-#define __ORIONSOCKET_ERR_
+#ifndef __ORIONSOCKET_API_H_
+#define __ORIONSOCKET_API_H_
 
-#define ORIONSOCKET_ERR_UNKNOWN         0x01
-#define ORIONSOCKET_ERR_ALLOC           0x02
-#define ORIONSOCKET_ERR_HTTPREQUEST     0X03
-#define ORIONSOCKET_INVALIDHOST         0x04
-#define ORIONSOCKET_INVALIDHTTPREQUEST  0x05
+// Structures
+#define orion_httpRequest               orion_httpRequest
 
-#endif // __ORIONSOCKET_ERR_
+// API Functions
+#define orion_httpRequestInit           orion_httpRequestInit
+#define orion_httpRequestCleanup        orion_httpRequestCleanup
+#define orion_setHttpRequestHeader      orion_setHttpRequestHeader
+#define orion_setHttpRequestHost        orion_setHttpRequestHost
+#define orion_assemblyHttpRequest       orion_assemblyHttpRequest
+#define orion_tcpConnect                orion_tcpConnect
+#define orion_httpRequestPerform        orion_httpRequestPerform
+
+#endif // __ORIONSOCKET_API_H_

@@ -1,5 +1,5 @@
 /*
-   OrionSocket - Socket Implementation
+   OrionSocket - Socket Header
    --------------------------------
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
@@ -28,6 +28,7 @@
 #include <config.h>
 #endif
 
+#include "api.h"
 #include "http.h"
 
 #define ORIONSOCKET_OK              0x00
@@ -68,11 +69,12 @@
 #define DEBUG_HTTPREQUEST(req)
 #endif
 
-extern void orionHttpRequestInit(orionHttpRequest *req);
-extern void orionHttpRequestCleanup(orionHttpRequest *req);
-extern _uint8 orionSetHttpRequestHeader(orionHttpRequest *req, const char* name, const char* value);
-extern void orionAssemblyHttpRequest(orionHttpRequest *req, char* reqBuffer);
-extern int orionTCPConnect(const char* host, _uint16 port);
-extern _uint8 orionHttpRequestPerform(orionHttpRequest *req, char** response);
+extern void orion_httpRequestInit(orion_httpRequest *req);
+extern void orion_httpRequestCleanup(orion_httpRequest *req);
+extern _uint8 orion_setHttpRequestHeader(orionHttpRequest *req, const char* name, const char* value);
+extern void orion_setHttpRequestHost(orionHttpRequest *req, const char* name);
+extern void orion_assemblyHttpRequest(orionHttpRequest *req, char* reqBuffer);
+extern int orion_tcpConnect(const char* host, _uint16 port);
+extern _uint8 orion_httpRequestPerform(orionHttpRequest *req, char** response);
 
 #endif // __APISOCKET_

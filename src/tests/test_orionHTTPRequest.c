@@ -28,8 +28,7 @@ int main(int argc, char** argv)
     orionSetHttpRequestHeader(req, "User-Agent", "Anakin");
                 
     code = orionHttpRequestPerform(req, &response);
-    printf("Code: %d\n", code);
-    
+
     if (code == ORIONSOCKET_OK)
     {
         printf("%d\n", code);

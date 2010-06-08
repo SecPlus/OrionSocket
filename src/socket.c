@@ -1,3 +1,24 @@
+/*
+   OrionSocket - Socket Implementation
+   --------------------------------
+
+   Author: Tiago Natel de Moura <tiago4orion@gmail.com>
+
+   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+ */
 #include "socket.h"
 #include "err.h"
 #include <stdio.h>
@@ -21,7 +42,7 @@ void *orionRealloc(void *ptr, size_t size)
         return malloc(size);
 }
 
-int orionTCPConnect(const char* host, _uint16 port)
+int orion_tcpConnect(const char* host, _uint16 port)
 {
     int sockfd;
     
@@ -189,7 +210,7 @@ const char* _getStrMethod(_uint8 method)
 // Monta a Requisição HTTP a partir da estrutura httpRequest
 // @param orionHttpRequest*      req
 // @param char *            reqBuffer
-void orionAssemblyHttpRequest(orionHttpRequest* req, char* reqBuffer)
+void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
 {
     _uint32 size = 0, i;
     char temp[10];
@@ -213,19 +234,19 @@ void orionAssemblyHttpRequest(orionHttpRequest* req, char* reqBuffer)
     if (req->method == METHOD_POST)
     {
         strcat(reqBuffer, "Content-Length: ");
-        
+
         size += strlen(req->query);     
-        
+
         sprintf(temp, "%d\n", size);
         strcat(reqBuffer, temp);
-        
+
         strcat(reqBuffer, req->query);
     }
-    
+ 
     strcat(reqBuffer, "\n");
 }
 
-void orionHttpRequestInit(orionHttpRequest *req)
+void orion_httpRequestInit(orion_httpRequest *req)
 {
     req->host = NULL;
     req->port = 80;                 /* Default port         */
@@ -240,7 +261,7 @@ void orionHttpRequestInit(orionHttpRequest *req)
     req->options = 0x0;             /* No option */
 }
 
-void orionHttpRequestCleanup(orionHttpRequest *req)
+void orion_httpRequestCleanup(orion_httpRequest *req)
 {
     int i;
     if (req->host)
@@ -279,7 +300,7 @@ void orionHttpRequestCleanup(orionHttpRequest *req)
 // @param orionHttpRequest*   req
 // @param const char* name
 // @param const char* value
-_uint8 orionSetHttpRequestHeader(orionHttpRequest *req, const char* name, const char* value)
+_uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value)
 {
     _uint8 len;
         
@@ -310,7 +331,7 @@ _uint8 orionSetHttpRequestHeader(orionHttpRequest *req, const char* name, const 
 // Estabelece uma conexão única no host passado em httpRequest *
 // Retorna o conteudo da página.
 // 
-_uint8 orionHttpRequestPerform(orionHttpRequest *req, char** response)
+_uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 {
     int sockfd, n = 0;
     char reqBuffer[HTTP_REQUEST_MAXLENGTH], temp[HTTP_BIG_RESPONSE];
@@ -319,11 +340,11 @@ _uint8 orionHttpRequestPerform(orionHttpRequest *req, char** response)
     memset(reqBuffer, '\0', sizeof(char) * HTTP_REQUEST_MAXLENGTH);
     memset(temp, '\0', sizeof(char) * HTTP_RESPONSE_LENGTH);
     
-    orionAssemblyHttpRequest(req, reqBuffer);
+    orion_assemblyHttpRequest(req, reqBuffer);
     
     DEBUG_HTTPREQUEST(req);
     
-    sockfd = orionTCPConnect(req->host, req->port);
+    sockfd = orion_tcpConnect(req->host, req->port);
     
     if (sockfd < 0)
     {

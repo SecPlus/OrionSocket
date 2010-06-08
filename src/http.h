@@ -33,13 +33,13 @@ typedef struct
     char* path;         /* URL Path             */
     char* file_ext;     /* File extension       */
     char* query;        /* Query String         */
-    
+
     nameValue *header;  /* HTTP    Headers      */
     _uint8 headerLen;   /* Number of headers    */
-    
+
     nameValue *cookie;  /* Array of cookies     */
     _uint8 cookieLen;   /* Number of cookies    */
-    
+
     _uint16 options;    /* Extra Options        */
 } orionHttpRequest;
 
@@ -47,10 +47,10 @@ typedef struct
 {
     _uint8 code;        /* Status Code          */
     char* file_ext;     /* File extension       */
-    
+
     nameValue *header;  /* HTTP Headers         */   
     _uint8 headerLen;   /* Number of headers    */
-    
+
     nameValue *cookie;  /* Set Cookie           */
     _uint8 cookieLen;   /* Number of cookies    */ 
 } orionHttpResponse;
