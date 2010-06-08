@@ -77,7 +77,7 @@ typedef struct
 
 typedef struct
 {
-    address *victim;
+    address address;
     char *data;
 } rawRequest;
 
@@ -85,8 +85,7 @@ extern void orionHTTPRequestInit(httpRequest *req);
 extern void orionHTTPRequestCleanup(httpRequest *req);
 extern _uint8 orionSetHttpDomain(httpRequest *req, const char* domain);
 extern _uint8 orionSetHttpHeader(httpRequest *req, const char* name, const char* value);
-extern void httpRequestCleanup(httpRequest *req);
-extern void assemblyHttpRequest(httpRequest *req, char* reqBuffer);
+extern void orionAssemblyHttpRequest(httpRequest *req, char* reqBuffer);
 extern int orionTCPConnect(address);
 extern _uint8 orionHTTPRequest(httpRequest *req, char** response);
 

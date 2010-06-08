@@ -57,7 +57,7 @@ int orionTCPConnect(address addr)
             case TRY_AGAIN:
                 fprintf(stderr, "[ERROR] gethostbyname(): Problemas ao obter o endereço do Host!!!\n"
                                 "Voce pode tentar novamente...\n"
-                                "Esse problema é raro...\n"
+                                "Esse problema é dificil de identificar a origem...\n"
                                 "Não posso lhe ajudar muito...\n"
                                 "Esse erro ocorreu na chamada da funcao gethostbyname()\n"
                                 "Essa funcao utiliza um banco de dados locais de resolucao de nomes\n"
@@ -195,7 +195,7 @@ const char* _getStrMethod(_uint8 method)
 // Monta a Requisição HTTP a partir da estrutura httpRequest
 // @param httpRequest*      req
 // @param char *            reqBuffer
-void assemblyHttpRequest(httpRequest* req, char* reqBuffer)
+void orionAssemblyHttpRequest(httpRequest* req, char* reqBuffer)
 {
     _uint32 size = 0, i;
     char temp[10];
