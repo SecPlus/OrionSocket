@@ -341,7 +341,7 @@ Copyright (C) 2006 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/fedora/i4k/programacao/orionsocket/trunk'
+ac_pwd='/home/i4k/programacao/orionsocket/trunk'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -458,7 +458,7 @@ FGREP='/bin/grep -F'
 LD='/usr/bin/ld'
 NM='/usr/bin/nm -B'
 LN_S='ln -s'
-max_cmd_len='1572864'
+max_cmd_len='1966080'
 ac_objext='o'
 exeext=''
 lt_unset='unset'
@@ -550,8 +550,8 @@ postuninstall_cmds=''
 finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
 finish_eval=''
 hardcode_into_libs='yes'
-sys_lib_search_path_spec='/usr/lib/gcc/i486-linux-gnu/4.3.2 /usr/lib /lib'
-sys_lib_dlsearch_path_spec='/lib /usr/lib /lib/i486-linux-gnu /usr/lib/i486-linux-gnu /opt/kde3/lib/ /usr/lib/alsa-lib /usr/local/lib /usr/local/lib/snort_dynamicengine '
+sys_lib_search_path_spec='/usr/lib/gcc/i686-redhat-linux/4.4.3 /usr/lib /lib'
+sys_lib_dlsearch_path_spec='/lib /usr/lib /usr/lib/ctapi /usr/lib/mysql /usr/lib/qt-3.3/lib /usr/lib/tcl8.5/tclx8.4 /usr/lib/tcl8.5 /usr/lib/wine/ /usr/lib/xulrunner-1.9.1 '
 hardcode_action='immediate'
 enable_dlopen='unknown'
 enable_dlopen_self='unknown'
@@ -724,19 +724,19 @@ s,@am__isrc@,|#_!!_#|,g
 s,@CYGPATH_W@,|#_!!_#|echo,g
 s,@PACKAGE@,|#_!!_#|orionsocket,g
 s,@VERSION@,|#_!!_#|0.1,g
-s,@ACLOCAL@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run aclocal-1.10,g
-s,@AUTOCONF@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run autoconf,g
-s,@AUTOMAKE@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run automake-1.10,g
-s,@AUTOHEADER@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run autoheader,g
-s,@MAKEINFO@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run makeinfo,g
-s,@install_sh@,|#_!!_#|$(SHELL) /home/fedora/i4k/programacao/orionsocket/trunk/install-sh,g
+s,@ACLOCAL@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run aclocal-1.10,g
+s,@AUTOCONF@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run autoconf,g
+s,@AUTOMAKE@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run automake-1.10,g
+s,@AUTOHEADER@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run autoheader,g
+s,@MAKEINFO@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run makeinfo,g
+s,@install_sh@,|#_!!_#|$(SHELL) /home/i4k/programacao/orionsocket/trunk/install-sh,g
 s,@STRIP@,|#_!!_#|strip,g
 s,@INSTALL_STRIP_PROGRAM@,|#_!!_#|$(install_sh) -c -s,g
 s,@mkdir_p@,|#_!!_#|/bin/mkdir -p,g
 s,@AWK@,|#_!!_#|gawk,g
 s,@SET_MAKE@,|#_!!_#|,g
 s,@am__leading_dot@,|#_!!_#|.,g
-s,@AMTAR@,|#_!!_#|${SHELL} /home/fedora/i4k/programacao/orionsocket/trunk/missing --run tar,g
+s,@AMTAR@,|#_!!_#|${SHELL} /home/i4k/programacao/orionsocket/trunk/missing --run tar,g
 s,@am__tar@,|#_!!_#|${AMTAR} chof - "$$tardir",g
 s,@am__untar@,|#_!!_#|${AMTAR} xf -,g
 s,@LIBTOOL@,|#_!!_#|$(SHELL) $(top_builddir)/libtool,g

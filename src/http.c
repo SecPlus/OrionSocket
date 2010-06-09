@@ -190,6 +190,9 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
     
 	strcpy(reqBuffer, orion_getStrMethod(req->method));
 	strcat(reqBuffer, " ");
+	if (!req->path)
+	    req->path = strdup("/");
+	
 	strcat(reqBuffer, req->path);
 	strcat(reqBuffer, " ");
 	strcat(reqBuffer, HTTP_PROTOCOL);
