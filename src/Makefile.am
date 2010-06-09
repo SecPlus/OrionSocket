@@ -12,4 +12,4 @@ library_include_HEADERS=socket.h 		\
 						http.h 			\
 						types.h 		\
 						api.h			\
-						util.h 
+						util.h

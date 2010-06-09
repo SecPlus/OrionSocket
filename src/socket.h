@@ -40,7 +40,7 @@
 #define METHOD_DELETE               0x05
 
 #define ORION_TCP_FAMILY            AF_INET
-#define ORION_TCP_SOCKETTYPE       SOCK_STREAM
+#define ORION_TCP_SOCKETTYPE        SOCK_STREAM
 
 #define HTTP_PROTOCOL               "HTTP/1.1"
 #define HTTP_REQUEST_MAXLENGTH      2048
