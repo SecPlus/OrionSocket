@@ -1,56 +1,47 @@
-OrionSocket é uma pequena API que facilita a criação de sockets em C usando os
-protocolos TCP e UDP.
+OrionSocket é uma pequena API que facilita a criação de sockets em C.
+Atualmente ela possue apenas uma API HTTP, mas o objetivo é expandi-la para 
+suportar outros tipos de protocolos.
 
 Por exemplo, para uma conexão HTTP com um servidor podemos usar o seguinte
 código:
 
-// Realiza uma conexão HTTP remota.
+/*******************************************************************************
+ ** Realiza uma requisição HTTP num servidor remoto usando OrionSocket's
+ ** Author: Tiago Natel de Moura
+ ** Date: 08/06/2010
+ ******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
-#include <orionsocket/socket.h>
+#include <string.h>
+#include <orion/socket/socket.h>
+#include <orion/socket/http.h>
 
 int main(int argc, char** argv)
 {
-    httpRequest *req = NULL;
-    address victim;
-    int i;    
-    char *response = NULL;
+	orion_httpRequest *req = NULL;
+	char *response = NULL;
+	int code;
+	
+	const char* domain = "www.omeuip.com.br";
+    // Initialize the library
+    orion_httpRequestInit(&req);
+    orion_setHttpRequestHost(req, domain, 80);
+	orion_setHttpRequestHeader(req, "Host", domain);
+	orion_setHttpRequestHeader(req, "User-Agent", "Anakin");
+	
+	
+	code = orion_httpRequestPerform(req, &response);
+	
+	if (code == ORIONSOCKET_OK)
+	{
+		printf("%s\n", response);
+		
+		free(response);
+	}
     
-    // Alvo
-    const char* domain = "www.omeuip.com.br";
-    bzero(victim.domain, DNS_MAXLENGTH);
+    // Free's library
+    orion_httpRequestCleanup(req);
     
-    // Setando o alvo na estrutura address
-    strncpy(victim.domain, domain, strlen(domain));
-    
-    // Setando a porta
-    victim.port = 80;
-    
-    // Inicializando a estrutura httpRequest
-    req = (httpRequest *) malloc(sizeof(httpRequest));
-    
-    // Setando as informações HTTP
-    req->victim = &victim;
-    req->method = METHOD_GET;
-    req->path = "/";
-    req->header = NULL;
-    req->headerLen = 0;
-    req->paramLen = 0;
-
-    // Setando cabeçalhos HTTP
-    setHttpHeader(req, "Host", victim.domain);
-    setHttpHeader(req, "User-Agent", "Meu Browser");
-    
-    // Deixe que o OrionSocket faça o trabalho sujo para voce :)
-    i = orionHTTPRequest(req, &response);
-    
-    // Resposta do servidor encontra-se em "response"
-    printf("%s\n", response);
-    
-    free(response);
-    
-    // Libera a memória alocada pelo Orion   
-    httpRequestCleanup(req);
-    
-    return 0;
+	return 0;
 }
+
