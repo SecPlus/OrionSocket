@@ -58,6 +58,7 @@ typedef struct
 extern void orion_httpRequestInit(orion_httpRequest **req);
 extern void orion_httpRequestCleanup(orion_httpRequest *req);
 extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port);
+extern void orion_setHttpRequestPath(orion_httpRequest *req, const char* path);
 extern _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value);
 extern void orion_assemblyHttpRequest(orion_httpRequest *req, char* reqBuffer);
 extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);

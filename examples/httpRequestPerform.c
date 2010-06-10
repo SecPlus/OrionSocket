@@ -8,15 +8,19 @@ int main(int argc, char** argv)
 {
 	orion_httpRequest *req = NULL;
 	char *response = NULL;
+	char reqBuffer[HTTP_REQUEST_MAXLENGTH];
 	int code;
 	
-	const char* domain = "www.omeuip.com.br";
+	const char* domain = "67.205.42.197";
     // Initialize the library
     orion_httpRequestInit(&req);
     orion_setHttpRequestHost(req, domain, 80);
-	orion_setHttpRequestHeader(req, "Host", domain);
+	
 	orion_setHttpRequestHeader(req, "User-Agent", "Anakin");
 	
+	orion_assemblyHttpRequest(req, reqBuffer);
+	
+	printf("%s\n", reqBuffer);
 	
 	code = orion_httpRequestPerform(req, &response);
 	

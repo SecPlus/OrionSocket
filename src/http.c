@@ -63,6 +63,7 @@ void orion_httpRequestCleanup(orion_httpRequest *req)
   int i;
   if (req->host)
     free(req->host);
+  req->port = 80;
   if (req->path)
     free(req->path);
   if (req->file_ext)
@@ -96,6 +97,11 @@ void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 
 {
 	req->host = strdup(host);
 	req->port = port;
+}
+
+void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
+{
+    req->path = strdup(path);
 }
 
 //
@@ -197,6 +203,11 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	strcat(reqBuffer, " ");
 	strcat(reqBuffer, HTTP_PROTOCOL);
 	strcat(reqBuffer, "\n");
+    
+    // For now let's set the Host header automatically. 
+    strcat(reqBuffer, "Host: ");
+    strcat(reqBuffer, req->host);
+    strcat(reqBuffer, "\n");
     
 	for (i = 0; i < req->headerLen; i++)
 	{
