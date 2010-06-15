@@ -31,6 +31,7 @@
 
 // Berkeley Sockets
 #include <netdb.h>
+#include <sys/socket.h>
 
 void orion_httpRequestInit(orion_httpRequest **req2)
 {
@@ -231,3 +232,4 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
  
 	strcat(reqBuffer, "\n");
 }
+

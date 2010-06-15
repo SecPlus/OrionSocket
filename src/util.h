@@ -29,3 +29,4 @@ extern void * orion_realloc(void *ptr, size_t size);
 extern const char* orion_getStrMethod(_uint8 method);
 
 #endif // __ORIONSOCKET_UTIL_H_
+

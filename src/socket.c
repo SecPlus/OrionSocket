@@ -48,13 +48,6 @@ int orion_tcpConnect(const char* host, _uint16 port)
         return -1;
     }
     
-    if (port <= 0 || port > 65535)
-    {
-        fprintf(stderr, "Porta inválida.\n");
-        return -1;
-    } 
-    
-    
     addr_host = gethostbyname(host);
     if (!addr_host)
     {
