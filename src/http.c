@@ -112,9 +112,13 @@ void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
 // @param const char* value
 _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value)
 {
-	_uint8 len;
-        
+	_uint8 len = 0, lenName = 0, lenValue = 0;
+	char* tmp = NULL;
 	len = req->headerLen;
+	int error;
+    
+    lenName = strlen(name);
+    lenValue = strlen(value);
     
 	req->header = (nameValue *) orion_realloc(req->header, sizeof(nameValue)*(len+1));
 	if (!req->header)
@@ -123,15 +127,41 @@ _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, cons
 		return ORIONSOCKET_ERR_ALLOC;
 	}
     
-	req->header[len].name = (char *) malloc(sizeof(char) * strlen(name) + 1);
-	req->header[len].value = (char *) malloc(sizeof(char) * strlen(value) + 1);
+	req->header[len].name = (char *) malloc(sizeof(char) * lenName + 1);
+	req->header[len].value = (char *) malloc(sizeof(char) * lenValue + 1);
 	if (!req->header[len].name || !req->header[len].value)
 	{
 		fprintf(stderr, "[ERROR] Erro ao alocar memória.\n");
 		return ORIONSOCKET_ERR_ALLOC;
 	}
-	strcpy(req->header[len].name, name);
-	strcpy(req->header[len].value, value);
+	
+	if (!strcmp(name, "Host") || !strcmp(name, "host"))
+	{
+	    tmp = (char *) malloc(sizeof(char) * NI_MAXHOST);
+	    
+	    if (!tmp)
+	    {
+	        ORIONFREE(req->header[len].name);
+	        ORIONFREE(req->header[len].value);
+	        return ORIONSOCKET_ERR_ALLOC;
+	    }
+        
+        bzero(tmp, NI_MAXHOST);
+        if ((error = orion_getDomain(value, tmp)) != ORIONSOCKET_OK)
+        {
+            printf("[ERROR %d] : %s\n", error, gai_strerror(error));
+        }
+        
+	    strncpy(req->header[len].name, "Host", lenName);
+	    strncpy(req->header[len].value, tmp, lenValue);
+	    req->header[len].name[lenName] = '\0';
+	    req->header[len].value[lenValue] = '\0';
+	    
+	    free(tmp);
+	} else {
+	    strcpy(req->header[len].name, name);
+	    strcpy(req->header[len].value, value);
+	}
     
 	req->headerLen++;
     
@@ -203,12 +233,7 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	strcat(reqBuffer, req->path);
 	strcat(reqBuffer, " ");
 	strcat(reqBuffer, HTTP_PROTOCOL);
-	strcat(reqBuffer, "\n");
-    
-    // For now let's set the Host header automatically. 
-    strcat(reqBuffer, "Host: ");
-    strcat(reqBuffer, req->host);
-    strcat(reqBuffer, "\n");
+	strcat(reqBuffer, "\n");    
     
 	for (i = 0; i < req->headerLen; i++)
 	{

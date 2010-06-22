@@ -33,5 +33,8 @@
 #define orion_assemblyHttpRequest       orion_assemblyHttpRequest
 #define orion_tcpConnect                orion_tcpConnect
 #define orion_httpRequestPerform        orion_httpRequestPerform
+#define orion_getHostByName             orion_getHostByName
+#define orion_getDomainByAddr           orion_getDomainByAddr
+#define orion_getDomain                 orion_getDomain
 
 #endif // __ORIONSOCKET_API_H_

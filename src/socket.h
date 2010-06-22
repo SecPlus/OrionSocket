@@ -28,6 +28,8 @@
 #include <config.h>
 #endif
 
+#include <netdb.h>
+
 #include "api.h"
 #include "http.h"
 
@@ -39,7 +41,7 @@
 #define METHOD_PUT                  0x04
 #define METHOD_DELETE               0x05
 
-#define ORION_TCP_FAMILY            AF_INET
+#define ORION_TCP_FAMILY            PF_INET
 #define ORION_TCP_SOCKETTYPE        SOCK_STREAM
 
 #define HTTP_PROTOCOL               "HTTP/1.1"
@@ -49,11 +51,11 @@
 
 #define DNS_MAXLENGTH               255
 #define URL_MAXLENGTH               2048
-#define IP_MAXLENGTH                16
+#define IPv4_MAXLENGTH              16
 
 #ifdef ORIONSOCKET_DEBUG
 #define DEBUG_HTTPREQUEST(req)  do {  \
-                                printf("DEBUGGING HTTP REQUEST:\n"); \
+                                printf("================ DEBUGGING HTTP REQUEST ===================\n"); \
                                 printf("Host: %s\n", req->host); \
                                 printf("Port: %d\n", req->port); \
                                 printf("Method: %s\n", orion_getStrMethod(req->method)); \
@@ -64,10 +66,17 @@
                                     printf("Cookie: "); \
                                 for (_orionIntdebug = 0; _orionIntdebug < req->cookieLen; _orionIntdebug++) \
                                     printf("%s=%s; &", req->cookie[_orionIntdebug].name, req->cookie[_orionIntdebug].value); \
+                                printf("===========================================================\n"); \
                                 } while(0) 
 #else
 #define DEBUG_HTTPREQUEST(req)
 #endif
 
+#define ORIONFREE(ptr)          if (ptr) free(ptr);
+
+extern int orion_getHostByName(const char* addr, char* buffer);
+extern int orion_getDomain(const char* ip, char* buffer);
+extern int orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
 extern int orion_tcpConnect(const char* host, _uint16 port);
 #endif // __APISOCKET_
+

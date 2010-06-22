@@ -1,7 +1,7 @@
 # Configure Script
 # --
 
-AC_INIT([orionsocket], [1.0.1], [tiago4orion@gmail.com])
+AC_INIT([orionsocket], [1.0.2], [tiago4orion@gmail.com])
 AM_INIT_AUTOMAKE
 LT_INIT
 AC_CONFIG_SRCDIR([src/socket.c])
@@ -26,5 +26,5 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([bzero gethostbyname inet_ntoa memset socket])
 
-AC_CONFIG_FILES([Makefile src/Makefile examples/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT

@@ -34,11 +34,103 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+int orion_getHostByName(const char* name, char* buffer)
+{
+    struct addrinfo hints, *res, *res0;
+    struct sockaddr_in * target = NULL;
+    int error;
+    char *tmp = NULL;
+    
+    memset(&hints, 0, sizeof(struct addrinfo));
+    
+    hints.ai_family = PF_UNSPEC;
+    hints.ai_socktype = 0;
+    error = getaddrinfo(name, "http", &hints, &res0);
+    
+    if (error)
+    {
+        freeaddrinfo(res0);
+        return error;
+    }
+    
+    for (res = res0; res; res = res->ai_next)
+    {
+        target = (struct sockaddr_in *) res->ai_addr;
+        if (target)
+        {
+            tmp = inet_ntoa(target->sin_addr);
+            if (tmp && strlen(tmp))
+            {
+                strncpy(buffer, tmp, strlen(tmp));
+                buffer[strlen(tmp)] = '\0';
+                freeaddrinfo(res0);
+                return ORIONSOCKET_OK;
+            }
+        }
+    }
+    
+    freeaddrinfo(res0);
+    
+    return ORIONSOCKET_ADDR_NOTFOUND;
+}
+
+int orion_getDomain(const char* ip, char* buffer)
+{
+    struct addrinfo hints, *res0;
+    int error;
+    
+    memset(&hints, 0, sizeof(struct addrinfo));
+    
+    hints.ai_family = PF_UNSPEC;
+    hints.ai_socktype = 0;
+    error = getaddrinfo(ip, NULL, &hints, &res0);
+    
+    if (error)
+    {
+        if (res0)
+            freeaddrinfo(res0);
+        return error;
+    }
+    
+    error = orion_getDomainByAddr(res0, buffer);
+    
+    freeaddrinfo(res0);
+    
+    if (error)
+        return error;
+    
+    if (buffer && *buffer && strlen(buffer))
+        return ORIONSOCKET_OK;
+    else
+        return ORIONSOCKET_ERR_UNKNOWN;
+}
+
+int orion_getDomainByAddr(struct addrinfo* addr, char* buffer)
+{
+    struct addrinfo *res;
+    int error = ORIONSOCKET_OK;
+    
+    for (res = addr; res; res = res->ai_next)
+    {
+        error = getnameinfo(res->ai_addr, res->ai_addrlen, buffer, NI_MAXHOST, NULL, 0, 0);
+            
+        if (error)
+            continue;
+                
+        if (buffer && *buffer && strlen(buffer))
+        {
+            error = ORIONSOCKET_OK;
+            break;
+        }
+    }
+    
+    return error;   
+}
+
 int orion_tcpConnect(const char* host, _uint16 port)
 {
     int sockfd;
     
-    struct hostent *addr_host;
     struct sockaddr_in target;
     char* ip = NULL;
     
@@ -48,52 +140,12 @@ int orion_tcpConnect(const char* host, _uint16 port)
         return -1;
     }
     
-    addr_host = gethostbyname(host);
-    if (!addr_host)
-    {
-        switch (h_errno)
-        {
-        case HOST_NOT_FOUND:
-            fprintf(stderr, "[ERROR] gethostbyname(): Host não encontrado.\n");
-            break;
-        case NO_ADDRESS:
-            fprintf(stderr, "[ERROR] gethostbyname(): O nome solicitado é válido mas não possui um endereço de internet...\n");
-            break;
-        case TRY_AGAIN:
-            fprintf(stderr, "[ERROR] gethostbyname(): Problemas ao obter o endereço do Host!!!\n"
-                            "Voce pode tentar novamente...\n"
-                            "Esse problema é dificil de identificar a origem...\n"
-                            "Não posso lhe ajudar muito...\n"
-                            "Esse erro ocorreu na chamada da funcao gethostbyname()\n"
-                            "Essa funcao utiliza um banco de dados locais de resolucao de nomes\n"
-                            "para encontrar o dominio.\n"
-                            "Verifique se possui os arquivos default do resolver, como:\n"
-                            "- /etc/hosts\n"
-                            "- /etc/networks\n"
-                            "- /etc/protocols\n"
-                            "- /etc/services\n"
-                            "...\n"
-                            "Verifique o header '/usr/include/netdb.h'\n");
-            break;
-        case NO_RECOVERY:
-            fprintf(stderr, "[ERROR] gethostbyname(): Erro irrecuperável... Muito explicativo não é? ¬¬\n");
-            break;
-        default:
-            fprintf(stderr, "[ERROR] gethostbyname(): Uwnknow Error Code: %d\n", h_errno);
-            break;    
-        }
-        
-        return -1;        
-    }
+    ip = (char *) malloc(sizeof(char) * (IPv4_MAXLENGTH + 1));
+    if (!ip)
+        return ORIONSOCKET_ERR_ALLOC;
     
-    // Converte um endereço de internet (struct in_addr *) em ASCII
-    ip = inet_ntoa(*(struct in_addr *)addr_host->h_addr);
-    if (*ip == -1)
-    {
-        fprintf(stderr, "[ERROR] inet_ntoa(): Não foi possivel obter o endereco IP.\n");
-        return -1;
-    }
-        
+    orion_getHostByName(host, ip);
+    
     // Cria o socket
     sockfd = socket(ORION_TCP_FAMILY, ORION_TCP_SOCKETTYPE, 0);
     if (sockfd < 0)
@@ -116,9 +168,11 @@ int orion_tcpConnect(const char* host, _uint16 port)
             break;
         }
         
+        free(ip);
         return -1;
     }
     
+    bzero(&target, sizeof target);
     target.sin_family = ORION_TCP_FAMILY;
     target.sin_port = htons(port);
     
@@ -126,6 +180,7 @@ int orion_tcpConnect(const char* host, _uint16 port)
     if (inet_pton(ORION_TCP_FAMILY, ip, &target.sin_addr) < 0)
     {
         perror("[ERROR] Erro ao setar o endereço remoto.\n");
+        ORIONFREE(ip);
         return errno;
     }
     
@@ -167,13 +222,12 @@ int orion_tcpConnect(const char* host, _uint16 port)
             break;        
         }
         
+        ORIONFREE(ip);        
         return -1;
     }
     
+    ORIONFREE(ip);
+        
     return sockfd;
 }
-
-
-
-
 
