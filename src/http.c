@@ -216,6 +216,40 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	return ORIONSOCKET_OK;
 }
 
+_uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
+{
+    int sockfd, n;
+    char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[HTTP_RESPONSE_LENGTH];
+    
+    memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
+    
+    orion_assemblyHttpRequest(req, reqBuffer);
+    
+    sockfd = orion_tcpConnect(req->host, req->port);
+    if (sockfd < 0)
+        return errno;
+    
+    if (send(sockfd, reqBuffer, strlen(reqBuffer), 0) < 0)
+    {
+		perror("[ERROR] Erro ao enviar requisição.\n");
+		close(sockfd);
+		return errno;
+	}
+	
+	n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
+	
+	while (n > 0)
+	{
+	    (*callback)(responseBuffer, (_uint32) n);
+	    bzero(responseBuffer, HTTP_RESPONSE_LENGTH);
+	    n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
+	}
+	
+	close(sockfd);
+	
+	return ORIONSOCKET_OK;
+}
+
 // Monta a Requisição HTTP a partir da estrutura httpRequest
 // @param orionHttpRequest*      req
 // @param char *            reqBuffer

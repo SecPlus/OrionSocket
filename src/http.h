@@ -62,6 +62,7 @@ extern void orion_setHttpRequestPath(orion_httpRequest *req, const char* path);
 extern _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value);
 extern void orion_assemblyHttpRequest(orion_httpRequest *req, char* reqBuffer);
 extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
+extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32));
 
 
 #endif // __ORIONSOCKET_HTTP_H_
