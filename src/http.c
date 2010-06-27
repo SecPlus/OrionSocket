@@ -153,14 +153,16 @@ _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, cons
         }
         
 	    strncpy(req->header[len].name, "Host", lenName);
-	    strncpy(req->header[len].value, tmp, lenValue);
+	    strncpy(req->header[len].value, tmp, strlen(tmp));
 	    req->header[len].name[lenName] = '\0';
 	    req->header[len].value[lenValue] = '\0';
 	    
 	    free(tmp);
 	} else {
-	    strcpy(req->header[len].name, name);
-	    strcpy(req->header[len].value, value);
+	    strncpy(req->header[len].name, name, lenName);
+	    strncpy(req->header[len].value, value, lenValue);
+	    req->header[len].name[lenName] = '\0';
+	    req->header[len].value[lenValue] = '\0';
 	}
     
 	req->headerLen++;
@@ -222,6 +224,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
     char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[HTTP_RESPONSE_LENGTH];
     
     memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
+    memset(reqBuffer, 0, responseBuffer[HTTP_RESPONSE_LENGTH]);
     
     orion_assemblyHttpRequest(req, reqBuffer);
     
@@ -229,7 +232,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
     if (sockfd < 0)
         return errno;
     
-    if (send(sockfd, reqBuffer, strlen(reqBuffer), 0) < 0)
+    if (write(sockfd, reqBuffer, strlen(reqBuffer)) < 0)
     {
 		perror("[ERROR] Erro ao enviar requisição.\n");
 		close(sockfd);
@@ -237,11 +240,12 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
 	}
 	
 	n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
-	
+		
 	while (n > 0)
 	{
-	    (*callback)(responseBuffer, (_uint32) n);
-	    bzero(responseBuffer, HTTP_RESPONSE_LENGTH);
+	    responseBuffer[n] = '\0';
+	    (*callback)(responseBuffer, n);
+	    memset(responseBuffer, 0, HTTP_RESPONSE_LENGTH);
 	    n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
 	}
 	

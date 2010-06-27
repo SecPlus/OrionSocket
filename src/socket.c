@@ -80,7 +80,7 @@ int orion_getDomain(const char* ip, char* buffer)
     int error;
     
     memset(&hints, 0, sizeof(struct addrinfo));
-    
+        
     hints.ai_family = PF_UNSPEC;
     hints.ai_socktype = 0;
     error = getaddrinfo(ip, NULL, &hints, &res0);
@@ -168,7 +168,7 @@ int orion_tcpConnect(const char* host, _uint16 port)
             break;
         }
         
-        free(ip);
+        ORIONFREE(ip);
         return -1;
     }
     
@@ -218,7 +218,7 @@ int orion_tcpConnect(const char* host, _uint16 port)
             break;
         default:
             fprintf(stderr, "Estou com preguiça de escrever um mensagem bonitinha para TODOS os erros que voce comete...\n"
-                            "Por favor, crie vergonha na cara e procure pelo codigo de erro %d no arquivo /usr/include/sys/socket.h.\n", errno);
+                            "Procure pelo codigo de erro %d no arquivo /usr/include/sys/socket.h.\n", errno);
             break;        
         }
         
