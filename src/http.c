@@ -224,7 +224,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
     char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[HTTP_RESPONSE_LENGTH];
     
     memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
-    memset(reqBuffer, 0, responseBuffer[HTTP_RESPONSE_LENGTH]);
+    memset(responseBuffer, 0, HTTP_RESPONSE_LENGTH);
     
     orion_assemblyHttpRequest(req, reqBuffer);
     
