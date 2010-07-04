@@ -26,7 +26,6 @@
 #define orion_httpRequest               orion_httpRequest
 
 // API Functions
-#define orion_httpRequestInit           orion_httpRequestInit
 #define orion_httpRequestCleanup        orion_httpRequestCleanup
 #define orion_setHttpRequestHeader      orion_setHttpRequestHeader
 #define orion_setHttpRequestHost        orion_setHttpRequestHost

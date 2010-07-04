@@ -33,7 +33,7 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
-void orion_httpRequestInit(orion_httpRequest **req2)
+void orion_initHttpRequest(orion_httpRequest **req2)
 {
   orion_httpRequest *req = NULL;
     
@@ -54,12 +54,12 @@ void orion_httpRequestInit(orion_httpRequest **req2)
   req->cookie = NULL;
   req->cookieLen = 0;
   req->query = NULL;
-  req->options = 0x0;             /* No option */
+  req->option = 0x0;             /* No option */
     
   *req2 = req;
 }
 
-void orion_httpRequestCleanup(orion_httpRequest *req)
+void orion_cleanupHttpRequest(orion_httpRequest *req)
 {
   int i;
   if (req->host)
@@ -170,6 +170,11 @@ _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, cons
 	return ORIONSOCKET_OK;    
 }
 
+void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)
+{
+    req->option |= option;
+}
+
 // Estabelece uma conexão única no host passado em httpRequest *
 // Retorna o conteudo da página.
 // 
@@ -218,13 +223,13 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	return ORIONSOCKET_OK;
 }
 
-_uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
+_uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _uint32 count)
 {
     int sockfd, n;
-    char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[HTTP_RESPONSE_LENGTH];
+    char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[count];
     
     memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
-    memset(responseBuffer, 0, HTTP_RESPONSE_LENGTH);
+    memset(responseBuffer, 0, count);
     
     orion_assemblyHttpRequest(req, reqBuffer);
     
@@ -239,14 +244,14 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32))
 		return errno;
 	}
 	
-	n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
+	n = read(sockfd, responseBuffer, count-1);
 		
 	while (n > 0)
 	{
 	    responseBuffer[n] = '\0';
 	    (*callback)(responseBuffer, n);
-	    memset(responseBuffer, 0, HTTP_RESPONSE_LENGTH);
-	    n = read(sockfd, responseBuffer, HTTP_RESPONSE_LENGTH-1);
+	    memset(responseBuffer, 0, count);
+	    n = read(sockfd, responseBuffer, count-1);
 	}
 	
 	close(sockfd);

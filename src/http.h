@@ -24,6 +24,10 @@
 
 #include "types.h"
 
+#define ORION_OPTDEBUG_REQUEST      1
+#define ORION_OPTDEBUG_RESPONSE     2
+#define ORION_OPTDEBUG_PROGRESS     4
+
 // orionHttpRequest structure
 typedef struct
 {
@@ -40,7 +44,7 @@ typedef struct
     nameValue *cookie;  /* Array of cookies     */
     _uint8 cookieLen;   /* Number of cookies    */
 
-    _uint16 options;    /* Extra Options        */
+    _uint16 option;    /* Extra Options        */
 } orion_httpRequest;
 
 typedef struct
@@ -55,14 +59,114 @@ typedef struct
     _uint8 cookieLen;   /* Number of cookies    */ 
 } orion_httpResponse;
 
-extern void orion_httpRequestInit(orion_httpRequest **req);
-extern void orion_httpRequestCleanup(orion_httpRequest *req);
-extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port);
-extern void orion_setHttpRequestPath(orion_httpRequest *req, const char* path);
-extern _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value);
-extern void orion_assemblyHttpRequest(orion_httpRequest *req, char* reqBuffer);
-extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
-extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32));
+/**
+ * Inicializa e aloca a memória necessária para a estrutura orion_httpRequest.
+ * TODO : Remover esse cara
+ *
+ * @deprecated
+ * @param orion_httpRequest **req
+ * @return void
+ */
+// extern void orion_httpRequestInit(orion_httpRequest **req);
 
+/**
+ * Inicializa e aloca a memória necessária para a estrutura orion_httpRequest.
+ *
+ * @param orion_httpRequest **req
+ * @return void
+ */
+extern void orion_initHttpRequest(orion_httpRequest **req);
+
+/**
+ * Libera a memória alocada por orion_httpRequestInit
+ * TODO : Remover esse cara
+ *
+ * @deprecated
+ * @param orion_httpRequest *req
+ * @return void
+ */
+extern void orion_httpRequestCleanup(orion_httpRequest *req);
+
+/**
+ * Libera a memória alocada por orion_initHttpRequest
+ *
+ * @param orion_httpRequest *req
+ * @return void
+ */
+extern void orion_cleanupHttpRequest(orion_httpRequest *req);
+
+/**
+ * Configura o host e a porta para a conexão HTTP.
+ *
+ * @param orion_httpRequest *req
+ * @param const char* host
+ * @param _uint16 port
+ */
+extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port);
+
+/**
+ * Configura o Path da requisição.
+ * Por exemplo, na URL http://www.bugsec.com.br/tools/shells/c99.txt
+ * temos que PATH=/tools/shells/c99.txt
+ * 
+ * @param orion_httpRequest *req
+ * @param const char* path
+ * @return void
+ */ 
+extern void orion_setHttpRequestPath(orion_httpRequest *req, const char* path);
+
+/**
+ * Configura um header HTTP.
+ * 
+ * @param orion_httpRequest *req
+ * @param const char* name
+ * @param const char* value
+ * @return _uint8
+ */
+extern _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value);
+
+/**
+ * Configura uma opção de controle para a requisição.
+ * 
+ * @param orion_httpRequest* req
+ * @param _uint8 option
+ * @return void
+ */
+extern void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option);
+
+/**
+ * Monta a requisição HTTP a partir da estrutura orion_httpRequest
+ * previamente montada.
+ *
+ * @param orion_httpRequest *req
+ * @param char* reqBuffer
+ * @return void
+ */
+extern void orion_assemblyHttpRequest(orion_httpRequest *req, char* reqBuffer);
+
+/**
+ * Executa a requisição HTTP no host alvo.
+ * Toda a resposta do host é armazenada na variável response.
+ * Essa função não retornará até todos os dados forem obtidos.
+ * Se voce deseja ter mais controle do stream de dados, utilize
+ * a função orion_httpGet().
+ *
+ * @param orion_httpRequest *req
+ * @param char* response
+ * @return _uint8
+ */
+extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
+
+/**
+ * Executa a requisição HTTP no host alvo.
+ * A cada count bytes retornados pelo servidor, é chamada a função callback
+ * passando a string e o numero de bytes lidos.
+ *
+ * @param orion_httpRequest* req
+ * @param void (*callback)(char*, _uint32)
+ * @param _uint32 count
+ * @return _uint8
+ */
+extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32), _uint32 count);
 
 #endif // __ORIONSOCKET_HTTP_H_
