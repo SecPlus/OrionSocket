@@ -10,6 +10,14 @@ AC_CONFIG_MACRO_DIR([m4])
 # Checks for programs.
 AC_PROG_CC
 
+AC_ARG_ENABLE([debug],[AS_HELP_STRING([--enable-debug],
+                    [Print on the screen some debugging information. @<:@default=no@:>@])],
+            [with_debug=$enableval], [with_debug=no])
+
+if test "x$with_debug" == "xyes"
+then
+    AC_DEFINE([ORIONSOCKET_DEBUG], [1], [Print debug information])
+fi
 # Checks for libraries.
 
 # Checks for header files.

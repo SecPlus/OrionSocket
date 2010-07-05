@@ -96,8 +96,8 @@ void orion_cleanupHttpRequest(orion_httpRequest *req)
 
 void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port)
 {
-	req->host = strdup(host);
-	req->port = port;
+    req->host = strdup(host);
+    req->port = port;
 }
 
 void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
@@ -113,10 +113,8 @@ void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
 _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value)
 {
 	_uint8 len = 0, lenName = 0, lenValue = 0;
-	char* tmp = NULL;
 	len = req->headerLen;
-	int error;
-    
+	
     lenName = strlen(name);
     lenValue = strlen(value);
     
@@ -135,35 +133,11 @@ _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, cons
 		return ORIONSOCKET_ERR_ALLOC;
 	}
 	
-	if (!strcmp(name, "Host") || !strcmp(name, "host"))
-	{
-	    tmp = (char *) malloc(sizeof(char) * NI_MAXHOST);
-	    
-	    if (!tmp)
-	    {
-	        ORIONFREE(req->header[len].name);
-	        ORIONFREE(req->header[len].value);
-	        return ORIONSOCKET_ERR_ALLOC;
-	    }
-        
-        bzero(tmp, NI_MAXHOST);
-        if ((error = orion_getDomain(value, tmp)) != ORIONSOCKET_OK)
-        {
-            printf("[ERROR %d] : %s\n", error, gai_strerror(error));
-        }
-        
-	    strncpy(req->header[len].name, "Host", lenName);
-	    strncpy(req->header[len].value, tmp, strlen(tmp));
-	    req->header[len].name[lenName] = '\0';
-	    req->header[len].value[lenValue] = '\0';
-	    
-	    free(tmp);
-	} else {
-	    strncpy(req->header[len].name, name, lenName);
-	    strncpy(req->header[len].value, value, lenValue);
-	    req->header[len].name[lenName] = '\0';
-	    req->header[len].value[lenValue] = '\0';
-	}
+	strncpy(req->header[len].name, name, lenName);
+	strncpy(req->header[len].value, value, lenValue);
+	req->header[len].name[lenName] = '\0';
+	req->header[len].value[lenValue] = '\0';
+	
     
 	req->headerLen++;
     
@@ -190,6 +164,11 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	orion_assemblyHttpRequest(req, reqBuffer);
     
 	DEBUG_HTTPREQUEST(req);
+
+    if ((req->option & ORION_OPTDEBUG_REQUEST)==ORION_OPTDEBUG_REQUEST)
+        printf("%s\n", reqBuffer);
+
+    //printf("option=0x%08x\n", req->option);
     
 	sockfd = orion_tcpConnect(req->host, req->port);
     
@@ -233,6 +212,11 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
     
     orion_assemblyHttpRequest(req, reqBuffer);
     
+    DEBUG_HTTPREQUEST(req);
+
+    if ((req->option & ORION_OPTDEBUG_REQUEST)==ORION_OPTDEBUG_REQUEST)
+        printf("%s\n", reqBuffer);
+
     sockfd = orion_tcpConnect(req->host, req->port);
     if (sockfd < 0)
         return errno;
@@ -269,35 +253,48 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	bzero(temp, 10);
     
 	strcpy(reqBuffer, orion_getStrMethod(req->method));
-	strcat(reqBuffer, " ");
+	strncat(reqBuffer, " ", HTTP_REQUEST_MAXLENGTH-1);
 	if (!req->path)
 	    req->path = strdup("/");
 	
-	strcat(reqBuffer, req->path);
-	strcat(reqBuffer, " ");
-	strcat(reqBuffer, HTTP_PROTOCOL);
-	strcat(reqBuffer, "\n");    
+	strncat(reqBuffer, req->path, HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, " ", HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, HTTP_PROTOCOL, HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);    
+    
+    _uint8 _host_header_exists = 0;
+
+    for (i = 0; i < req->headerLen; i++)
+        if (strcasecmp(req->header[i].name, "Host") == 0)
+            _host_header_exists = 1;
+
+    if (_host_header_exists == 0)
+    {
+        strncat(reqBuffer, "Host: ", HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, req->host, HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH);        
+    }
     
 	for (i = 0; i < req->headerLen; i++)
 	{
-		strcat(reqBuffer, req->header[i].name);
-		strcat(reqBuffer, ": ");
-		strcat(reqBuffer, req->header[i].value);
-		strcat(reqBuffer, "\n");
+		strncat(reqBuffer, req->header[i].name, HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, ": ", HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, req->header[i].value, HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);
 	}
-    
+
 	if (req->method == METHOD_POST)
 	{
-		strcat(reqBuffer, "Content-Length: ");
+		strncat(reqBuffer, "Content-Length: ", HTTP_REQUEST_MAXLENGTH-1);
 
 		size += strlen(req->query);     
 
 		sprintf(temp, "%d\n", size);
-		strcat(reqBuffer, temp);
+		strncat(reqBuffer, temp, HTTP_REQUEST_MAXLENGTH-1);
 
-		strcat(reqBuffer, req->query);
+		strncat(reqBuffer, req->query, HTTP_REQUEST_MAXLENGTH-1);
 	}
  
-	strcat(reqBuffer, "\n");
+	strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);
 }
 
