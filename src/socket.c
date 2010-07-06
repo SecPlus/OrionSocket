@@ -36,7 +36,7 @@
 
 int orion_getHostByName(const char* name, char* buffer)
 {
-    struct addrinfo hints, *res, *res0;
+    struct addrinfo hints, *res, *res0 = NULL;
     struct sockaddr_in * target = NULL;
     int error;
     char *tmp = NULL;
@@ -49,7 +49,8 @@ int orion_getHostByName(const char* name, char* buffer)
     
     if (error)
     {
-        freeaddrinfo(res0);
+        if (res0)
+            freeaddrinfo(res0);
         return error;
     }
     
@@ -63,7 +64,8 @@ int orion_getHostByName(const char* name, char* buffer)
             {
                 strncpy(buffer, tmp, strlen(tmp));
                 buffer[strlen(tmp)] = '\0';
-                freeaddrinfo(res0);
+                if (res0)
+                    freeaddrinfo(res0);
                 return ORIONSOCKET_OK;
             }
         }
@@ -189,39 +191,7 @@ int orion_tcpConnect(const char* host, _uint16 port)
     if (connect(sockfd, (struct sockaddr *)&target, sizeof(struct sockaddr)) == -1)
     {
         perror("[ERROR] Erro ao conectar no host.\n");
-        
-        switch (errno)
-        {
-        case EADDRINUSE:
-            fprintf(stderr, ">> O endereco IP já está em uso...\n");
-            break;
-        case EADDRNOTAVAIL:
-            fprintf(stderr, ">> O endereco especificado não está disponivel nesta maquina local.\n");
-            break;
-        case EAFNOSUPPORT:
-            fprintf(stderr, ">> O endereco na Familia de Enderecos não pode ser usado com esse socket...\n");
-            break;
-        case EALREADY:
-            fprintf(stderr, ">> O socket está setado com O_NONBLOCK  ou O_NDLAY e a conexão anterior ainda não foi completada.\n");
-            break;
-        case EINTR:
-            fprintf(stderr, "The attempt to establish a connection was interrupted by delivery of a signal that was caught; the connection will be established asynchronously.\n");
-            break;
-        case EACCES:
-            fprintf(stderr, "Permissão de busca negada no componente ou acesso de escrita negado no socket.\n");
-            break;
-        case ENOBUFS:
-            fprintf(stderr, "O sistema não possui memória suficiente para a estrutura de dados interna.\n");
-            break;
-        case EOPNOTSUPP:
-            fprintf(stderr, "O socket especificado no parametro 'socket' não suporta a chamada connect.\n");
-            break;
-        default:
-            fprintf(stderr, "Estou com preguiça de escrever um mensagem bonitinha para TODOS os erros que voce comete...\n"
-                            "Procure pelo codigo de erro %d no arquivo /usr/include/sys/socket.h.\n", errno);
-            break;        
-        }
-        
+                
         ORIONFREE(ip);        
         return -1;
     }

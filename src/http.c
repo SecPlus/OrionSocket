@@ -61,37 +61,37 @@ void orion_initHttpRequest(orion_httpRequest **req2)
 
 void orion_cleanupHttpRequest(orion_httpRequest *req)
 {
-  int i;
-  if (req->host)
-    free(req->host);
-  req->port = 80;
-  if (req->path)
-    free(req->path);
-  if (req->file_ext)
-    free(req->file_ext);
+    int i;
     
-  for (i = 0; i < req->headerLen; i++)
-  {
-    free(req->header[i].name);
-    free(req->header[i].value);
-  }
-    
-  if (req->headerLen > 0)
-    free(req->header);
-  req->headerLen = 0;
-    
-  for (i = 0; i < req->cookieLen; i++)
-  {
-    free(req->cookie[i].name);
-    free(req->cookie[i].value);
-  }
-    
-  if (req->cookieLen > 0)
-    free(req->cookie);
-  req->cookieLen = 0;    
-    
-  if (req)
-    free(req);
+    if (req)
+    {
+        ORIONFREE(req->host);
+        req->port = 80;
+        ORIONFREE(req->path);
+        ORIONFREE(req->file_ext);
+
+        for (i = 0; i < req->headerLen; i++)
+        {
+            ORIONFREE(req->header[i].name);
+            ORIONFREE(req->header[i].value);
+        }
+
+        if (req->headerLen > 0)
+            ORIONFREE(req->header);
+        req->headerLen = 0;
+
+        for (i = 0; i < req->cookieLen; i++)
+        {
+            ORIONFREE(req->cookie[i].name);
+            ORIONFREE(req->cookie[i].value);
+        }
+
+        if (req->cookieLen > 0)
+            ORIONFREE(req->cookie);
+        req->cookieLen = 0;    
+
+        ORIONFREE(req);
+    }
 }
 
 void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port)
@@ -102,6 +102,7 @@ void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 
 
 void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
 {
+    ORIONFREE(req->path);
     req->path = strdup(path);
 }
 
@@ -154,7 +155,7 @@ void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)
 // 
 _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 {
-	int sockfd, n = 0;
+	int sockfd, n = 0, lengthBuffer = 0;
 	char reqBuffer[HTTP_REQUEST_MAXLENGTH], temp[HTTP_BIG_RESPONSE];
 	char *localBuffer = NULL;
     
@@ -189,9 +190,10 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
     
 	while((n = read(sockfd, temp, HTTP_BIG_RESPONSE-1)) > 0)
 	{
-		localBuffer = (char *) orion_realloc(localBuffer, n + strlen(localBuffer) + 1);
+        lengthBuffer = n + strlen(localBuffer) + 1;
+		localBuffer = (char *) orion_realloc(localBuffer, lengthBuffer);
 		temp[n-1] = '\0';
-		strcat(localBuffer, temp);
+		strncat(localBuffer, temp, lengthBuffer-1);
 		bzero(temp, HTTP_BIG_RESPONSE);       
 	}
     
@@ -252,6 +254,7 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	char temp[10];
 	bzero(temp, 10);
     
+    // It is safe.
 	strcpy(reqBuffer, orion_getStrMethod(req->method));
 	strncat(reqBuffer, " ", HTTP_REQUEST_MAXLENGTH-1);
 	if (!req->path)
