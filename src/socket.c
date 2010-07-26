@@ -34,6 +34,9 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+/**
+ * @param name
+ */
 int orion_getHostByName(const char* name, char* buffer)
 {
     struct addrinfo hints, *res, *res0 = NULL;
@@ -166,7 +169,7 @@ int orion_tcpConnect(const char* host, _uint16 port)
             fprintf(stderr, ">> O sistema não possui recursos suficientes para completar a chamada...\n");
             break;
         case ESOCKTNOSUPPORT:
-            fprintf(stderr, ">> O socket especificado na familia de enderecos não é siportado.\n");
+            fprintf(stderr, ">> O socket especificado na familia de enderecos não é suportado.\n");
             break;
         }
         

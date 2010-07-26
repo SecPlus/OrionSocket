@@ -22,6 +22,7 @@
 #include "util.h"
 #include "socket.h"
 #include <stdlib.h>
+#include <string.h>
 
 void * orion_realloc(void *ptr, size_t size)
 {
@@ -50,4 +51,30 @@ const char* orion_getStrMethod(_uint8 method)
     }
 }
 
+char* orion_getNextLine(char* buffer)
+{
+    int pos_endl = 0;
+    char* line = NULL;
+    pos_endl = orion_linearSearchChar(buffer, '\n');
+    if (pos_endl > 0)
+    {
+        buffer[pos_endl] = '\0';
+        line = buffer;
+        
+        return line;
+    } else
+        return NULL;
+}
+
+int orion_linearSearchChar(const char* buffer, char c)
+{   
+    int i;
+    for (i = 0; i < strlen(buffer); i++)
+    {
+        if (buffer[i] == c)
+            return i;
+    }
+    
+    return -1;
+}
 

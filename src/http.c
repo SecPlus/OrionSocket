@@ -162,7 +162,7 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	memset(reqBuffer, '\0', sizeof(char) * HTTP_REQUEST_MAXLENGTH);
 	memset(temp, '\0', sizeof(char) * HTTP_RESPONSE_LENGTH);
     
-	orion_assemblyHttpRequest(req, reqBuffer);
+	orion_assembleHttpRequest(req, reqBuffer);
     
 	DEBUG_HTTPREQUEST(req);
 
@@ -212,7 +212,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
     memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
     memset(responseBuffer, 0, count);
     
-    orion_assemblyHttpRequest(req, reqBuffer);
+    orion_assembleHttpRequest(req, reqBuffer);
     
     DEBUG_HTTPREQUEST(req);
 
@@ -248,7 +248,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
 // Monta a Requisição HTTP a partir da estrutura httpRequest
 // @param orionHttpRequest*      req
 // @param char *            reqBuffer
-void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
+void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
 {
 	_uint32 size = 0, i;
 	char temp[10];
@@ -300,4 +300,169 @@ void orion_assemblyHttpRequest(orion_httpRequest* req, char* reqBuffer)
  
 	strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);
 }
+
+void orion_initHttpResponse(orion_httpResponse** res2)
+{
+    orion_httpResponse* res = NULL;
+    
+    res = (orion_httpResponse*) malloc(sizeof(orion_httpResponse));
+    res->version = 0;
+    res->code = 0;
+    res->message = NULL;
+    res->serverName = NULL;
+    res->date = NULL;
+    res->expires = NULL;
+    res->location = NULL;
+    res->content_type = NULL;
+    res->content_length = 0;
+    res->charset = NULL;
+    res->header = NULL;
+    res->headerLen = 0;
+    res->cookie = NULL;
+    res->cookieLen = 0;
+    
+    res->body = NULL;
+    
+    *res2 = res;    
+}
+
+void orion_cleanupHttpResponse(orion_httpResponse* res)
+{
+    _uint8 i;
+    res->version = 0;
+    res->code = 0;
+    ORIONFREE(res->message);
+    res->serverName = NULL;
+    res->date = NULL;
+    res->expires = NULL;
+    res->location = NULL;
+    res->content_type = NULL;
+    res->content_length = 0;
+    ORIONFREE(res->charset);
+    res->mime_version = NULL;
+    
+    for (i = 0; i < res->headerLen; i++)
+    {
+        ORIONFREE(res->header[i].name);
+        ORIONFREE(res->header[i].value);
+    }
+    
+    if (res->headerLen > 0)
+    {
+        ORIONFREE(res->header);
+        res->headerLen = 0;
+    }
+    
+    ORIONFREE(res->cookie);
+    res->cookieLen = 0;
+    
+    ORIONFREE(res->body);
+    
+    ORIONFREE(res);
+}
+
+void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value)
+{
+    res->headerLen++;
+    res->header = (nameValue *) orion_realloc(res->header, sizeof(nameValue)*res->headerLen);
+    res->header[res->headerLen-1].name = strdup(name);
+    res->header[res->headerLen-1].value = strdup(value);
+}
+
+void orion_assembleHttpResponse(orion_httpResponse *res, char* line)
+{
+    char* bufHandle = NULL;
+    char* name = NULL;
+    char* value = NULL;
+    
+    if (!strncmp(line, "HTTP/1.", 7))
+    {
+        if (!strncmp(line, "HTTP/1.0", 8))
+        {
+            res->version = ORION_HTTP_PROTOCOL_1_0;
+        } else if (!strncmp(line, "HTTP/1.1", 8))
+        {
+            res->version = ORION_HTTP_PROTOCOL_1_1;
+        } else {
+            fprintf(stderr, "[error] unknown protocol: %s\n", line);
+            res->version = ORION_HTTP_PROTOCOL_UNKNOWN;
+        }
+                
+        bufHandle = line + 9;
+        bufHandle[3] = '\0';
+        
+        // code = XXX
+        res->code = atoi(bufHandle);
+                
+        bufHandle = bufHandle+4;
+        
+        // message is the rest  of response
+        res->message = strdup(bufHandle);
+    } else
+    if (!strncmp(line, "Server: ", 8))
+    {
+        bufHandle = line + 8;
+        
+        orion_setHttpResponseHeader(res, "Server", bufHandle);
+        res->serverName = res->header[res->headerLen-1].value;
+    } else
+    if (!strncmp(line, "Date: ", 6))
+    {
+        bufHandle = line + 6;
+        
+        orion_setHttpResponseHeader(res, "Date", bufHandle);
+        res->date = res->header[res->headerLen-1].value;
+    } else if (!strncmp(line, "Expires: ", 9))
+    {
+        bufHandle = line + 9;
+        orion_setHttpResponseHeader(res, "Expires", bufHandle);
+        res->expires = res->header[res->headerLen-1].value;
+    } else
+    if (!strncmp(line, "Location: ", 10))
+    {
+        bufHandle = line + 10;
+        value = bufHandle;
+        orion_setHttpResponseHeader(res, "Location", value);
+        res->location = res->header[res->headerLen-1].value;
+    } else
+    if (!strncmp(line, "Mime-Version: ", 14))
+    {
+        bufHandle = line + 14;
+        orion_setHttpResponseHeader(res, "Mime-Version", bufHandle);
+        res->mime_version = res->header[res->headerLen-1].value;
+    } else 
+    if (!strncmp(line, "Content-Type: ", 14))
+    {    
+        bufHandle = line + 14;
+        orion_setHttpResponseHeader(res, "Content-Type", bufHandle);
+        res->content_type = res->header[res->headerLen-1].value;
+    } else 
+    if (!strncmp(line, "Content-Length: ", 16))
+    {
+        bufHandle = line + 16;
+        orion_setHttpResponseHeader(res, "Content-Length", bufHandle);
+        res->content_length = atoi(res->header[res->headerLen-1].value);
+    } else
+    if (!strncmp(line, "Set-Cookie: ", 12))
+    {
+        bufHandle = line + 12;
+        orion_setHttpResponseHeader(res, "Set-Cookie", bufHandle);
+        res->cookieLen++;
+        res->cookie = orion_realloc(res->cookie, sizeof(nameValue) * res->cookieLen);
+        res->cookie[res->cookieLen-1] = &res->header[res->headerLen-1];
+    } else {
+        bufHandle = line;
+        int pos = orion_linearSearchChar(bufHandle, ':');
+        if (pos > 0)
+        {        
+            bufHandle[pos] = '\0';
+            name = bufHandle;
+            bufHandle = bufHandle+pos+2; // Name: value.  ** jumping the space **
+            value = bufHandle;
+            
+            orion_setHttpResponseHeader(res, name, value);
+        }
+    }
+}
+
 

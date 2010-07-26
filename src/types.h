@@ -29,11 +29,14 @@ typedef uint8_t _uint8;
 typedef uint16_t _uint16;
 typedef uint32_t _uint32;
 
-// Structure Name-Value.
+/**
+ * Structure Name-Value. \n
+ * Used in various parts of the library
+ */
 typedef struct 
 {
-    char* name;
-    char* value;
+    char* name; 
+    char* value; 
 } nameValue;
 
 #endif // __ORIONSOCKET_TYPES_H_

@@ -28,6 +28,22 @@
 #define ORION_OPTDEBUG_RESPONSE     2
 #define ORION_OPTDEBUG_PROGRESS     4
 
+#define HTTP_PROTOCOL               "HTTP/1.1"
+
+#define ORION_HTTP_PROTOCOL_1_0     0x00
+#define ORION_HTTP_PROTOCOL_1_1     0x01
+#define ORION_HTTP_PROTOCOL_UNKNOWN 0x02
+
+#define HTTP_REQUEST_MAXLENGTH      2048
+#define HTTP_RESPONSE_LENGTH        1024
+#define HTTP_BIG_RESPONSE           8192
+
+#define METHOD_GET                  0x01
+#define METHOD_POST                 0x02
+#define METHOD_TRACE                0x03
+#define METHOD_PUT                  0x04
+#define METHOD_DELETE               0x05
+
 // orionHttpRequest structure
 typedef struct
 {
@@ -49,16 +65,31 @@ typedef struct
 
 typedef struct
 {
-    _uint8 code;        /* Status Code          */
-    char* file_ext;     /* File extension       */
+    _uint8 version;         /* HTTP version. 1.0 || 1.1 */
+    _uint16 code;            /* Status Code              */
+    char* message;          /* Server Message           */
+    char* serverName;       /* Server Name              */
+    char* date;             /* Date                     */
+    char* expires;          /* Expires time             */
+    char* location;         /* Location.                */
+    char* mime_version;     /* MIME-VERSION             */
+    char* content_type;     /* Content-Type             */
+    char* charset;          /* Charset                  */
+    _uint32 content_length;   /* Length of the content;   */
 
-    nameValue *header;  /* HTTP Headers         */   
-    _uint8 headerLen;   /* Number of headers    */
+    nameValue *header;      /* HTTP Headers             */   
+    _uint8 headerLen;       /* Number of headers        */
 
-    nameValue *cookie;  /* Set Cookie           */
-    _uint8 cookieLen;   /* Number of cookies    */ 
+    nameValue **cookie;      /* Set Cookie               */
+    _uint8 cookieLen;       /* Number of cookies        */
+    
+    char* body;             /* Body of the response     */
 } orion_httpResponse;
 
+/*******************************************************************************
+ * API FOR REQUEST                                                             *
+ ******************************************************************************/
+ 
 /**
  * Inicializa e aloca a memória necessária para a estrutura orion_httpRequest.
  * TODO : Remover esse cara
@@ -67,7 +98,7 @@ typedef struct
  * @param orion_httpRequest **req
  * @return void
  */
-// extern void orion_httpRequestInit(orion_httpRequest **req);
+extern void orion_httpRequestInit(orion_httpRequest **req);
 
 /**
  * Inicializa e aloca a memória necessária para a estrutura orion_httpRequest.
@@ -142,7 +173,17 @@ extern void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option);
  * @param char* reqBuffer
  * @return void
  */
-extern void orion_assemblyHttpRequest(orion_httpRequest *req, char* reqBuffer);
+extern void orion_assembleHttpRequest(orion_httpRequest *req, char* reqBuffer);
+
+/**
+ * Monta a estrutura orion_httpResponse a partir do cabeçalho retornado pelo
+ * servidor.
+ * 
+ * @param orion_httpResponse *res
+ * @param char* resBuffer
+ * @return void
+ */
+extern void orion_assembleHttpResponse(orion_httpResponse *res, char* resBuffer);
 
 /**
  * Executa a requisição HTTP no host alvo.
@@ -168,5 +209,34 @@ extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
  * @return _uint8
  */
 extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32), _uint32 count);
+
+/*******************************************************************************
+ * API FOR RESPONSE                                                            *
+ ******************************************************************************/
+
+/**
+ * Initialize and allocate memory for the structure orion_httpResponse
+ *
+ * @param orion_httpResponse
+ * @return void
+ */
+extern void orion_initHttpResponse(orion_httpResponse **res);
+
+/**
+ * Free the memory allocated by orion_initHttpResponse
+ * 
+ * @param orion_httpResponse
+ * @return void
+ */
+extern void orion_cleanupHttpResponse(orion_httpResponse* res);
+
+/**
+ * Add a header to the struct orion_httpResponse
+ *
+ * @param orion_httpResponse
+ * @return void
+ */
+extern void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value);
+extern void orion_assembleHttpResponse(orion_httpResponse *res, char* line);
 
 #endif // __ORIONSOCKET_HTTP_H_

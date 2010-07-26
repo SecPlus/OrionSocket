@@ -27,6 +27,8 @@
 
 extern void * orion_realloc(void *ptr, size_t size);
 extern const char* orion_getStrMethod(_uint8 method);
+extern int orion_linearSearchChar(const char* buffer, char c);
+extern char* orion_getNextLine(char* buffer);
 
 #endif // __ORIONSOCKET_UTIL_H_
 

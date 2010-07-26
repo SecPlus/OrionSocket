@@ -20,6 +20,7 @@ int main(int argc, char** argv)
     
     int sockfd = orion_tcpConnect(argv[1], atoi(argv[2]));
     
+    bzero(temp, 1024);
     if (send(sockfd, "GET / HTTP/1.1\nHost: xxx\n\n", 26, 0) < 0)
     {
         fprintf(stderr, "[ERROR] Não pode enviar dados.\n");

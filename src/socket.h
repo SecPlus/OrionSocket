@@ -35,19 +35,8 @@
 
 #define ORIONSOCKET_OK              0x00
 
-#define METHOD_GET                  0x01
-#define METHOD_POST                 0x02
-#define METHOD_TRACE                0x03
-#define METHOD_PUT                  0x04
-#define METHOD_DELETE               0x05
-
 #define ORION_TCP_FAMILY            PF_INET
 #define ORION_TCP_SOCKETTYPE        SOCK_STREAM
-
-#define HTTP_PROTOCOL               "HTTP/1.1"
-#define HTTP_REQUEST_MAXLENGTH      2048
-#define HTTP_RESPONSE_LENGTH        1024
-#define HTTP_BIG_RESPONSE           8192
 
 #define DNS_MAXLENGTH               255
 #define URL_MAXLENGTH               2048
@@ -72,8 +61,11 @@
 #define DEBUG_HTTPREQUEST(req)
 #endif
 
-#define ORIONFREE(ptr)          if (ptr) free(ptr);
+#define ORIONFREE(ptr)          if (ptr) free(ptr)
 
+/**
+ * Retorna o ip do host dado o dominio.
+ */
 extern int orion_getHostByName(const char* addr, char* buffer);
 extern int orion_getDomain(const char* ip, char* buffer);
 extern int orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
