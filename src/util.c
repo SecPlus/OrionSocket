@@ -36,15 +36,15 @@ const char* orion_getStrMethod(_uint8 method)
 {
     switch (method)
     {
-    case METHOD_GET:
+    case ORION_METHOD_GET:
         return "GET";
-    case METHOD_POST:
+    case ORION_METHOD_POST:
         return "POST";
-    case METHOD_TRACE:
+    case ORION_METHOD_TRACE:
         return "TRACE";
-    case METHOD_PUT:
+    case ORION_METHOD_PUT:
         return "PUT";
-    case METHOD_DELETE:
+    case ORION_METHOD_DELETE:
         return "DELETE";
     default:
         return "UNKNOWN";

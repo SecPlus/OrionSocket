@@ -47,7 +47,7 @@ void orion_initHttpRequest(orion_httpRequest **req2)
   req->host = NULL;
   req->port = 80;                 /* Default port         */
   req->path = NULL;
-  req->method = METHOD_GET;       /* Default HTTP Method  */
+  req->method = ORION_METHOD_GET;       /* Default HTTP Method  */
   req->file_ext = NULL;
   req->header = NULL;
   req->headerLen = 0;
@@ -156,11 +156,11 @@ void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)
 _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 {
 	int sockfd, n = 0, lengthBuffer = 0;
-	char reqBuffer[HTTP_REQUEST_MAXLENGTH], temp[HTTP_BIG_RESPONSE];
+	char reqBuffer[ORION_HTTP_REQUEST_MAXLENGTH], temp[ORION_HTTP_BIG_RESPONSE];
 	char *localBuffer = NULL;
     
-	memset(reqBuffer, '\0', sizeof(char) * HTTP_REQUEST_MAXLENGTH);
-	memset(temp, '\0', sizeof(char) * HTTP_RESPONSE_LENGTH);
+	memset(reqBuffer, '\0', sizeof(char) * ORION_HTTP_REQUEST_MAXLENGTH);
+	memset(temp, '\0', sizeof(char) * ORION_HTTP_RESPONSE_LENGTH);
     
 	orion_assembleHttpRequest(req, reqBuffer);
     
@@ -168,8 +168,6 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 
     if ((req->option & ORION_OPTDEBUG_REQUEST)==ORION_OPTDEBUG_REQUEST)
         printf("%s\n", reqBuffer);
-
-    //printf("option=0x%08x\n", req->option);
     
 	sockfd = orion_tcpConnect(req->host, req->port);
     
@@ -188,13 +186,13 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	localBuffer = (char *) malloc(sizeof(char) * 1);
 	localBuffer[0] = '\0';
     
-	while((n = read(sockfd, temp, HTTP_BIG_RESPONSE-1)) > 0)
+	while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE-1)) > 0)
 	{
         lengthBuffer = n + strlen(localBuffer) + 1;
 		localBuffer = (char *) orion_realloc(localBuffer, lengthBuffer);
 		temp[n-1] = '\0';
 		strncat(localBuffer, temp, lengthBuffer-1);
-		bzero(temp, HTTP_BIG_RESPONSE);       
+		bzero(temp, ORION_HTTP_BIG_RESPONSE);       
 	}
     
 	close(sockfd);
@@ -204,12 +202,33 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	return ORIONSOCKET_OK;
 }
 
+_uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res2)
+{
+    int status = ORIONSOCKET_OK;
+    char* response = NULL;
+    orion_httpResponse* res = NULL;
+    
+    status = orion_httpRequestPerform(req, &response);
+    
+    if (status == ORIONSOCKET_OK)
+    {
+        orion_initHttpResponse(&res);
+        orion_assembleHttpResponse(res, response);
+        
+        *res2 = res;
+        
+        ORIONFREE(response);
+    }
+    
+    return status;
+}
+
 _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _uint32 count)
 {
     int sockfd, n;
-    char reqBuffer[HTTP_REQUEST_MAXLENGTH], responseBuffer[count];
+    char reqBuffer[ORION_HTTP_REQUEST_MAXLENGTH], responseBuffer[count];
     
-    memset(reqBuffer, 0, HTTP_REQUEST_MAXLENGTH);
+    memset(reqBuffer, 0, ORION_HTTP_REQUEST_MAXLENGTH);
     memset(responseBuffer, 0, count);
     
     orion_assembleHttpRequest(req, reqBuffer);
@@ -256,14 +275,14 @@ void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
     
     // It is safe.
 	strcpy(reqBuffer, orion_getStrMethod(req->method));
-	strncat(reqBuffer, " ", HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	if (!req->path)
 	    req->path = strdup("/");
 	
-	strncat(reqBuffer, req->path, HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, " ", HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, HTTP_PROTOCOL, HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);    
+	strncat(reqBuffer, req->path, ORION_HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);    
     
     _uint8 _host_header_exists = 0;
 
@@ -273,32 +292,32 @@ void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
 
     if (_host_header_exists == 0)
     {
-        strncat(reqBuffer, "Host: ", HTTP_REQUEST_MAXLENGTH-1);
-        strncat(reqBuffer, req->host, HTTP_REQUEST_MAXLENGTH-1);
-        strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH);        
+        strncat(reqBuffer, "Host: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, req->host, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH);        
     }
     
 	for (i = 0; i < req->headerLen; i++)
 	{
-		strncat(reqBuffer, req->header[i].name, HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, ": ", HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, req->header[i].value, HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, req->header[i].name, ORION_HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, ": ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, req->header[i].value, ORION_HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	}
 
-	if (req->method == METHOD_POST)
+	if (req->method == ORION_METHOD_POST)
 	{
-		strncat(reqBuffer, "Content-Length: ", HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, "Content-Length: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 
 		size += strlen(req->query);     
 
 		sprintf(temp, "%d\n", size);
-		strncat(reqBuffer, temp, HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, temp, ORION_HTTP_REQUEST_MAXLENGTH-1);
 
-		strncat(reqBuffer, req->query, HTTP_REQUEST_MAXLENGTH-1);
+		strncat(reqBuffer, req->query, ORION_HTTP_REQUEST_MAXLENGTH-1);
 	}
  
-	strncat(reqBuffer, "\n", HTTP_REQUEST_MAXLENGTH-1);
+	strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 }
 
 void orion_initHttpResponse(orion_httpResponse** res2)
@@ -369,7 +388,7 @@ void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, cons
     res->header[res->headerLen-1].value = strdup(value);
 }
 
-void orion_assembleHttpResponse(orion_httpResponse *res, char* line)
+void orion_parseResponseLine(orion_httpResponse *res, char* line)
 {
     char* bufHandle = NULL;
     char* name = NULL;
@@ -465,4 +484,27 @@ void orion_assembleHttpResponse(orion_httpResponse *res, char* line)
     }
 }
 
+void orion_assembleHttpResponse(orion_httpResponse* res, char* buf)
+{
+    char* bufHandle = NULL, *line = NULL;
+    int pos_endl = 0;
+    
+    bufHandle = buf;
+    
+    // pegando somente o header
+    for (pos_endl = 0; pos_endl < strlen(bufHandle); pos_endl++)
+        if (    (bufHandle[pos_endl] == '\n' && bufHandle[pos_endl+1] == '\n') ||
+                (bufHandle[pos_endl] == '\r' && bufHandle[pos_endl+1] == '\n' && bufHandle[pos_endl+2] == '\r' && bufHandle[pos_endl+3]=='\n')
+        ) break;
+    
+    bufHandle[pos_endl] = '\0';
+    
+    while ((line = orion_getNextLine(bufHandle)))
+    {
+        bufHandle = bufHandle + strlen(line) + 1;
+        orion_parseResponseLine(res, line);
+    }
+    
+    res->body = strdup(buf+pos_endl+2);
+}
 

@@ -24,25 +24,35 @@
 
 #include "types.h"
 
-#define ORION_OPTDEBUG_REQUEST      1
-#define ORION_OPTDEBUG_RESPONSE     2
-#define ORION_OPTDEBUG_PROGRESS     4
+/**
+ * Options
+ */
+#define ORION_OPTDEBUG_REQUEST      0x01
+#define ORION_OPTDEBUG_RESPONSE     0x02
+#define ORION_OPTDEBUG_PROGRESS     0x04
+#define ORION_OPTRESPONSE_DETAIL    0x08
 
-#define HTTP_PROTOCOL               "HTTP/1.1"
+#define ORION_HTTP_PROTOCOL         "HTTP/1.1"
 
 #define ORION_HTTP_PROTOCOL_1_0     0x00
 #define ORION_HTTP_PROTOCOL_1_1     0x01
 #define ORION_HTTP_PROTOCOL_UNKNOWN 0x02
 
-#define HTTP_REQUEST_MAXLENGTH      2048
-#define HTTP_RESPONSE_LENGTH        1024
-#define HTTP_BIG_RESPONSE           8192
+/**
+ * Response lengths
+ */
+#define ORION_HTTP_REQUEST_MAXLENGTH      2048
+#define ORION_HTTP_RESPONSE_LENGTH        1024
+#define ORION_HTTP_BIG_RESPONSE           8192
 
-#define METHOD_GET                  0x01
-#define METHOD_POST                 0x02
-#define METHOD_TRACE                0x03
-#define METHOD_PUT                  0x04
-#define METHOD_DELETE               0x05
+/**
+ * Request methods
+ */
+#define ORION_METHOD_GET            0x01
+#define ORION_METHOD_POST           0x02
+#define ORION_METHOD_TRACE          0x03
+#define ORION_METHOD_PUT            0x04
+#define ORION_METHOD_DELETE         0x05
 
 // orionHttpRequest structure
 typedef struct
@@ -237,6 +247,8 @@ extern void orion_cleanupHttpResponse(orion_httpResponse* res);
  * @return void
  */
 extern void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value);
+extern void orion_parseResponseLine(orion_httpResponse* res, char* line);
 extern void orion_assembleHttpResponse(orion_httpResponse *res, char* line);
+extern _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res);
 
 #endif // __ORIONSOCKET_HTTP_H_
