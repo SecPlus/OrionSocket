@@ -21,6 +21,7 @@
  */
 #include "util.h"
 #include "socket.h"
+#include "http.h"
 #include <stdlib.h>
 #include <string.h>
 

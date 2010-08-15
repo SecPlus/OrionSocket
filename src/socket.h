@@ -23,15 +23,13 @@
 #define __ORIONSOCKET_
 
 #include <stdint.h>
+#include "types.h"
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
 
 #include <netdb.h>
-
-#include "api.h"
-#include "http.h"
 
 #define ORIONSOCKET_OK              0x00
 

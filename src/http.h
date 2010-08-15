@@ -23,6 +23,8 @@
 #define __ORIONSOCKET_HTTP_H_
 
 #include "types.h"
+#include "api.h"
+#include "socket.h"
 
 /**
  * Options
@@ -147,7 +149,7 @@ extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _
 
 /**
  * Configura o Path da requisição.
- * Por exemplo, na URL http://www.bugsec.com.br/tools/shells/c99.txt
+ * Por exemplo, na URL http://www.bugsec.com.br/tools/
  * temos que PATH=/tools/shells/c99.txt
  * 
  * @param orion_httpRequest *req

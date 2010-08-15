@@ -1,32 +1,29 @@
+/**
+ * Author: Tiago Natel de Moura
+ * Date: 14/08/2010
+ */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <orion/socket/socket.h>
 #include <orion/socket/http.h>
 
 int main(int argc, char** argv)
 {
 	orion_httpRequest *req = NULL;
 	char *response = NULL;
-	char reqBuffer[HTTP_REQUEST_MAXLENGTH];
 	int code;
 	
-	const char* domain = "www.google.com";
+	const char* domain = "universemachine.wordpress.com";
     // Initialize the library
     orion_initHttpRequest(&req);
     orion_setHttpRequestHost(req, domain, 80);
-    orion_setHttpRequestPath(req, "http://l.google.com/");
-	orion_setHttpRequestHeader(req, "Host", domain);
-	orion_setHttpRequestHeader(req, "User-Agent", "Anakin");
-	
-	orion_assemblyHttpRequest(req, reqBuffer);
+    orion_setHttpRequestPath(req, "/");
+	orion_setHttpRequestHeader(req, "User-Agent", "Anakin SkyWalker");
 	
 	code = orion_httpRequestPerform(req, &response);
 	
 	if (code == ORIONSOCKET_OK)
 	{
-		printf("%s\n", response);
-		
+		printf("%s\n", response);	
 		free(response);
 	}
     

@@ -21,7 +21,6 @@
  */
 #include "http.h"
 #include "err.h"
-#include "socket.h"
 #include "util.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -332,6 +331,7 @@ void orion_initHttpResponse(orion_httpResponse** res2)
     res->date = NULL;
     res->expires = NULL;
     res->location = NULL;
+    res->mime_version = NULL;
     res->content_type = NULL;
     res->content_length = 0;
     res->charset = NULL;
@@ -348,36 +348,38 @@ void orion_initHttpResponse(orion_httpResponse** res2)
 void orion_cleanupHttpResponse(orion_httpResponse* res)
 {
     _uint8 i;
-    res->version = 0;
-    res->code = 0;
-    ORIONFREE(res->message);
-    res->serverName = NULL;
-    res->date = NULL;
-    res->expires = NULL;
-    res->location = NULL;
-    res->content_type = NULL;
-    res->content_length = 0;
-    ORIONFREE(res->charset);
-    res->mime_version = NULL;
     
-    for (i = 0; i < res->headerLen; i++)
+    if (res)
     {
-        ORIONFREE(res->header[i].name);
-        ORIONFREE(res->header[i].value);
+        res->version = 0;
+        res->code = 0;
+        ORIONFREE(res->message);
+        res->serverName = NULL;
+        res->date = NULL;
+        res->expires = NULL;
+        res->location = NULL;
+        res->content_type = NULL;
+        res->content_length = 0;
+        ORIONFREE(res->charset);
+        res->mime_version = NULL;
+        
+        for (i = 0; i < res->headerLen; i++)
+        {
+            ORIONFREE(res->header[i].name);
+            ORIONFREE(res->header[i].value);
+        }
+        
+        if (res->headerLen > 0)
+        {
+            ORIONFREE(res->header);
+            res->headerLen = 0;
+        }
+        
+        res->cookieLen = 0;
+        ORIONFREE(res->cookie);        
+        ORIONFREE(res->body);        
+        ORIONFREE(res);
     }
-    
-    if (res->headerLen > 0)
-    {
-        ORIONFREE(res->header);
-        res->headerLen = 0;
-    }
-    
-    ORIONFREE(res->cookie);
-    res->cookieLen = 0;
-    
-    ORIONFREE(res->body);
-    
-    ORIONFREE(res);
 }
 
 void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value)
@@ -493,10 +495,12 @@ void orion_assembleHttpResponse(orion_httpResponse* res, char* buf)
     
     // pegando somente o header
     for (pos_endl = 0; pos_endl < strlen(bufHandle); pos_endl++)
+    {
         if (    (bufHandle[pos_endl] == '\n' && bufHandle[pos_endl+1] == '\n') ||
-                (bufHandle[pos_endl] == '\r' && bufHandle[pos_endl+1] == '\n' && bufHandle[pos_endl+2] == '\r' && bufHandle[pos_endl+3]=='\n')
-        ) break;
-    
+                (bufHandle[pos_endl] == '\r' && bufHandle[pos_endl+1] == '\n' && bufHandle[pos_endl+2] == '\r' && bufHandle[pos_endl+3]=='\n')  ||
+                (bufHandle[pos_endl] == '\r' && bufHandle[pos_endl+1] == '\n' && bufHandle[pos_endl+2] == '\r')
+        )  break; 
+    }
     bufHandle[pos_endl] = '\0';
     
     while ((line = orion_getNextLine(bufHandle)))
