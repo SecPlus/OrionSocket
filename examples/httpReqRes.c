@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <orion/socket/socket.h>
+#include <orion/socket/http.h>
 
 int main(int argc, char** argv)
 {
@@ -8,10 +8,12 @@ int main(int argc, char** argv)
     orion_httpResponse* res = NULL;
     int i;
     
+    // Inicializa a requisição
     orion_initHttpRequest(&req);
     
     orion_setHttpRequestHost(req, "www.unicheck.com.br", 80);
     
+    // Não há a necessidade de inicializar res (orion_httpResponse)
     int code = orion_httpReqRes(req, &res);
    
     // or if (!code)
@@ -38,7 +40,8 @@ int main(int argc, char** argv)
         printf("# Body Content: \n");
         printf("%s\n", res->body);
     }
-        
+    
+    // Desaloca a memória da requisição e da resposta        
     orion_cleanupHttpRequest(req);
     orion_cleanupHttpResponse(res);
     
