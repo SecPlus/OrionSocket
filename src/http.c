@@ -470,7 +470,7 @@ void orion_parseResponseLine(orion_httpResponse *res, char* line)
         orion_setHttpResponseHeader(res, "Set-Cookie", bufHandle);
         res->cookieLen++;
         res->cookie = orion_realloc(res->cookie, sizeof(nameValue) * res->cookieLen);
-        res->cookie[res->cookieLen-1] = &res->header[res->headerLen-1];
+        res->cookie[res->cookieLen-1] = res->header[res->headerLen-1];
     } else {
         bufHandle = line;
         int pos = orion_linearSearchChar(bufHandle, ':');

@@ -92,7 +92,7 @@ typedef struct
     nameValue *header;      /* HTTP Headers             */   
     _uint8 headerLen;       /* Number of headers        */
 
-    nameValue **cookie;      /* Set Cookie               */
+    nameValue *cookie;      /* Set Cookie               */
     _uint8 cookieLen;       /* Number of cookies        */
     
     char* body;             /* Body of the response     */
