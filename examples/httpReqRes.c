@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     // Inicializa a requisição
     orion_initHttpRequest(&req);
     
-    orion_setHttpRequestHost(req, "www.unicheck.com.br", 80);
+    orion_setHttpRequestHost(req, "universemachine.wordpress.com", 80);
     
     // Não há a necessidade de inicializar res (orion_httpResponse)
     int code = orion_httpReqRes(req, &res);
@@ -34,6 +34,11 @@ int main(int argc, char** argv)
         for (i = 0; i < res->headerLen; i++)
         {
             printf("# %s: %s\n", res->header[i].name, res->header[i].value);
+        }
+
+        for (i = 0; i < res->cookieLen; i++)
+        {
+			printf("# cookie-> %s: %s\n", res->cookie[i].name, res->cookie[i].value);
         }
         
         printf("################################\n");

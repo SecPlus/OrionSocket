@@ -271,14 +271,14 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
     
 	localBuffer = (char *) malloc(sizeof(char) * 1);
 	localBuffer[0] = '\0';
-    
-	while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE-1)) > 0)
+
+	while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE)) > 0)
 	{
         lengthBuffer = n + strlen(localBuffer) + 1;
 		localBuffer = (char *) orion_realloc(localBuffer, lengthBuffer);
 		temp[n-1] = '\0';
 		strncat(localBuffer, temp, lengthBuffer-1);
-		bzero(temp, ORION_HTTP_BIG_RESPONSE);       
+		bzero(temp, ORION_HTTP_BIG_RESPONSE);
 	}
     
 	close(sockfd);
@@ -338,7 +338,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
 	}
 	
 	n = read(sockfd, responseBuffer, count-1);
-		
+
 	while (n > 0)
 	{
 	    responseBuffer[n] = '\0';

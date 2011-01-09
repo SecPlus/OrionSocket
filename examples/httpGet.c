@@ -3,7 +3,7 @@
 
 void myCallBack(char* buffer, unsigned int count)
 {
-    printf("%s\n", buffer);
+    printf("%s", buffer);
 }
 
 int main(int argc, char** argv)
