@@ -41,22 +41,27 @@
 #define IPv4_MAXLENGTH              16
 
 #ifdef ORIONSOCKET_DEBUG
-#define DEBUG_HTTPREQUEST(req)  do {  \
-                                printf("================ DEBUGGING HTTP REQUEST ===================\n"); \
-                                printf("Host: %s\n", req->host); \
-                                printf("Port: %d\n", req->port); \
-                                printf("Method: %s\n", orion_getStrMethod(req->method)); \
+#define DEBUG_OUT_HTTPREQUEST(output, req)  do {  \
+                                fprintf(output, "================ DEBUGGING HTTP REQUEST ===================\n"); \
+                                fprintf(output, "Host: %s\n", req->host); \
+                                fprintf(output, "Port: %d\n", req->port); \
+                                fprintf(output, "Method: %s\n", orion_getStrMethod(req->method)); \
                                 int _orionIntdebug; \
                                 for (_orionIntdebug = 0; _orionIntdebug < req->headerLen; _orionIntdebug++) \
-                                    printf("%s: %s\n", req->header[_orionIntdebug].name, req->header[_orionIntdebug].value); \
+                                    fprintf(output, "%s: %s\n", req->header[_orionIntdebug].name, req->header[_orionIntdebug].value); \
                                 if (req->cookieLen > 0) \
-                                    printf("Cookie: "); \
+                                    fprintf(output, "Cookie: "); \
                                 for (_orionIntdebug = 0; _orionIntdebug < req->cookieLen; _orionIntdebug++) \
-                                    printf("%s=%s; &", req->cookie[_orionIntdebug].name, req->cookie[_orionIntdebug].value); \
-                                printf("===========================================================\n"); \
+                                    fprintf(output, "%s=%s; &", req->cookie[_orionIntdebug].name, req->cookie[_orionIntdebug].value); \
+                                fprintf(output, "===========================================================\n"); \
                                 } while(0) 
+#define DEBUG_HTTPREQUEST(req)  DEBUG_OUT_HTTPREQUEST(stderr, req)
+#define DEBUG_STR(str)			fprintf(stderr, str)
 #else
 #define DEBUG_HTTPREQUEST(req)
+#define DEBUG_OUT_HTTPREQUEST(output, req)
+#define DEBUG_OUT_STR(out,str)
+#define DEBUG_STR(fmt)
 #endif
 
 #define ORIONFREE(ptr)          if (ptr) free(ptr)
@@ -67,6 +72,7 @@
 extern int orion_getHostByName(const char* addr, char* buffer);
 extern int orion_getDomain(const char* ip, char* buffer);
 extern int orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
+extern int orion_socket(int domain, int type, int protocol); 
 extern int orion_tcpConnect(const char* host, _uint16 port);
 #endif // __APISOCKET_
 

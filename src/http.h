@@ -56,6 +56,38 @@
 #define ORION_METHOD_PUT            0x04
 #define ORION_METHOD_DELETE         0x05
 
+/**
+ * MACROS
+ */
+#define ORION_GETPARTCOOKIE(part,tam) \
+			do { \
+			bufHandle += tam+1;   \
+			sz = strlen(bufHandle); \
+			for (i = 0; i < sz && bufHandle[i] != ';'; i++); \
+			if (i == sz-1) \
+				return; \
+			bufHandle[i] = '\0'; \
+			cookie->part = strdup(bufHandle); \
+			bufHandle += i + 2; \
+			} while(0)
+
+
+/**
+ * Estrutura de Dados
+ */
+
+// Cookie struct
+typedef struct
+{
+	char* name;
+	char* value;
+	char* domain;
+	char* path;
+	char* proto;
+	char* expires;	
+} orion_cookie;
+
+
 // orionHttpRequest structure
 typedef struct
 {
@@ -69,7 +101,7 @@ typedef struct
     nameValue *header;  /* HTTP    Headers      */
     _uint8 headerLen;   /* Number of headers    */
 
-    nameValue *cookie;  /* Array of cookies     */
+    orion_cookie *cookie;  /* Array of cookies     */
     _uint8 cookieLen;   /* Number of cookies    */
 
     _uint16 option;    /* Extra Options        */
@@ -92,7 +124,7 @@ typedef struct
     nameValue *header;      /* HTTP Headers             */   
     _uint8 headerLen;       /* Number of headers        */
 
-    nameValue *cookie;      /* Set Cookie               */
+    orion_cookie *cookie;      /* Set Cookie               */
     _uint8 cookieLen;       /* Number of cookies        */
     
     char* body;             /* Body of the response     */
@@ -138,6 +170,7 @@ extern void orion_httpRequestCleanup(orion_httpRequest *req);
  */
 extern void orion_cleanupHttpRequest(orion_httpRequest *req);
 
+extern void orion_cleanupCookie(orion_cookie* cookie);
 /**
  * Configura o host e a porta para a conexão HTTP.
  *
@@ -222,6 +255,11 @@ extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
  */
 extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32), _uint32 count);
 
+extern void orion_initCookie(orion_cookie** cookie);
+extern void orion_cleanupCookie(orion_cookie* cookie);
+extern void orion_setCookie(orion_cookie *cookie, const char* name, const char* value, const char* domain, const char* path, const char* proto, const char* expires);
+extern _uint8 orion_addCookie(orion_httpResponse* response, orion_cookie* cookie);
+
 /*******************************************************************************
  * API FOR RESPONSE                                                            *
  ******************************************************************************/
@@ -251,6 +289,8 @@ extern void orion_cleanupHttpResponse(orion_httpResponse* res);
 extern void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value);
 extern void orion_parseResponseLine(orion_httpResponse* res, char* line);
 extern void orion_assembleHttpResponse(orion_httpResponse *res, char* line);
+extern void orion_assembleCookie(orion_cookie* cookie, char* lineBuffer);
 extern _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res);
 
 #endif // __ORIONSOCKET_HTTP_H_
+

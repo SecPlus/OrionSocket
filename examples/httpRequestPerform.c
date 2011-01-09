@@ -13,6 +13,7 @@ int main(int argc, char** argv)
 	int code;
 	
 	const char* domain = "universemachine.wordpress.com";
+	printf("%s\n", domain);
     // Initialize the library
     orion_initHttpRequest(&req);
     orion_setHttpRequestHost(req, domain, 80);
@@ -25,6 +26,8 @@ int main(int argc, char** argv)
 	{
 		printf("%s\n", response);	
 		free(response);
+	} else {
+		printf("code = %d\n", code);
 	}
     
     // Free's library

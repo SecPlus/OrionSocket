@@ -34,8 +34,18 @@
 #include <sys/socket.h>
 #include <netdb.h>
 
+static int orionsocket_last_error = ORIONSOCKET_OK;
+
 /**
- * @param name
+ *	TODO: Change #ifdef ORIONSOCKET_DEBUG for a include library with MACRO's defined when DEBUG is enabled.
+ */
+/**
+ * Returns ORIONSOCKET_OK (or ZERO) and set in buffer the ip address for the hostname especified by "name". 
+ * On error, returns the ERROR CODE returned by getaddrinfo. 
+ *
+ * @see man getaddrinfo
+ * @param name Hostname
+ * @param buffer for the ip.
  */
 int orion_getHostByName(const char* name, char* buffer)
 {
@@ -79,6 +89,14 @@ int orion_getHostByName(const char* name, char* buffer)
     return ORIONSOCKET_ADDR_NOTFOUND;
 }
 
+/**
+ * Returns ORIONSOCKET_OK (or ZERO) and set in buffer the hostname of the ip address especified.
+ * On error, returns the ERROR CODE of the getaddrinfo().
+ * @see getaddrinfo manpage
+ * 
+ * @param ip 	Ip address
+ * @param buffer
+ */ 
 int orion_getDomain(const char* ip, char* buffer)
 {
     struct addrinfo hints, *res0;
@@ -110,6 +128,14 @@ int orion_getDomain(const char* ip, char* buffer)
         return ORIONSOCKET_ERR_UNKNOWN;
 }
 
+/**
+ * Returns ORIONSOCKET_OK (or ZERO) and set in buffer the hostname for the ip address especified.
+ * On error, returns the error code of the getnameinfo() function.
+ * @see manpage getnameinfo
+ *
+ * @param addr	Addrinfo structure with the host data.
+ * @param buffer
+ */
 int orion_getDomainByAddr(struct addrinfo* addr, char* buffer)
 {
     struct addrinfo *res;
@@ -132,59 +158,75 @@ int orion_getDomainByAddr(struct addrinfo* addr, char* buffer)
     return error;   
 }
 
+/**
+ * Connect to host.
+ * Returns the socket descriptor for the connection established. On error,
+ * -1 is returned and errno is set appropriately.
+ */
 int orion_tcpConnect(const char* host, _uint16 port)
 {
     int sockfd;
     
     struct sockaddr_in target;
     char* ip = NULL;
+    _uint8 error = ORIONSOCKET_OK;
     
     if (strlen(host) == 0)
     {
-        fprintf(stderr, "Host não pode ser vazio.\n");
+#ifdef ORIONSOCKET_DEBUG
+        fprintf(stderr, "<orionsocket> [ERROR] empty host...\n");
+#endif
+		orionsocket_last_error = ORIONSOCKET_INVALIDHOST;
         return -1;
     }
     
     ip = (char *) malloc(sizeof(char) * (IPv4_MAXLENGTH + 1));
-    if (!ip)
-        return ORIONSOCKET_ERR_ALLOC;
+    if (!ip) 
+    {
+    	orionsocket_last_error = ORIONSOCKET_ERR_ALLOC;
+        return -1;
+    }
     
-    orion_getHostByName(host, ip);
-    
+    error = orion_getHostByName(host, ip);
+#ifdef ORIONSOCKET_DEBUG
+   	fprintf(stderr, "%s(%u):%s(%u)\n", host, (unsigned) strlen(host), ip, (unsigned) strlen(ip));
+#endif
+
+	if (error) {
+		switch (error)
+		{
+			case ORIONSOCKET_ADDR_NOTFOUND:
+#ifdef ORIONSOCKET_DEBUG
+				fprintf(stderr, "<orionsocket> [ERROR] Host not found.\n");
+#endif
+        		ORIONFREE(ip);
+        		orionsocket_last_error = ORIONSOCKET_ADDR_NOTFOUND;
+        		return -1;
+        	default:
+        		orionsocket_last_error = ORIONSOCKET_ERR_UNKNOWN;
+        		ORIONFREE(ip);
+        		return -1;        		
+		}
+	}
+	    
     // Cria o socket
-    sockfd = socket(ORION_TCP_FAMILY, ORION_TCP_SOCKETTYPE, 0);
+    sockfd = orion_socket(ORION_TCP_FAMILY, ORION_TCP_SOCKETTYPE, 0);
     if (sockfd < 0)
     {
-        fprintf(stderr, "[ERROR] Erro ao criar socket.\n");
-        switch (errno)
-        {
-        case EAFNOSUPPORT:
-            fprintf(stderr, ">> O endereco especificado na 'Familia de Enderecos' não pode"
-                            " ser usado com esse socket...\n");
-            break;
-        case EMFILE:
-            fprintf(stderr, ">> A Tabela de descritores por processo está cheia.\n");
-            break;
-        case ENOBUFS:
-            fprintf(stderr, ">> O sistema não possui recursos suficientes para completar a chamada...\n");
-            break;
-        case ESOCKTNOSUPPORT:
-            fprintf(stderr, ">> O socket especificado na familia de enderecos não é suportado.\n");
-            break;
-        }
-        
         ORIONFREE(ip);
-        return -1;
+        return sockfd;
     }
     
     bzero(&target, sizeof target);
     target.sin_family = ORION_TCP_FAMILY;
     target.sin_port = htons(port);
     
-    // Converte om endereco de internet de ASCII para binário
+    // Converte um endereco de internet de ASCII para binário
     if (inet_pton(ORION_TCP_FAMILY, ip, &target.sin_addr) < 0)
     {
-        perror("[ERROR] Erro ao setar o endereço remoto.\n");
+#ifdef ORIONSOCKET_DEBUG
+        perror("<orionsocket> [ERROR] Erro ao setar o endereço remoto.\n");
+#endif
         ORIONFREE(ip);
         return errno;
     }
@@ -193,7 +235,9 @@ int orion_tcpConnect(const char* host, _uint16 port)
     
     if (connect(sockfd, (struct sockaddr *)&target, sizeof(struct sockaddr)) == -1)
     {
-        perror("[ERROR] Erro ao conectar no host.\n");
+#ifdef ORIONSOCKET_DEBUG
+        perror("<orionsocket> [ERROR] Erro ao conectar no host.\n");
+#endif
                 
         ORIONFREE(ip);        
         return -1;
@@ -204,3 +248,32 @@ int orion_tcpConnect(const char* host, _uint16 port)
     return sockfd;
 }
 
+int orion_socket(int domain, int type, int protocol)
+{
+    int sockfd = socket(domain, type, protocol);
+    if (sockfd < 0)
+    {
+#ifdef ORIONSOCKET_DEBUG
+        fprintf(stderr, "<orionsocket> [ERROR] Error creating socket.\n");
+
+        switch (errno)
+        {
+        case EAFNOSUPPORT:
+            fprintf(stderr, "<orionsocket> [ERROR] The address specified in the 'address family' can not be used with this socket.\n");
+            break;
+        case EMFILE:
+            fprintf(stderr, "<orionsocket> [ERROR] Table of descriptors per process is full.\n");
+            break;
+        case ENOBUFS:
+            fprintf(stderr, "<orionsocket> [ERROR] The system has insufficient resources to complete the call.\n");
+            break;
+        case ESOCKTNOSUPPORT:
+            fprintf(stderr, "<orionsocket> [ERROR] The socket at the specified address family is not supported.\n");
+            break;
+        }
+#endif        
+        return -1;
+    }
+    
+    return sockfd;
+}
