@@ -88,6 +88,7 @@ _uint8 orion_addCookie(orion_httpResponse *res, orion_cookie* cookie)
 	}
 
 	res->cookie[len] = *cookie;
+	res->cookieLen++;
 
 	return ORIONSOCKET_OK;
 }

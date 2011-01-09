@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     // Inicializa a requisição
     orion_initHttpRequest(&req);
     
-    orion_setHttpRequestHost(req, "universemachine.wordpress.com", 80);
+    orion_setHttpRequestHost(req, "imasters.com.br", 80);
     
     // Não há a necessidade de inicializar res (orion_httpResponse)
     int code = orion_httpReqRes(req, &res);
