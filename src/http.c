@@ -467,12 +467,7 @@ void orion_cleanupHttpResponse(orion_httpResponse* res)
 
         for (i = 0; i < res->cookieLen; i++)
         {
-			ORIONFREE(res->cookie[i].name);
-			ORIONFREE(res->cookie[i].value);
-			ORIONFREE(res->cookie[i].domain);
-			ORIONFREE(res->cookie[i].path);
-			ORIONFREE(res->cookie[i].proto);
-			ORIONFREE(res->cookie[i].expires);
+			orion_cleanupCookie(&res->cookie[i]);
         }
 
         res->cookieLen = 0;
@@ -502,9 +497,9 @@ void orion_assembleCookie(orion_cookie* cookie, char* line)
 		return;
 
 	bufHandle[i] = '\0';
-	bufHandle += i+1;
 
 	cookie->name = strdup(bufHandle);
+	bufHandle += i+1;
 
 	sz = strlen(bufHandle);
 	for (i = 0; i < sz && bufHandle[i] != ';'; i++);
