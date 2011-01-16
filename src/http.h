@@ -64,8 +64,10 @@
 			bufHandle += tam+1;   \
 			sz = strlen(bufHandle); \
 			for (i = 0; i < sz && bufHandle[i] != ';'; i++); \
-			if (i == sz-1) \
+			if (i == sz-1) { \
+			    free(lineBuffer); \
 				return; \
+		    } \
 			bufHandle[i] = '\0'; \
 			cookie->part = strdup(bufHandle); \
 			bufHandle += i + 2; \

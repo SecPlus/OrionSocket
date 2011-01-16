@@ -504,17 +504,18 @@ void orion_assembleCookie(orion_cookie* cookie, char* line)
 	sz = strlen(bufHandle);
 	for (i = 0; i < sz && bufHandle[i] != ';'; i++);
 
-	if (i == sz-1)
+	if (i == sz-1) 
+	{
+	    free(lineBuffer);
 		return;
+	}
 
 	bufHandle[i] = '\0';
 
 	cookie->value = strdup(bufHandle);
 	bufHandle += i + 2;
 
-	_uint8 done = 0;
-
-	while (!done)
+	while (1)
 	{
 		if (!strncasecmp("path", bufHandle, 4))
 		{
@@ -527,7 +528,7 @@ void orion_assembleCookie(orion_cookie* cookie, char* line)
 		{
 			ORION_GETPARTCOOKIE(domain,6);
 		} else 
-			done = 1;
+			break;
 	}
 
 	sz = strlen(bufHandle);
