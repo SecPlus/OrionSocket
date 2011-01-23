@@ -55,6 +55,7 @@
 #define ORION_METHOD_TRACE          0x03
 #define ORION_METHOD_PUT            0x04
 #define ORION_METHOD_DELETE         0x05
+#define ORION_METHOD_UNKNOWN        -0x01
 
 /**
  * MACROS
@@ -72,7 +73,6 @@
 			cookie->part = strdup(bufHandle); \
 			bufHandle += i + 2; \
 			} while(0)
-
 
 /**
  * Estrutura de Dados
@@ -192,6 +192,20 @@ extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _
  * @return void
  */ 
 extern void orion_setHttpRequestPath(orion_httpRequest *req, const char* path);
+
+extern void orion_setHttpRequestMethod(orion_httpRequest* req, const char* method);
+
+/**
+ * Configura a query
+ * Por exemplo, para um GET: http://[domain]/[path]?[query]
+ * 
+ * @param orion_httpRequest *req
+ * @param const char* query
+ * @return void
+ */ 
+extern void orion_setHttpRequestQuery(orion_httpRequest *req, const char* query);
+
+extern void orion_setHttpRequestMethod(orion_httpRequest *req, const char* method);
 
 /**
  * Configura um header HTTP.

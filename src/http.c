@@ -32,6 +32,9 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
+// prototypes
+_uint8 orion_getMethod(const char*);
+
 void orion_initCookie(orion_cookie** cookie2)
 {
 	orion_cookie* cookie = (orion_cookie *) malloc(sizeof(orion_cookie));
@@ -147,6 +150,7 @@ void orion_cleanupHttpRequest(orion_httpRequest *req)
         req->port = 80;
         ORIONFREE(req->path);
         ORIONFREE(req->file_ext);
+        ORIONFREE(req->query);
 
         for (i = 0; i < req->headerLen; i++)
         {
@@ -181,6 +185,17 @@ void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
 {
     ORIONFREE(req->path);
     req->path = strdup(path);
+}
+
+void orion_setHttpRequestQuery(orion_httpRequest *req, const char* query)
+{
+    ORIONFREE(req->query);
+    req->query = strdup(query);
+}
+
+void orion_setHttpRequestMethod(orion_httpRequest* req, const char* method)
+{
+    req->method = orion_getMethod(method);
 }
 
 //
@@ -396,13 +411,14 @@ void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
 
 	if (req->method == ORION_METHOD_POST)
 	{
+	    strncat(reqBuffer, "Content-Type: application/x-www-form-urlencoded\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, "Content-Length: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		
 		size += strlen(req->query);     
 
 		sprintf(temp, "%d\n", size);
 		strncat(reqBuffer, temp, ORION_HTTP_REQUEST_MAXLENGTH-1);
-
+        strcat(reqBuffer, "\n");
 		strncat(reqBuffer, req->query, ORION_HTTP_REQUEST_MAXLENGTH-1);
 	}
  
@@ -670,5 +686,19 @@ void orion_assembleHttpResponse(orion_httpResponse* res, char* buf)
     res->body = strdup(buf+pos_endl+2);
 }
 
-
+_uint8 orion_getMethod(const char* method)
+{
+    if (strstr(method, "GET"))
+        return ORION_METHOD_GET;
+    else if (strstr(method, "POST"))
+        return ORION_METHOD_POST;
+    else if (strstr(method, "TRACE"))
+        return ORION_METHOD_TRACE;
+    else if (strstr(method, "PUT"))
+        return ORION_METHOD_PUT;
+    else if (strstr(method, "DELETE"))
+        return ORION_METHOD_DELETE;
+    else 
+        return ORION_METHOD_UNKNOWN;
+}
 
