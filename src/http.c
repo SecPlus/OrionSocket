@@ -1,5 +1,5 @@
 /*
-   OrionSocket - Socket Header
+   OrionSocket - HTTP Request and Response handling Impl
    --------------------------------
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
