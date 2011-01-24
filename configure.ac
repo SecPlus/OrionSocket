@@ -1,7 +1,7 @@
 # Configure Script
 # --
 
-AC_INIT([orionsocket], [1.0.6], [tiago4orion@gmail.com])
+AC_INIT([orionsocket], [1.0.7], [tiago4orion@gmail.com])
 AM_INIT_AUTOMAKE
 LT_INIT
 AC_CONFIG_SRCDIR([src/socket.c])
