@@ -27,6 +27,7 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 // Berkeley Sockets
 #include <netdb.h>
@@ -266,6 +267,7 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
         printf("%s\n", reqBuffer);
     
 	sockfd = orion_tcpConnect(req->host, req->port);
+    //fcntl(sockfd, F_SETFL, O_NONBLOCK);
     
 	if (sockfd < 0)
 	{
@@ -285,9 +287,9 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 		return errno;
 	}
     
-	localBuffer = (char *) malloc(sizeof(char) * 1);
+	localBuffer = (char *) malloc(sizeof(char));
 	localBuffer[0] = '\0';
-
+	
 	while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE)) > 0)
 	{
         lengthBuffer = n + strlen(localBuffer) + 1;
@@ -401,13 +403,20 @@ void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
         strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH);        
     }
     
+    _uint8 has_connection = 0;
+    
 	for (i = 0; i < req->headerLen; i++)
 	{
+	    if (!strcasecmp(req->header[i].name, "Connection"))
+	        has_connection = 1;
 		strncat(reqBuffer, req->header[i].name, ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, ": ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, req->header[i].value, ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	}
+	
+	if (!has_connection)
+	    strncat(reqBuffer, "Connection: Close\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 
 	if (req->method == ORION_METHOD_POST)
 	{

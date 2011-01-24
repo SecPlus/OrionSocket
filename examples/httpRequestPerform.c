@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	orion_setHttpRequestHeader(req, "User-Agent", "Anakin SkyWalker");
 	
 	code = orion_httpRequestPerform(req, &response);
-	
+
 	if (code == ORIONSOCKET_OK)
 	{
 		printf("%s\n", response);	

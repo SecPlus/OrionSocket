@@ -39,6 +39,7 @@
 #define DNS_MAXLENGTH               255
 #define URL_MAXLENGTH               2048
 #define IPv4_MAXLENGTH              16
+#define ORION_MAX_ERRORCONNECTION   3
 
 #ifdef ORIONSOCKET_DEBUG
 #define DEBUG_OUT_HTTPREQUEST(output, req)  do {  \

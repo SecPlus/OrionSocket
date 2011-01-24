@@ -233,14 +233,19 @@ int orion_tcpConnect(const char* host, _uint16 port)
     
     memset(target.sin_zero, '\0', 8);
     
-    if (connect(sockfd, (struct sockaddr *)&target, sizeof(struct sockaddr)) == -1)
+    _uint8 count_errors = 0;
+    
+    while (connect(sockfd, (struct sockaddr *)&target, sizeof(struct sockaddr)) == -1)
     {
+        count_errors++;
 #ifdef ORIONSOCKET_DEBUG
         perror("<orionsocket> [ERROR] Erro ao conectar no host.\n");
 #endif
-                
-        ORIONFREE(ip);        
-        return -1;
+        if (count_errors >= ORION_MAX_ERRORCONNECTION)
+        {
+            ORIONFREE(ip);
+            return -1;
+        }
     }
     
     ORIONFREE(ip);
