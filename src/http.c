@@ -259,7 +259,7 @@ _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 	memset(reqBuffer, '\0', sizeof(char) * ORION_HTTP_REQUEST_MAXLENGTH);
 	memset(temp, '\0', sizeof(char) * ORION_HTTP_RESPONSE_LENGTH);
     
-	orion_assembleHttpRequest(req, reqBuffer);
+	orion_buildHttpRequest(req, reqBuffer);
     
 	DEBUG_HTTPREQUEST(req);
 
@@ -317,7 +317,7 @@ _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res2)
     if (status == ORIONSOCKET_OK)
     {
         orion_initHttpResponse(&res);
-        orion_assembleHttpResponse(res, response);
+        orion_buildHttpResponse(res, response);
         
         *res2 = res;
         
@@ -335,7 +335,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
     memset(reqBuffer, 0, ORION_HTTP_REQUEST_MAXLENGTH);
     memset(responseBuffer, 0, count);
     
-    orion_assembleHttpRequest(req, reqBuffer);
+    orion_buildHttpRequest(req, reqBuffer);
     
     DEBUG_HTTPREQUEST(req);
 
@@ -373,7 +373,7 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
 // Monta a Requisição HTTP a partir da estrutura httpRequest
 // @param orionHttpRequest*      req
 // @param char *            reqBuffer
-void orion_assembleHttpRequest(orion_httpRequest* req, char* reqBuffer)
+void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
 {
 	_uint32 size = 0, i;
 	char temp[10];
@@ -510,7 +510,7 @@ void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, cons
     res->header[res->headerLen-1].value = strdup(value);
 }
 
-void orion_assembleCookie(orion_cookie* cookie, char* line)
+void orion_buildCookie(orion_cookie* cookie, char* line)
 {
 	char* lineBuffer = strdup(line);
 	char* bufHandle = lineBuffer;
@@ -652,7 +652,7 @@ void orion_parseResponseLine(orion_httpResponse *res, char* line)
 		
         orion_cookie *c = NULL;
         orion_initCookie(&c);
-        orion_assembleCookie(c, bufHandle);
+        orion_buildCookie(c, bufHandle);
         orion_addCookie(res, c);
     } else {
         bufHandle = line;
@@ -669,7 +669,7 @@ void orion_parseResponseLine(orion_httpResponse *res, char* line)
     }
 }
 
-void orion_assembleHttpResponse(orion_httpResponse* res, char* buf)
+void orion_buildHttpResponse(orion_httpResponse* res, char* buf)
 {
     char* bufHandle = NULL, *line = NULL;
     int pos_endl = 0;

@@ -40,6 +40,10 @@
 #define ORION_HTTP_PROTOCOL_1_1     0x01
 #define ORION_HTTP_PROTOCOL_UNKNOWN 0x02
 
+#define ORION_PROTO_HTTP            0x00
+#define ORION_PROTO_HTTPS           0x01
+#define ORION_PROTO_FTP             0x02
+
 /**
  * Response lengths
  */
@@ -93,6 +97,7 @@ typedef struct
 // orionHttpRequest structure
 typedef struct
 {
+    _uint8 proto;
     char* host;         /* Host Target          */
     _uint16 port;       /* Port Target          */
     _uint8 method;      /* HTTP Method          */
@@ -234,7 +239,7 @@ extern void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option);
  * @param char* reqBuffer
  * @return void
  */
-extern void orion_assembleHttpRequest(orion_httpRequest *req, char* reqBuffer);
+extern void orion_buildHttpRequest(orion_httpRequest *req, char* reqBuffer);
 
 /**
  * Monta a estrutura orion_httpResponse a partir do cabeçalho retornado pelo
@@ -244,7 +249,7 @@ extern void orion_assembleHttpRequest(orion_httpRequest *req, char* reqBuffer);
  * @param char* resBuffer
  * @return void
  */
-extern void orion_assembleHttpResponse(orion_httpResponse *res, char* resBuffer);
+extern void orion_buildHttpResponse(orion_httpResponse *res, char* resBuffer);
 
 /**
  * Executa a requisição HTTP no host alvo.
@@ -271,6 +276,11 @@ extern _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response);
  */
 extern _uint8 orion_httpGet(orion_httpRequest* req, void (*callback)(char*,_uint32), _uint32 count);
 
+/**
+ * Iniciliza a estrutura orion_cookie
+ * @param orion_cookie** cookie
+ * @return void
+ */
 extern void orion_initCookie(orion_cookie** cookie);
 extern void orion_cleanupCookie(orion_cookie* cookie);
 extern void orion_setCookie(orion_cookie *cookie, const char* name, const char* value, const char* domain, const char* path, const char* proto, const char* expires);
@@ -304,8 +314,8 @@ extern void orion_cleanupHttpResponse(orion_httpResponse* res);
  */
 extern void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value);
 extern void orion_parseResponseLine(orion_httpResponse* res, char* line);
-extern void orion_assembleHttpResponse(orion_httpResponse *res, char* line);
-extern void orion_assembleCookie(orion_cookie* cookie, char* lineBuffer);
+extern void orion_buildHttpResponse(orion_httpResponse *res, char* line);
+extern void orion_buildCookie(orion_cookie* cookie, char* lineBuffer);
 extern _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res);
 
 #endif // __ORIONSOCKET_HTTP_H_
