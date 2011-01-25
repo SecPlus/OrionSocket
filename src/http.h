@@ -82,7 +82,9 @@
  * Estrutura de Dados
  */
 
-// Cookie struct
+/**
+ * Armazena as informações de cookie
+ */
 typedef struct
 {
 	char* name;
@@ -94,7 +96,9 @@ typedef struct
 } orion_cookie;
 
 
-// orionHttpRequest structure
+/**
+ * orionHttpRequest structure
+ */
 typedef struct
 {
     _uint8 proto;
@@ -114,6 +118,9 @@ typedef struct
     _uint16 option;    /* Extra Options        */
 } orion_httpRequest;
 
+/**
+ * orionHttpResponse structure
+ */
 typedef struct
 {
     _uint8 version;         /* HTTP version. 1.0 || 1.1 */
