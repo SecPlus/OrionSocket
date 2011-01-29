@@ -19,6 +19,7 @@
    limitations under the License.
 
  */
+
 #include "http.h"
 #include "err.h"
 #include "util.h"
@@ -128,6 +129,8 @@ void orion_initHttpRequest(orion_httpRequest **req2)
 
   req->host = NULL;
   req->port = 80;                 /* Default port         */
+  req->auth = NULL;
+  req->pass = NULL;
   req->path = NULL;
   req->method = ORION_METHOD_GET;       /* Default HTTP Method  */
   req->file_ext = NULL;
@@ -149,6 +152,8 @@ void orion_cleanupHttpRequest(orion_httpRequest *req)
     {
         ORIONFREE(req->host);
         req->port = 80;
+        ORIONFREE(req->auth);
+        ORIONFREE(req->pass);
         ORIONFREE(req->path);
         ORIONFREE(req->file_ext);
         ORIONFREE(req->query);
@@ -180,6 +185,98 @@ void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 
 {
     req->host = strdup(host);
     req->port = port;
+}
+
+void orion_setUrl(orion_httpRequest* req, const char* url)
+{
+    char *buffer = NULL, *ptrBuffer = NULL;
+    int it = 0, it2, len, len2;
+    
+    len = strlen(url);
+    
+    if (!strncmp(url, "https", 5))
+        req->proto = ORION_PROTO_HTTPS;
+    else if (!strncmp(url, "http", 4))
+        req->proto = ORION_PROTO_HTTP;
+    
+    //for (it = 0; it < len && url[it] != ':'; it++);
+    it = strcspn(url, ":");
+
+    if (it == len)
+        return;
+
+    buffer = strdup(url + it + 3);  // pula '://'
+    ptrBuffer = buffer;
+    len = strlen(buffer);
+    
+    // verifica se tem autenticação
+    it = strcspn(ptrBuffer, "@");
+    if (it < len)
+    {
+        ptrBuffer[it] = '\0';
+        // verifica se tem senha
+        it2 = strcspn(ptrBuffer, ":");
+        len2 = strlen(ptrBuffer);
+        if (it2 < len2)
+        {
+            ptrBuffer[it2] = '\0';
+            req->auth = strdup(ptrBuffer);
+            ptrBuffer = ptrBuffer + it2 + 1;
+            req->pass = strdup(ptrBuffer);
+            ptrBuffer += it - it2;
+        } else {
+            req->auth = strdup(ptrBuffer);
+            req->pass = NULL;
+            ptrBuffer += it + 1;
+        }    
+    }
+    
+    len = strlen(ptrBuffer);
+    int matchLen = 0;
+    it = strcspn(ptrBuffer, ":/");
+    it2 = 0;
+    
+    if (it > 0)
+    {
+        if (it == len)
+        {
+            req->host = strdup(ptrBuffer);
+            req->port = 80;
+            ptrBuffer += it;
+            matchLen += it;
+        } else
+        
+        // verifica se a porta não é a default
+        if (ptrBuffer[it] == ':')
+        {
+            ptrBuffer[it] = '\0';
+            req->host = strdup(ptrBuffer);
+            ptrBuffer += it + 1;
+            matchLen += it + 1;
+            it2 = strcspn(ptrBuffer, "/");
+            ptrBuffer[it2] = '\0';
+            req->port = atoi(ptrBuffer);
+            
+            ptrBuffer += it2 + 1;
+            matchLen += it2;
+        } else {
+            ptrBuffer[it] = '\0';
+            req->host = strdup(ptrBuffer);
+            ptrBuffer += it + 1;
+            matchLen += it;
+        }
+    } else { DEBUG("aqui");
+        return; }
+
+    if (matchLen >= len || *ptrBuffer == '\0')
+    {
+        req->path = strdup("/");
+        return;
+    }
+    
+    req->path = strdup(ptrBuffer);
+        
+    free(buffer);
 }
 
 void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)
@@ -378,8 +475,10 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	_uint32 size = 0, i;
 	char temp[10];
 	bzero(temp, 10);
+	_uint8  _connection_header_exists = 0, 
+            _host_header_exists = 0, 
+            _content_type_header_exists = 0;
     
-    // It is safe.
 	strcpy(reqBuffer, orion_getStrMethod(req->method));
 	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	if (!req->path)
@@ -388,14 +487,8 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	strncat(reqBuffer, req->path, ORION_HTTP_REQUEST_MAXLENGTH-1);
 	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);    
-    
-    _uint8 _host_header_exists = 0;
-
-    for (i = 0; i < req->headerLen; i++)
-        if (strcasecmp(req->header[i].name, "Host") == 0)
-            _host_header_exists = 1;
-
+	strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
+            
     if (!_host_header_exists)
     {
         strncat(reqBuffer, "Host: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
@@ -403,24 +496,27 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
         strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH);        
     }
     
-    _uint8 has_connection = 0;
-    
 	for (i = 0; i < req->headerLen; i++)
 	{
-	    if (!strcasecmp(req->header[i].name, "Connection"))
-	        has_connection = 1;
+	    if (!strcasecmp(req->header[i].name, "Host"))
+            _host_header_exists = 1;
+        else if (!strcasecmp(req->header[i].name, "Content-Type"))
+            _content_type_header_exists = 1;
+	    else if (!strcasecmp(req->header[i].name, "Connection"))
+	        _connection_header_exists = 1;
 		strncat(reqBuffer, req->header[i].name, ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, ": ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, req->header[i].value, ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	}
 	
-	if (!has_connection)
+	if (!_connection_header_exists)
 	    strncat(reqBuffer, "Connection: Close\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 
 	if (req->method == ORION_METHOD_POST)
 	{
-	    strncat(reqBuffer, "Content-Type: application/x-www-form-urlencoded\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
+	    if (!_content_type_header_exists)
+    	    strncat(reqBuffer, "Content-Type: text/html\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		strncat(reqBuffer, "Content-Length: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 		
 		size += strlen(req->query);     

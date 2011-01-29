@@ -9,8 +9,8 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
 
-/* Define to 1 if you have the `gethostbyname' function. */
-#undef HAVE_GETHOSTBYNAME
+/* Define to 1 if you have the `getaddrinfo' function. */
+#undef HAVE_GETADDRINFO
 
 /* Define to 1 if you have the `inet_ntoa' function. */
 #undef HAVE_INET_NTOA
@@ -71,6 +71,9 @@
 
 /* Print debug information */
 #undef ORIONSOCKET_DEBUG
+
+/* DEBUG ON STDERR */
+#undef ORION_LOG_STDERR
 
 /* Name of package */
 #undef PACKAGE

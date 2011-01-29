@@ -22,9 +22,15 @@
 #ifndef __ORIONSOCKET_HTTP_H_
 #define __ORIONSOCKET_HTTP_H_
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+#include "debug.h"
 #include "types.h"
 #include "api.h"
 #include "socket.h"
+#include "util.h"
 
 /**
  * Options
@@ -78,6 +84,41 @@
 			bufHandle += i + 2; \
 			} while(0)
 
+#define ORION_DEBUG_PROTO(proto) \
+            do { \
+            if (proto == ORION_PROTO_HTTP) \
+                DEBUG("HTTP"); \
+            else if (proto == ORION_PROTO_HTTPS) \
+                DEBUG("HTTPS"); \
+            else if (proto == ORION_PROTO_FTP) \
+                DEBUG("FTP"); \
+            } while(0)
+            
+                
+            
+#define ORION_DEBUG_HTTPREQUEST(req) \
+            do { \
+                DEBUG("PROTOCOL: "); ORION_DEBUG_PROTO(req->proto); DEBUG("\n");\
+                DEBUG("HOST: %s:%d\n", req->host, req->port); \
+                DEBUG("METHOD: %s\n", orion_getStrMethod(req->method)); \
+                if (req->auth) \
+                    DEBUG("AUTH: %s\n", req->auth); \
+                if (req->pass) \
+                    DEBUG("PASSWORD: %s\n", req->pass); \
+                DEBUG("PATH: %s\n", req->path); \
+                if (req->file_ext) \
+                    DEBUG("FILE EXT: %s\n", req->file_ext); \
+                if (req->query) \
+                    DEBUG("QUERY STRING: %s\n", req->query); \
+                _uint8 _it; \
+                if (req->headerLen > 0) {\
+                    DEBUG("HEADER NAME\t|\tHEADER VALUE\n"); \
+                    for (_it = 0; _it < req->headerLen; _it++) \
+                        DEBUG("%s\t|\t%s\n",req->header[_it].name,req->header[_it].value); \
+                } \
+            } while (0);
+            
+            
 /**
  * Estrutura de Dados
  */
@@ -104,6 +145,11 @@ typedef struct
     _uint8 proto;
     char* host;         /* Host Target          */
     _uint16 port;       /* Port Target          */
+    
+    /* Authentication */
+    char* auth;         /* User  */
+    char* pass;         /* Password  */
+    
     _uint8 method;      /* HTTP Method          */
     char* path;         /* URL Path             */
     char* file_ext;     /* File extension       */
@@ -193,6 +239,14 @@ extern void orion_cleanupCookie(orion_cookie* cookie);
  * @param _uint16 port
  */
 extern void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port);
+
+/**
+ * Configura a requisição a partir de uma url
+ *
+ * @param orion_httpRequest
+ * #param char*
+ */
+extern void orion_setUrl(orion_httpRequest* req, const char* url);
 
 /**
  * Configura o Path da requisição.
