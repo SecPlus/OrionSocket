@@ -265,8 +265,8 @@ void orion_setUrl(orion_httpRequest* req, const char* url)
             ptrBuffer += it + 1;
             matchLen += it;
         }
-    } else { DEBUG("aqui");
-        return; }
+    } else 
+        return;
 
     if (matchLen >= len || *ptrBuffer == '\0')
     {
@@ -274,7 +274,10 @@ void orion_setUrl(orion_httpRequest* req, const char* url)
         return;
     }
     
-    req->path = strdup(ptrBuffer);
+    req->path = (char *) malloc(sizeof(char)*strlen(ptrBuffer)+2);
+    bzero(req->path, strlen(ptrBuffer)+2);
+    strncpy(req->path, "/", 1);
+    strncat(req->path, ptrBuffer, strlen(ptrBuffer)+2);
         
     free(buffer);
 }
