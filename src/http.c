@@ -491,7 +491,25 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
 	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
 	strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
 	strncat(reqBuffer, "\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
-            
+	
+	// TODO: For performance change this...
+	// is best using two buffers, one with the headers
+	// buffer1 = "GET / HTTP/1.1"
+	// buffer2 = "User-Agent: Anakin\nContent-Type: text/html"
+	// then:
+	// strncat(reqBuffer, buffer1, ORION_HTTP_REQUEST_MAXLENGTH-1);
+	// if (!_host_header_exists)
+	//      strncat(reqBuffer, "Host: <blab><bla>\n", ORION_HTTP_REQUEST_MAXLENGTH-1);
+	// strncat(reqBuffer, buffer2, ORION_HTTP_REQUEST_MAXLENGTH-1);
+	for (i = 0; i < req->headerLen; i++)
+	{
+	    if (!strcasecmp(req->header[i].name, "Host"))
+	    {
+	        _host_header_exists = 1;
+	        break;
+	    }
+    }
+           
     if (!_host_header_exists)
     {
         strncat(reqBuffer, "Host: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
@@ -501,9 +519,7 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
     
 	for (i = 0; i < req->headerLen; i++)
 	{
-	    if (!strcasecmp(req->header[i].name, "Host"))
-            _host_header_exists = 1;
-        else if (!strcasecmp(req->header[i].name, "Content-Type"))
+	    if (!strcasecmp(req->header[i].name, "Content-Type"))
             _content_type_header_exists = 1;
 	    else if (!strcasecmp(req->header[i].name, "Connection"))
 	        _connection_header_exists = 1;
