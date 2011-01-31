@@ -75,5 +75,6 @@ extern int orion_getDomain(const char* ip, char* buffer);
 extern int orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
 extern int orion_socket(int domain, int type, int protocol); 
 extern int orion_tcpConnect(const char* host, _uint16 port);
+extern _uint8 orion_send(int socket, char* buffer);
 #endif // __APISOCKET_
 

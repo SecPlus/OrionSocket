@@ -30,7 +30,7 @@ int main(int argc, char** argv, char** envp)
     
     if (!code)
     {
-        printf("%s\n", response);
+        //printf("%s\n", response);
         free(response);
     }
     

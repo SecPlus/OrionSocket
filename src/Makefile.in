@@ -75,7 +75,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 liborionsocket_la_LIBADD =
-am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo
+am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo debug.lo
 liborionsocket_la_OBJECTS = $(am_liborionsocket_la_OBJECTS)
 liborionsocket_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -214,7 +214,8 @@ AM_CFLAGS = -Wall -Werror -fPIC -O2
 lib_LTLIBRARIES = liborionsocket.la
 liborionsocket_la_SOURCES = socket.c 	\
 							http.c 		\
-							util.c
+							util.c \
+							debug.c
 
 liborionsocket_la_LDFLAGS = -version-info 1:9:0
 library_includedir = $(includedir)/orion/socket
@@ -301,6 +302,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/http.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/socket.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Plo@am__quote@

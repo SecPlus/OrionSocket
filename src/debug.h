@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,5 +70,8 @@
 #endif  // ORION_LOG_STDERR
 
 #define ORION_PRINT(x...)   printf(x)
+
+extern void orion_dump(const unsigned char* data, const unsigned int length);
+
 
 #endif // __ORIONSOCKET_DEBUG_H_

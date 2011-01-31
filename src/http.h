@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -66,6 +66,11 @@
 #define ORION_METHOD_PUT            0x04
 #define ORION_METHOD_DELETE         0x05
 #define ORION_METHOD_UNKNOWN        -0x01
+
+/**
+ * defaults
+ */
+#define ORIONSOCKET_NL              "\r\n"
 
 /**
  * MACROS

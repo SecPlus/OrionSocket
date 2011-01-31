@@ -282,3 +282,30 @@ int orion_socket(int domain, int type, int protocol)
     
     return sockfd;
 }
+
+/**
+ * Ensures that all data was sent
+ * On success, 1 is returned, otherwise returns 0.
+ * 
+ * @param int socket - Socket descriptor
+ * @param char* buffer- Data to sent
+ * @return _uint8
+ */
+_uint8 orion_send(int socket, char* buffer)
+{
+    _uint32 bytes_to_send = strlen(buffer);
+    _uint32 bytes_sent = 0;
+    
+    while (bytes_to_send > 0)
+    {
+        bytes_sent = send(socket, buffer, bytes_to_send, 0);
+        
+        if (bytes_sent < 0)
+            return 0;
+        bytes_to_send -= bytes_sent;
+        buffer += bytes_sent;
+    }
+    
+    return 1;
+}
+

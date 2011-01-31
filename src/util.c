@@ -79,3 +79,4 @@ int orion_linearSearchChar(const char* buffer, char c)
     return -1;
 }
 
+
