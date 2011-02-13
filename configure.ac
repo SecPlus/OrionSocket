@@ -4,7 +4,7 @@
 AC_INIT([orionsocket], [1.0.9], [tiago4orion@gmail.com])
 AM_INIT_AUTOMAKE
 LT_INIT
-AC_CONFIG_SRCDIR([src/socket.c])
+AC_CONFIG_SRCDIR([src/socket.c], [examples/simple.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_HEADERS([orion_config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -38,5 +38,5 @@ AC_CHECK_FUNCS([bzero getaddrinfo inet_ntoa memset socket])
 # Orion DEFINE's
 AC_DEFINE([ORION_LOG_STDERR], 1, [DEBUG ON STDERR])
 
-AC_CONFIG_FILES([Makefile src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile examples/Makefile])
 AC_OUTPUT

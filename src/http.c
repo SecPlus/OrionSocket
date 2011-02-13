@@ -40,78 +40,77 @@ _uint8 orion_getMethod(const char*);
 
 void orion_initCookie(orion_cookie** cookie2)
 {
-	orion_cookie* cookie = (orion_cookie *) malloc(sizeof(orion_cookie));
+    orion_cookie* cookie = (orion_cookie *) malloc(sizeof(orion_cookie));
 
-	if (!cookie)
-	{
+    if (!cookie)
+    {
 #ifdef ORIONSOCKET_DEBUG
-		fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
+        fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
 #endif
-		return;
-	}
+        return;
+    }
 
-	cookie->name = NULL;
-	cookie->value = NULL;
-	cookie->domain = NULL;
-	cookie->path = NULL;
-	cookie->expires = NULL;
-	cookie->proto = NULL;
+    cookie->name = NULL;
+    cookie->value = NULL;
+    cookie->domain = NULL;
+    cookie->path = NULL;
+    cookie->expires = NULL;
+    cookie->proto = NULL;
 
-	*cookie2 = cookie;
-
+    *cookie2 = cookie;
 }
 
-void orion_setCookie(	orion_cookie* cookie, 
-						const char* name, 
-						const char* value, 
-						const char* domain, 
-						const char* path, 
-						const char* proto, 
-						const char* expires)
-{	
-	if (!strlen(name))
-		return;
+void orion_setCookie(    orion_cookie* cookie, 
+                        const char* name, 
+                        const char* value, 
+                        const char* domain, 
+                        const char* path, 
+                        const char* proto, 
+                        const char* expires)
+{    
+    if (!strlen(name))
+        return;
 
-	cookie->name = strdup(name);
-	cookie->value = strdup(value && strlen(value) ? value : "");
-	cookie->domain = strdup(domain && strlen(domain) ? domain : "");
-	cookie->path = strdup(path && strlen(path) ? path : "");
-	cookie->proto = strdup(proto && strlen(proto) ? proto : "");
-	cookie->expires = strdup(expires && strlen(expires) ? expires : "");
+    cookie->name = strdup(name);
+    cookie->value = strdup(value && strlen(value) ? value : "");
+    cookie->domain = strdup(domain && strlen(domain) ? domain : "");
+    cookie->path = strdup(path && strlen(path) ? path : "");
+    cookie->proto = strdup(proto && strlen(proto) ? proto : "");
+    cookie->expires = strdup(expires && strlen(expires) ? expires : "");
 }
 
 _uint8 orion_addCookie(orion_httpResponse *res, orion_cookie* cookie)
 {
-	_uint8 len = res->cookieLen;
-	res->cookie = (orion_cookie*) orion_realloc(res->cookie, sizeof(orion_cookie)*(len+1));	
+    _uint8 len = res->cookieLen;
+    res->cookie = (orion_cookie*) orion_realloc(res->cookie, sizeof(orion_cookie)*(len+1));    
 
-	if (!res->cookie)
-	{
+    if (!res->cookie)
+    {
 #ifdef ORIONSOCKET_DEBUG
-		fprintf(stderr, "[ERROR] Erro ao alocar memoria."ORIONSOCKET_NL);
+        fprintf(stderr, "[ERROR] Erro ao alocar memoria."ORIONSOCKET_NL);
 #endif
-		return ORIONSOCKET_ERR_ALLOC;
-	}
+        return ORIONSOCKET_ERR_ALLOC;
+    }
 
-	res->cookie[len] = *cookie;
-	res->cookieLen++;
+    res->cookie[len] = *cookie;
+    res->cookieLen++;
 
-	return ORIONSOCKET_OK;
+    return ORIONSOCKET_OK;
 }
 
 void orion_cleanupCookie(orion_cookie* cookie)
 {
-	if (cookie)
-	{
-		ORIONFREE(cookie->name);
-		ORIONFREE(cookie->value);
-		ORIONFREE(cookie->domain);
-		ORIONFREE(cookie->path);
-		ORIONFREE(cookie->expires);
-		ORIONFREE(cookie->proto);
-	}
+    if (cookie)
+    {
+        ORIONFREE(cookie->name);
+        ORIONFREE(cookie->value);
+        ORIONFREE(cookie->domain);
+        ORIONFREE(cookie->path);
+        ORIONFREE(cookie->expires);
+        ORIONFREE(cookie->proto);
+    }
 
-	ORIONFREE(cookie);
+    ORIONFREE(cookie);
 }
 
 void orion_initHttpRequest(orion_httpRequest **req2)
@@ -124,7 +123,7 @@ void orion_initHttpRequest(orion_httpRequest **req2)
 #ifdef ORIONSOCKET_DEBUG
     fprintf(stderr, "[ORION][ERROR] Não foi possivel alocar memória."ORIONSOCKET_NL); 
 #endif
-	*req2 = NULL;
+    *req2 = NULL;
     return;
   }
 
@@ -307,40 +306,40 @@ void orion_setHttpRequestMethod(orion_httpRequest* req, const char* method)
 // @param const char* value
 _uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value)
 {
-	_uint8 len = 0, lenName = 0, lenValue = 0;
-	len = req->headerLen;
-	
+    _uint8 len = 0, lenName = 0, lenValue = 0;
+    len = req->headerLen;
+    
     lenName = strlen(name);
     lenValue = strlen(value);
     
-	req->header = (nameValue *) orion_realloc(req->header, sizeof(nameValue)*(len+1));
-	if (!req->header)
-	{
+    req->header = (nameValue *) orion_realloc(req->header, sizeof(nameValue)*(len+1));
+    if (!req->header)
+    {
 #ifdef ORIONSOCKET_DEBUG
-		fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
+        fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
 #endif
-		return ORIONSOCKET_ERR_ALLOC;
-	}
+        return ORIONSOCKET_ERR_ALLOC;
+    }
     
-	req->header[len].name = (char *) malloc(sizeof(char) * lenName + 1);
-	req->header[len].value = (char *) malloc(sizeof(char) * lenValue + 1);
-	if (!req->header[len].name || !req->header[len].value)
-	{
+    req->header[len].name = (char *) malloc(sizeof(char) * lenName + 1);
+    req->header[len].value = (char *) malloc(sizeof(char) * lenValue + 1);
+    if (!req->header[len].name || !req->header[len].value)
+    {
 #ifdef ORIONSOCKET_DEBUG
-		fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
+        fprintf(stderr, "[ERROR] Erro ao alocar memória."ORIONSOCKET_NL);
 #endif
-		return ORIONSOCKET_ERR_ALLOC;
-	}
-	
-	strncpy(req->header[len].name, name, lenName);
-	strncpy(req->header[len].value, value, lenValue);
-	req->header[len].name[lenName] = '\0';
-	req->header[len].value[lenValue] = '\0';
-	
+        return ORIONSOCKET_ERR_ALLOC;
+    }
     
-	req->headerLen++;
+    strncpy(req->header[len].name, name, lenName);
+    strncpy(req->header[len].value, value, lenValue);
+    req->header[len].name[lenName] = '\0';
+    req->header[len].value[lenValue] = '\0';
     
-	return ORIONSOCKET_OK;    
+    
+    req->headerLen++;
+    
+    return ORIONSOCKET_OK;    
 }
 
 void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)
@@ -353,67 +352,67 @@ void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)
 // 
 _uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)
 {
-	int sockfd, n = 0, lengthBuffer = 0;
-	char reqBuffer[ORION_HTTP_REQUEST_MAXLENGTH], temp[ORION_HTTP_BIG_RESPONSE];
-	char *localBuffer = NULL;
+    int sockfd, n = 0, lengthBuffer = 0;
+    char reqBuffer[ORION_HTTP_REQUEST_MAXLENGTH], temp[ORION_HTTP_BIG_RESPONSE];
+    char *localBuffer = NULL;
     
-	memset(reqBuffer, '\0', sizeof(char) * ORION_HTTP_REQUEST_MAXLENGTH);
-	memset(temp, '\0', sizeof(char) * ORION_HTTP_RESPONSE_LENGTH);
+    memset(reqBuffer, '\0', sizeof(char) * ORION_HTTP_REQUEST_MAXLENGTH);
+    memset(temp, '\0', sizeof(char) * ORION_HTTP_RESPONSE_LENGTH);
     
-	orion_buildHttpRequest(req, reqBuffer);
+    orion_buildHttpRequest(req, reqBuffer);
     
-	DEBUG_HTTPREQUEST(req);
+    DEBUG_HTTPREQUEST(req);
 
     if ((req->option & ORION_OPTDEBUG_REQUEST)==ORION_OPTDEBUG_REQUEST)
         printf("%s"ORIONSOCKET_NL, reqBuffer);
     
-	sockfd = orion_tcpConnect(req->host, req->port);
+    sockfd = orion_tcpConnect(req->host, req->port);
     //fcntl(sockfd, F_SETFL, O_NONBLOCK);
     
-	if (sockfd < 0)
-	{
+    if (sockfd < 0)
+    {
 #ifdef ORIONSOCKET_DEBUG
-		perror("[ERROR] Erro ao conectar."ORIONSOCKET_NL);
+        perror("[ERROR] Erro ao conectar."ORIONSOCKET_NL);
 #endif
-		close(sockfd);
-		return errno;
-	}
+        close(sockfd);
+        return errno;
+    }
     
 #ifdef ORIONSOCKET_DEBUG
     DEBUG("[DEBUG] Request:"ORIONSOCKET_NL);
     orion_dump((unsigned char*) reqBuffer, strlen(reqBuffer));
 #endif
     
-	if (!orion_send(sockfd, reqBuffer))
-	{
+    if (!orion_send(sockfd, reqBuffer))
+    {
 #ifdef ORIONSOCKET_DEBUG
-		perror("[ERROR] Erro ao enviar requisição."ORIONSOCKET_NL);
+        perror("[ERROR] Erro ao enviar requisição."ORIONSOCKET_NL);
 #endif
-		close(sockfd);
-		return errno;
-	}
+        close(sockfd);
+        return errno;
+    }
     
-	localBuffer = (char *) malloc(sizeof(char));
-	localBuffer[0] = '\0';
-	
-	while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE)) > 0)
-	{
+    localBuffer = (char *) malloc(sizeof(char));
+    localBuffer[0] = '\0';
+    
+    while((n = read(sockfd, temp, ORION_HTTP_BIG_RESPONSE)) > 0)
+    {
 #ifdef ORIONSOCKET_DEBUG
         DEBUG("[DEBUG] Response:"ORIONSOCKET_NL);
         orion_dump((unsigned char*) temp, strlen(temp));
 #endif
         lengthBuffer = n + strlen(localBuffer) + 1;
-		localBuffer = (char *) orion_realloc(localBuffer, lengthBuffer);
-		temp[n-1] = '\0';
-		strncat(localBuffer, temp, lengthBuffer-1);
-		bzero(temp, ORION_HTTP_BIG_RESPONSE);
-	}
+        localBuffer = (char *) orion_realloc(localBuffer, lengthBuffer);
+        temp[n-1] = '\0';
+        strncat(localBuffer, temp, lengthBuffer-1);
+        bzero(temp, ORION_HTTP_BIG_RESPONSE);
+    }
     
-	close(sockfd);
+    close(sockfd);
     
-	*response = localBuffer;
+    *response = localBuffer;
     
-	return ORIONSOCKET_OK;
+    return ORIONSOCKET_OK;
 }
 
 _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res2)
@@ -455,29 +454,29 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
     sockfd = orion_tcpConnect(req->host, req->port);
     if (sockfd < 0)
         return errno;
-    
+
     if (write(sockfd, reqBuffer, strlen(reqBuffer)) < 0)
     {
 #ifdef ORIONSOCKET_DEBUG
-		perror("[ERROR] Erro ao enviar requisição."ORIONSOCKET_NL);
+        perror("[ERROR] Erro ao enviar requisição."ORIONSOCKET_NL);
 #endif
-		close(sockfd);
-		return errno;
-	}
-	
-	n = read(sockfd, responseBuffer, count-1);
+        close(sockfd);
+        return errno;
+    }
+    
+    n = read(sockfd, responseBuffer, count-1);
 
-	while (n > 0)
-	{
-	    responseBuffer[n] = '\0';
-	    (*callback)(responseBuffer, n);
-	    memset(responseBuffer, 0, count);
-	    n = read(sockfd, responseBuffer, count-1);
-	}
-	
-	close(sockfd);
-	
-	return ORIONSOCKET_OK;
+    while (n > 0)
+    {
+        responseBuffer[n] = '\0';
+        (*callback)(responseBuffer, n);
+        memset(responseBuffer, 0, count);
+        n = read(sockfd, responseBuffer, count-1);
+    }
+    
+    close(sockfd);
+    
+    return ORIONSOCKET_OK;
 }
 
 // Monta a Requisição HTTP a partir da estrutura httpRequest
@@ -485,40 +484,40 @@ _uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _
 // @param char *            reqBuffer
 void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
 {
-	_uint32 size = 0, i;
-	char temp[10];
-	bzero(temp, 10);
-	_uint8  _connection_header_exists = 0, 
+    _uint32 size = 0, i;
+    char temp[10];
+    bzero(temp, 10);
+    _uint8  _connection_header_exists = 0, 
             _host_header_exists = 0, 
             _content_type_header_exists = 0;
     
-	strcpy(reqBuffer, orion_getStrMethod(req->method));
-	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
-	if (!req->path)
-	    req->path = strdup("/");
-	
-	strncat(reqBuffer, req->path, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	
-	// TODO: For performance change this...
-	// is best using two buffers, one with the headers
-	// buffer1 = "GET / HTTP/1.1"
-	// buffer2 = "User-Agent: Anakin\nContent-Type: text/html"
-	// then:
-	// strncat(reqBuffer, buffer1, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	// if (!_host_header_exists)
-	//      strncat(reqBuffer, "Host: <blab><bla>"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	// strncat(reqBuffer, buffer2, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	for (i = 0; i < req->headerLen; i++)
-	{
-	    if (!strcasecmp(req->header[i].name, "Host"))
-	    {
-	        _host_header_exists = 1;
-	        break;
-	    }
-    }
+    strcpy(reqBuffer, orion_getStrMethod(req->method));
+    strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+    if (!req->path)
+        req->path = strdup("/");
+    
+    strncat(reqBuffer, req->path, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+    strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    
+    // TODO: For performance change this...
+    // is best using two buffers, one with the headers
+    // buffer1 = "GET / HTTP/1.1"
+    // buffer2 = "User-Agent: Anakin\nContent-Type: text/html"
+    // then:
+    // strncat(reqBuffer, buffer1, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    // if (!_host_header_exists)
+    //      strncat(reqBuffer, "Host: <blab><bla>"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    // strncat(reqBuffer, buffer2, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    for (i = 0; i < req->headerLen; i++)
+    {
+        if (!strcasecmp(req->header[i].name, "Host"))
+        {
+            _host_header_exists = 1;
+            break;
+        }
+        }
            
     if (!_host_header_exists)
     {
@@ -527,36 +526,36 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
         strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH);        
     }
     
-	for (i = 0; i < req->headerLen; i++)
-	{
-	    if (!strcasecmp(req->header[i].name, "Content-Type"))
+    for (i = 0; i < req->headerLen; i++)
+    {
+        if (!strcasecmp(req->header[i].name, "Content-Type"))
             _content_type_header_exists = 1;
-	    else if (!strcasecmp(req->header[i].name, "Connection"))
-	        _connection_header_exists = 1;
-		strncat(reqBuffer, req->header[i].name, ORION_HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, ": ", ORION_HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, req->header[i].value, ORION_HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	}
-	
-	if (!_connection_header_exists)
-	    strncat(reqBuffer, "Connection: Close"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        else if (!strcasecmp(req->header[i].name, "Connection"))
+            _connection_header_exists = 1;
+        strncat(reqBuffer, req->header[i].name, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, ": ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, req->header[i].value, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    }
+    
+    if (!_connection_header_exists)
+        strncat(reqBuffer, "Connection: Close"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
 
-	if (req->method == ORION_METHOD_POST)
-	{
-	    if (!_content_type_header_exists)
-    	    strncat(reqBuffer, "Content-Type: text/html"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
-		strncat(reqBuffer, "Content-Length: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
-		
-		size += strlen(req->query);     
+    if (req->method == ORION_METHOD_POST)
+    {
+        if (!_content_type_header_exists)
+            strncat(reqBuffer, "Content-Type: text/html"ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        strncat(reqBuffer, "Content-Length: ", ORION_HTTP_REQUEST_MAXLENGTH-1);
+        
+        size += strlen(req->query);     
 
-		sprintf(temp, "%d"ORIONSOCKET_NL, size);
-		strncat(reqBuffer, temp, ORION_HTTP_REQUEST_MAXLENGTH-1);
+        sprintf(temp, "%d"ORIONSOCKET_NL, size);
+        strncat(reqBuffer, temp, ORION_HTTP_REQUEST_MAXLENGTH-1);
         strcat(reqBuffer, ORIONSOCKET_NL);
-		strncat(reqBuffer, req->query, ORION_HTTP_REQUEST_MAXLENGTH-1);
-	}
+        strncat(reqBuffer, req->query, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    }
  
-	strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
 }
 
 void orion_initHttpResponse(orion_httpResponse** res2)
@@ -617,7 +616,7 @@ void orion_cleanupHttpResponse(orion_httpResponse* res)
 
         for (i = 0; i < res->cookieLen; i++)
         {
-			orion_cleanupCookie(&res->cookie[i]);
+            orion_cleanupCookie(&res->cookie[i]);
         }
 
         res->cookieLen = 0;
@@ -637,64 +636,64 @@ void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, cons
 
 void orion_buildCookie(orion_cookie* cookie, char* line)
 {
-	char* lineBuffer = strdup(line);
-	char* bufHandle = lineBuffer;
-	int i, sz = strlen(lineBuffer);
+    char* lineBuffer = strdup(line);
+    char* bufHandle = lineBuffer;
+    int i, sz = strlen(lineBuffer);
 
-	for (i = 0; i < sz && bufHandle[i] != '='; i++);
+    for (i = 0; i < sz && bufHandle[i] != '='; i++);
 
-	if (i == sz-1)
-		return;
+    if (i == sz-1)
+        return;
 
-	bufHandle[i] = '\0';
+    bufHandle[i] = '\0';
 
-	cookie->name = strdup(bufHandle);
-	bufHandle += i+1;
+    cookie->name = strdup(bufHandle);
+    bufHandle += i+1;
 
-	sz = strlen(bufHandle);
-	for (i = 0; i < sz && bufHandle[i] != ';'; i++);
+    sz = strlen(bufHandle);
+    for (i = 0; i < sz && bufHandle[i] != ';'; i++);
 
-	if (i == sz-1) 
-	{
-	    free(lineBuffer);
-		return;
-	}
+    if (i == sz-1) 
+    {
+        free(lineBuffer);
+        return;
+    }
 
-	bufHandle[i] = '\0';
+    bufHandle[i] = '\0';
 
-	cookie->value = strdup(bufHandle);
-	bufHandle += i + 2;
+    cookie->value = strdup(bufHandle);
+    bufHandle += i + 2;
 
-	while (1)
-	{
-		if (!strncasecmp("path", bufHandle, 4))
-		{
-			ORION_GETPARTCOOKIE(path,4);
-			
-		} else if (!strncasecmp("expires", bufHandle, 7))
-		{
-			ORION_GETPARTCOOKIE(expires,7);
-		} else if (!strncasecmp("domain", bufHandle, 6))
-		{
-			ORION_GETPARTCOOKIE(domain,6);
-		} else 
-			break;
-	}
+    while (1)
+    {
+        if (!strncasecmp("path", bufHandle, 4))
+        {
+            ORION_GETPARTCOOKIE(path,4);
+            
+        } else if (!strncasecmp("expires", bufHandle, 7))
+        {
+            ORION_GETPARTCOOKIE(expires,7);
+        } else if (!strncasecmp("domain", bufHandle, 6))
+        {
+            ORION_GETPARTCOOKIE(domain,6);
+        } else 
+            break;
+    }
 
-	sz = strlen(bufHandle);
+    sz = strlen(bufHandle);
 
-	if (sz > 0)
-	{
-		for (i = 0; i < sz && bufHandle[i] != ';'; i++);
+    if (sz > 0)
+    {
+        for (i = 0; i < sz && bufHandle[i] != ';'; i++);
 
-		if (i > 0)
-		{
-			bufHandle[i] = '\0';
-			cookie->proto = strdup(bufHandle);
-		}
-	}
-	
-	free(lineBuffer);	
+        if (i > 0)
+        {
+            bufHandle[i] = '\0';
+            cookie->proto = strdup(bufHandle);
+        }
+    }
+    
+    free(lineBuffer);    
 }
 
 void orion_parseResponseLine(orion_httpResponse *res, char* line)
@@ -774,7 +773,7 @@ void orion_parseResponseLine(orion_httpResponse *res, char* line)
     if (!strncmp(line, "Set-Cookie: ", 12))
     {
         bufHandle = line + 12;
-		
+        
         orion_cookie *c = NULL;
         orion_initCookie(&c);
         orion_buildCookie(c, bufHandle);

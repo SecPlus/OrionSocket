@@ -34,7 +34,11 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = httpRequestPerform$(EXEEXT) tcpConnect$(EXEEXT)
+bin_PROGRAMS = httpRequestPerform$(EXEEXT) tcpConnect$(EXEEXT) \
+	cookies$(EXEEXT) httpGet$(EXEEXT) httpGet_using_post$(EXEEXT) \
+	httpGet_with_setUrl$(EXEEXT) httpReqRes$(EXEEXT) \
+	parseResponse$(EXEEXT) parseUrl$(EXEEXT) simple$(EXEEXT) \
+	tcpListen$(EXEEXT) tcpConnect$(EXEEXT)
 subdir = examples
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -45,17 +49,45 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/config.h \
+	$(top_builddir)/orion_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am_cookies_OBJECTS = cookies.$(OBJEXT)
+cookies_OBJECTS = $(am_cookies_OBJECTS)
+cookies_LDADD = $(LDADD)
+am_httpGet_OBJECTS = httpGet.$(OBJEXT)
+httpGet_OBJECTS = $(am_httpGet_OBJECTS)
+httpGet_LDADD = $(LDADD)
+am_httpGet_using_post_OBJECTS = httpGet_using_post.$(OBJEXT)
+httpGet_using_post_OBJECTS = $(am_httpGet_using_post_OBJECTS)
+httpGet_using_post_LDADD = $(LDADD)
+am_httpGet_with_setUrl_OBJECTS = httpGet_with_setUrl.$(OBJEXT)
+httpGet_with_setUrl_OBJECTS = $(am_httpGet_with_setUrl_OBJECTS)
+httpGet_with_setUrl_LDADD = $(LDADD)
+am_httpReqRes_OBJECTS = httpReqRes.$(OBJEXT)
+httpReqRes_OBJECTS = $(am_httpReqRes_OBJECTS)
+httpReqRes_LDADD = $(LDADD)
 am_httpRequestPerform_OBJECTS = httpRequestPerform.$(OBJEXT)
 httpRequestPerform_OBJECTS = $(am_httpRequestPerform_OBJECTS)
 httpRequestPerform_LDADD = $(LDADD)
+am_parseResponse_OBJECTS = parseResponse.$(OBJEXT)
+parseResponse_OBJECTS = $(am_parseResponse_OBJECTS)
+parseResponse_LDADD = $(LDADD)
+am_parseUrl_OBJECTS = parseUrl.$(OBJEXT)
+parseUrl_OBJECTS = $(am_parseUrl_OBJECTS)
+parseUrl_LDADD = $(LDADD)
+am_simple_OBJECTS = simple.$(OBJEXT)
+simple_OBJECTS = $(am_simple_OBJECTS)
+simple_LDADD = $(LDADD)
 am_tcpConnect_OBJECTS = tcpConnect.$(OBJEXT)
 tcpConnect_OBJECTS = $(am_tcpConnect_OBJECTS)
 tcpConnect_LDADD = $(LDADD)
+am_tcpListen_OBJECTS = tcpListen.$(OBJEXT)
+tcpListen_OBJECTS = $(am_tcpListen_OBJECTS)
+tcpListen_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -69,8 +101,16 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(httpRequestPerform_SOURCES) $(tcpConnect_SOURCES)
-DIST_SOURCES = $(httpRequestPerform_SOURCES) $(tcpConnect_SOURCES)
+SOURCES = $(cookies_SOURCES) $(httpGet_SOURCES) \
+	$(httpGet_using_post_SOURCES) $(httpGet_with_setUrl_SOURCES) \
+	$(httpReqRes_SOURCES) $(httpRequestPerform_SOURCES) \
+	$(parseResponse_SOURCES) $(parseUrl_SOURCES) $(simple_SOURCES) \
+	$(tcpConnect_SOURCES) $(tcpListen_SOURCES)
+DIST_SOURCES = $(cookies_SOURCES) $(httpGet_SOURCES) \
+	$(httpGet_using_post_SOURCES) $(httpGet_with_setUrl_SOURCES) \
+	$(httpReqRes_SOURCES) $(httpRequestPerform_SOURCES) \
+	$(parseResponse_SOURCES) $(parseUrl_SOURCES) $(simple_SOURCES) \
+	$(tcpConnect_SOURCES) $(tcpListen_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -124,6 +164,7 @@ PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
 PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 RANLIB = @RANLIB@
@@ -188,6 +229,15 @@ AM_CFLAGS = -Wall -ggdb
 AM_LDFLAGS = -lorionsocket
 httpRequestPerform_SOURCES = httpRequestPerform.c
 tcpConnect_SOURCES = tcpConnect.c
+cookies_SOURCES = cookies.c
+httpGet_SOURCES = httpGet.c
+httpGet_using_post_SOURCES = httpGet_using_post.c
+httpGet_with_setUrl_SOURCES = httpGet_with_setUrl.c
+httpReqRes_SOURCES = httpReqRes.c
+parseResponse_SOURCES = parseResponse.c
+parseUrl_SOURCES = parseUrl.c
+simple_SOURCES = simple.c
+tcpListen_SOURCES = tcpListen.c
 all: all-am
 
 .SUFFIXES:
@@ -265,12 +315,39 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+cookies$(EXEEXT): $(cookies_OBJECTS) $(cookies_DEPENDENCIES) 
+	@rm -f cookies$(EXEEXT)
+	$(LINK) $(cookies_OBJECTS) $(cookies_LDADD) $(LIBS)
+httpGet$(EXEEXT): $(httpGet_OBJECTS) $(httpGet_DEPENDENCIES) 
+	@rm -f httpGet$(EXEEXT)
+	$(LINK) $(httpGet_OBJECTS) $(httpGet_LDADD) $(LIBS)
+httpGet_using_post$(EXEEXT): $(httpGet_using_post_OBJECTS) $(httpGet_using_post_DEPENDENCIES) 
+	@rm -f httpGet_using_post$(EXEEXT)
+	$(LINK) $(httpGet_using_post_OBJECTS) $(httpGet_using_post_LDADD) $(LIBS)
+httpGet_with_setUrl$(EXEEXT): $(httpGet_with_setUrl_OBJECTS) $(httpGet_with_setUrl_DEPENDENCIES) 
+	@rm -f httpGet_with_setUrl$(EXEEXT)
+	$(LINK) $(httpGet_with_setUrl_OBJECTS) $(httpGet_with_setUrl_LDADD) $(LIBS)
+httpReqRes$(EXEEXT): $(httpReqRes_OBJECTS) $(httpReqRes_DEPENDENCIES) 
+	@rm -f httpReqRes$(EXEEXT)
+	$(LINK) $(httpReqRes_OBJECTS) $(httpReqRes_LDADD) $(LIBS)
 httpRequestPerform$(EXEEXT): $(httpRequestPerform_OBJECTS) $(httpRequestPerform_DEPENDENCIES) 
 	@rm -f httpRequestPerform$(EXEEXT)
 	$(LINK) $(httpRequestPerform_OBJECTS) $(httpRequestPerform_LDADD) $(LIBS)
+parseResponse$(EXEEXT): $(parseResponse_OBJECTS) $(parseResponse_DEPENDENCIES) 
+	@rm -f parseResponse$(EXEEXT)
+	$(LINK) $(parseResponse_OBJECTS) $(parseResponse_LDADD) $(LIBS)
+parseUrl$(EXEEXT): $(parseUrl_OBJECTS) $(parseUrl_DEPENDENCIES) 
+	@rm -f parseUrl$(EXEEXT)
+	$(LINK) $(parseUrl_OBJECTS) $(parseUrl_LDADD) $(LIBS)
+simple$(EXEEXT): $(simple_OBJECTS) $(simple_DEPENDENCIES) 
+	@rm -f simple$(EXEEXT)
+	$(LINK) $(simple_OBJECTS) $(simple_LDADD) $(LIBS)
 tcpConnect$(EXEEXT): $(tcpConnect_OBJECTS) $(tcpConnect_DEPENDENCIES) 
 	@rm -f tcpConnect$(EXEEXT)
 	$(LINK) $(tcpConnect_OBJECTS) $(tcpConnect_LDADD) $(LIBS)
+tcpListen$(EXEEXT): $(tcpListen_OBJECTS) $(tcpListen_DEPENDENCIES) 
+	@rm -f tcpListen$(EXEEXT)
+	$(LINK) $(tcpListen_OBJECTS) $(tcpListen_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -278,8 +355,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cookies.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/httpGet.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/httpGet_using_post.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/httpGet_with_setUrl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/httpReqRes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/httpRequestPerform.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parseResponse.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/parseUrl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/simple.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tcpConnect.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tcpListen.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

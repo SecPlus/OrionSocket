@@ -142,6 +142,8 @@ typedef struct
 } orion_cookie;
 
 
+
+
 /**
  * orionHttpRequest structure
  */
@@ -167,6 +169,8 @@ typedef struct
     _uint8 cookieLen;   /* Number of cookies    */
 
     _uint16 option;    /* Extra Options        */
+    
+    
 } orion_httpRequest;
 
 /**
@@ -379,8 +383,22 @@ extern void orion_cleanupHttpResponse(orion_httpResponse* res);
  * @return void
  */
 extern void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value);
+
+/**
+ * Realiza o parser da linha e popula res
+ *
+ * @param orion_httpResponse
+ * @param char*
+ */
 extern void orion_parseResponseLine(orion_httpResponse* res, char* line);
-extern void orion_buildHttpResponse(orion_httpResponse *res, char* line);
+
+/**
+ * Constroi a estrutura orion_httpResponse com base em buf
+ * 
+ * @param orion_httpResponse
+ * @param char*
+ */
+extern void orion_buildHttpResponse(orion_httpResponse* res, char* buf);
 extern void orion_buildCookie(orion_cookie* cookie, char* lineBuffer);
 extern _uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res);
 

@@ -1,3 +1,7 @@
+/**
+ * Experimental source for server side use of OrionSocket
+ * ** OrionSocket doesn't works in server side **
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
