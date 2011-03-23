@@ -1,0 +1,360 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACLOCAL	Makefile	/^ACLOCAL = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run aclocal-1.11$/;"	m
+ACLOCAL_M4	Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMTAR	Makefile	/^AMTAR = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run tar$/;"	m
+AM_CFLAGS	Makefile	/^AM_CFLAGS = -Wall -Werror -fPIC -O2$/;"	m
+AR	Makefile	/^AR = ar$/;"	m
+AUTOCONF	Makefile	/^AUTOCONF = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run autoconf$/;"	m
+AUTOHEADER	Makefile	/^AUTOHEADER = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run autoheader$/;"	m
+AUTOMAKE	Makefile	/^AUTOMAKE = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run automake-1.11$/;"	m
+AWK	Makefile	/^AWK = gawk$/;"	m
+CC	Makefile	/^CC = gcc$/;"	m
+CCDEPMODE	Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CCLD	Makefile	/^CCLD = $(CC)$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -g -O2$/;"	m
+COMPILE	Makefile	/^COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \\$/;"	m
+CONFIG_CLEAN_FILES	Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CONFIG_HEADER	Makefile	/^CONFIG_HEADER = $(top_builddir)\/config.h \\$/;"	m
+CPP	Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS = $/;"	m
+CTAGS	Makefile	/^CTAGS = ctags$/;"	m
+CYGPATH_W	Makefile	/^CYGPATH_W = echo$/;"	m
+DEBUG	debug.h	67;"	d
+DEBUG	debug.h	69;"	d
+DEBUG_HTTPREQUEST	socket.h	59;"	d
+DEBUG_HTTPREQUEST	socket.h	62;"	d
+DEBUG_OUT_HTTPREQUEST	socket.h	45;"	d
+DEBUG_OUT_HTTPREQUEST	socket.h	63;"	d
+DEBUG_OUT_STR	socket.h	64;"	d
+DEBUG_STR	socket.h	60;"	d
+DEBUG_STR	socket.h	65;"	d
+DEFAULT_INCLUDES	Makefile	/^DEFAULT_INCLUDES = -I. -I$(top_builddir)$/;"	m
+DEFS	Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEPDIR	Makefile	/^DEPDIR = .deps$/;"	m
+DISTFILES	Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_COMMON	Makefile	/^DIST_COMMON = $(library_include_HEADERS) $(srcdir)\/Makefile.am \\$/;"	m
+DIST_SOURCES	Makefile	/^DIST_SOURCES = $(liborionsocket_la_SOURCES)$/;"	m
+DNS_MAXLENGTH	socket.h	39;"	d
+DSYMUTIL	Makefile	/^DSYMUTIL = $/;"	m
+DUMPBIN	Makefile	/^DUMPBIN = $/;"	m
+ECHO_C	Makefile	/^ECHO_C = $/;"	m
+ECHO_N	Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	Makefile	/^ECHO_T = $/;"	m
+EGREP	Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+ETAGS	Makefile	/^ETAGS = etags$/;"	m
+EXEEXT	Makefile	/^EXEEXT = $/;"	m
+FGREP	Makefile	/^FGREP = \/bin\/grep -F$/;"	m
+GREP	Makefile	/^GREP = \/bin\/grep$/;"	m
+HEADERS	Makefile	/^HEADERS = $(library_include_HEADERS)$/;"	m
+INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_DATA	Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+IPv4_MAXLENGTH	socket.h	41;"	d
+LD	Makefile	/^LD = \/usr\/bin\/ld -m elf_x86_64$/;"	m
+LDFLAGS	Makefile	/^LDFLAGS = $/;"	m
+LIBOBJS	Makefile	/^LIBOBJS = $/;"	m
+LIBS	Makefile	/^LIBS = $/;"	m
+LIBTOOL	Makefile	/^LIBTOOL = $(SHELL) $(top_builddir)\/libtool$/;"	m
+LINK	Makefile	/^LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \\$/;"	m
+LIPO	Makefile	/^LIPO = $/;"	m
+LN_S	Makefile	/^LN_S = ln -s$/;"	m
+LTCOMPILE	Makefile	/^LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \\$/;"	m
+LTLIBOBJS	Makefile	/^LTLIBOBJS = $/;"	m
+LTLIBRARIES	Makefile	/^LTLIBRARIES = $(lib_LTLIBRARIES)$/;"	m
+MAKEINFO	Makefile	/^MAKEINFO = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/missing --run makeinfo$/;"	m
+MKDIR_P	Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+NM	Makefile	/^NM = \/usr\/bin\/nm -B$/;"	m
+NMEDIT	Makefile	/^NMEDIT = $/;"	m
+NORMAL_INSTALL	Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+OBJDUMP	Makefile	/^OBJDUMP = objdump$/;"	m
+OBJEXT	Makefile	/^OBJEXT = o$/;"	m
+ORIONFREE	socket.h	68;"	d
+ORIONSOCKET_ACCEPT_ERROR	err.h	32;"	d
+ORIONSOCKET_ADDR_NOTFOUND	err.h	30;"	d
+ORIONSOCKET_BIND_ERROR	err.h	31;"	d
+ORIONSOCKET_ERR_ALLOC	err.h	26;"	d
+ORIONSOCKET_ERR_HTTPREQUEST	err.h	27;"	d
+ORIONSOCKET_ERR_UNKNOWN	err.h	25;"	d
+ORIONSOCKET_INVALIDHOST	err.h	28;"	d
+ORIONSOCKET_INVALIDHTTPREQUEST	err.h	29;"	d
+ORIONSOCKET_NL	http.h	73;"	d
+ORIONSOCKET_OK	socket.h	34;"	d
+ORION_DEBUG_HTTPREQUEST	http.h	104;"	d
+ORION_DEBUG_PROTO	http.h	92;"	d
+ORION_GETPARTCOOKIE	http.h	78;"	d
+ORION_HTTP_BIG_RESPONSE	http.h	58;"	d
+ORION_HTTP_PROTOCOL	http.h	43;"	d
+ORION_HTTP_PROTOCOL_1_0	http.h	45;"	d
+ORION_HTTP_PROTOCOL_1_1	http.h	46;"	d
+ORION_HTTP_PROTOCOL_UNKNOWN	http.h	47;"	d
+ORION_HTTP_REQUEST_MAXLENGTH	http.h	56;"	d
+ORION_HTTP_RESPONSE_LENGTH	http.h	57;"	d
+ORION_MAX_ERRORCONNECTION	socket.h	42;"	d
+ORION_METHOD_DELETE	http.h	67;"	d
+ORION_METHOD_GET	http.h	63;"	d
+ORION_METHOD_POST	http.h	64;"	d
+ORION_METHOD_PUT	http.h	66;"	d
+ORION_METHOD_TRACE	http.h	65;"	d
+ORION_METHOD_UNKNOWN	http.h	68;"	d
+ORION_OPTDEBUG_PROGRESS	http.h	40;"	d
+ORION_OPTDEBUG_REQUEST	http.h	38;"	d
+ORION_OPTDEBUG_RESPONSE	http.h	39;"	d
+ORION_OPTRESPONSE_DETAIL	http.h	41;"	d
+ORION_PRINT	debug.h	72;"	d
+ORION_PROTO_FTP	http.h	51;"	d
+ORION_PROTO_HTTP	http.h	49;"	d
+ORION_PROTO_HTTPS	http.h	50;"	d
+ORION_TCP_FAMILY	socket.h	36;"	d
+ORION_TCP_SOCKETTYPE	socket.h	37;"	d
+OTOOL	Makefile	/^OTOOL = $/;"	m
+OTOOL64	Makefile	/^OTOOL64 = $/;"	m
+PACKAGE	Makefile	/^PACKAGE = orionsocket$/;"	m
+PACKAGE_BUGREPORT	Makefile	/^PACKAGE_BUGREPORT = tiago4orion@gmail.com$/;"	m
+PACKAGE_NAME	Makefile	/^PACKAGE_NAME = orionsocket$/;"	m
+PACKAGE_STRING	Makefile	/^PACKAGE_STRING = orionsocket 1.0.9$/;"	m
+PACKAGE_TARNAME	Makefile	/^PACKAGE_TARNAME = orionsocket$/;"	m
+PACKAGE_URL	Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_VERSION	Makefile	/^PACKAGE_VERSION = 1.0.9$/;"	m
+PATH_SEPARATOR	Makefile	/^PATH_SEPARATOR = :$/;"	m
+POST_INSTALL	Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	Makefile	/^PRE_UNINSTALL = :$/;"	m
+RANLIB	Makefile	/^RANLIB = ranlib$/;"	m
+SED	Makefile	/^SED = \/bin\/sed$/;"	m
+SET_MAKE	Makefile	/^SET_MAKE = $/;"	m
+SHELL	Makefile	/^SHELL = \/bin\/bash$/;"	m
+SOURCES	Makefile	/^SOURCES = $(liborionsocket_la_SOURCES)$/;"	m
+STRIP	Makefile	/^STRIP = strip$/;"	m
+URL_MAXLENGTH	socket.h	40;"	d
+VERSION	Makefile	/^VERSION = 1.0.9$/;"	m
+__ORIONSOCKET_	socket.h	23;"	d
+__ORIONSOCKET_API_H_	api.h	23;"	d
+__ORIONSOCKET_DEBUG_H_	debug.h	23;"	d
+__ORIONSOCKET_ERR_	err.h	23;"	d
+__ORIONSOCKET_HTTP_H_	http.h	23;"	d
+__ORIONSOCKET_TYPES_H_	types.h	24;"	d
+__ORIONSOCKET_UTIL_H_	util.h	23;"	d
+_uint16	types.h	/^typedef uint16_t _uint16;$/;"	t
+_uint32	types.h	/^typedef uint32_t _uint32;$/;"	t
+_uint8	types.h	/^typedef uint8_t _uint8;$/;"	t
+abs_builddir	Makefile	/^abs_builddir = \/home\/natel\/coding\/white\/projetos\/orionsocket\/src$/;"	m
+abs_srcdir	Makefile	/^abs_srcdir = \/home\/natel\/coding\/white\/projetos\/orionsocket\/src$/;"	m
+abs_top_builddir	Makefile	/^abs_top_builddir = \/home\/natel\/coding\/white\/projetos\/orionsocket$/;"	m
+abs_top_srcdir	Makefile	/^abs_top_srcdir = \/home\/natel\/coding\/white\/projetos\/orionsocket$/;"	m
+ac_ct_CC	Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_DUMPBIN	Makefile	/^ac_ct_DUMPBIN = $/;"	m
+am__aclocal_m4_deps	Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/m4\/libtool.m4 \\$/;"	m
+am__base_list	Makefile	/^am__base_list = \\$/;"	m
+am__cd	Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__depfiles_maybe	Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__include	Makefile	/^am__include = include$/;"	m
+am__install_max	Makefile	/^am__install_max = 40$/;"	m
+am__installdirs	Makefile	/^am__installdirs = "$(DESTDIR)$(libdir)" \\$/;"	m
+am__leading_dot	Makefile	/^am__leading_dot = .$/;"	m
+am__mv	Makefile	/^am__mv = mv -f$/;"	m
+am__nobase_list	Makefile	/^am__nobase_list = $(am__nobase_strip_setup); \\$/;"	m
+am__nobase_strip	Makefile	/^am__nobase_strip = \\$/;"	m
+am__nobase_strip_setup	Makefile	/^am__nobase_strip_setup = \\$/;"	m
+am__quote	Makefile	/^am__quote = $/;"	m
+am__strip_dir	Makefile	/^am__strip_dir = f=`echo $$p | sed -e 's|^.*\/||'`;$/;"	m
+am__tar	Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
+am__untar	Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
+am__vpath_adj	Makefile	/^am__vpath_adj = case $$p in \\$/;"	m
+am__vpath_adj_setup	Makefile	/^am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;$/;"	m
+am_liborionsocket_la_OBJECTS	Makefile	/^am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo debug.lo$/;"	m
+auth	http.h	/^    char* auth;         \/* User  *\/$/;"	m	struct:__anon2
+bindir	Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+body	http.h	/^    char* body;             \/* Body of the response     *\/$/;"	m	struct:__anon3
+build	Makefile	/^build = x86_64-unknown-linux-gnu$/;"	m
+build_alias	Makefile	/^build_alias = $/;"	m
+build_cpu	Makefile	/^build_cpu = x86_64$/;"	m
+build_os	Makefile	/^build_os = linux-gnu$/;"	m
+build_triplet	Makefile	/^build_triplet = x86_64-unknown-linux-gnu$/;"	m
+build_vendor	Makefile	/^build_vendor = unknown$/;"	m
+builddir	Makefile	/^builddir = .$/;"	m
+cBLK	debug.h	29;"	d
+cBLK	debug.h	47;"	d
+cBLU	debug.h	33;"	d
+cBLU	debug.h	51;"	d
+cBRI	debug.h	44;"	d
+cBRI	debug.h	62;"	d
+cBRN	debug.h	32;"	d
+cBRN	debug.h	50;"	d
+cCYA	debug.h	35;"	d
+cCYA	debug.h	53;"	d
+cGRA	debug.h	37;"	d
+cGRA	debug.h	55;"	d
+cGRN	debug.h	31;"	d
+cGRN	debug.h	49;"	d
+cLBL	debug.h	41;"	d
+cLBL	debug.h	59;"	d
+cLCY	debug.h	43;"	d
+cLCY	debug.h	61;"	d
+cLGN	debug.h	39;"	d
+cLGN	debug.h	57;"	d
+cLRD	debug.h	38;"	d
+cLRD	debug.h	56;"	d
+cMGN	debug.h	34;"	d
+cMGN	debug.h	52;"	d
+cNOR	debug.h	36;"	d
+cNOR	debug.h	54;"	d
+cPIN	debug.h	42;"	d
+cPIN	debug.h	60;"	d
+cRED	debug.h	30;"	d
+cRED	debug.h	48;"	d
+cRST	debug.h	45;"	d
+cRST	debug.h	63;"	d
+cYEL	debug.h	40;"	d
+cYEL	debug.h	58;"	d
+charset	http.h	/^    char* charset;          \/* Charset                  *\/$/;"	m	struct:__anon3
+code	http.h	/^    _uint16 code;            \/* Status Code              *\/$/;"	m	struct:__anon3
+content_length	http.h	/^    _uint32 content_length;   \/* Length of the content;   *\/$/;"	m	struct:__anon3
+content_type	http.h	/^    char* content_type;     \/* Content-Type             *\/$/;"	m	struct:__anon3
+cookie	http.h	/^    orion_cookie *cookie;      \/* Set Cookie               *\/$/;"	m	struct:__anon3
+cookie	http.h	/^    orion_cookie *cookie;  \/* Array of cookies     *\/$/;"	m	struct:__anon2
+cookieLen	http.h	/^    _uint8 cookieLen;       \/* Number of cookies        *\/$/;"	m	struct:__anon3
+cookieLen	http.h	/^    _uint8 cookieLen;   \/* Number of cookies    *\/$/;"	m	struct:__anon2
+datadir	Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+date	http.h	/^    char* date;             \/* Date                     *\/$/;"	m	struct:__anon3
+depcomp	Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
+docdir	Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE_TARNAME}$/;"	m
+domain	http.h	/^	char* domain;$/;"	m	struct:__anon1
+dvidir	Makefile	/^dvidir = ${docdir}$/;"	m
+exec_prefix	Makefile	/^exec_prefix = ${prefix}$/;"	m
+expires	http.h	/^	char* expires;	$/;"	m	struct:__anon1
+expires	http.h	/^    char* expires;          \/* Expires time             *\/$/;"	m	struct:__anon3
+file_ext	http.h	/^    char* file_ext;     \/* File extension       *\/$/;"	m	struct:__anon2
+header	http.h	/^    nameValue *header;      \/* HTTP Headers             *\/   $/;"	m	struct:__anon3
+header	http.h	/^    nameValue *header;  \/* HTTP    Headers      *\/$/;"	m	struct:__anon2
+headerLen	http.h	/^    _uint8 headerLen;       \/* Number of headers        *\/$/;"	m	struct:__anon3
+headerLen	http.h	/^    _uint8 headerLen;   \/* Number of headers    *\/$/;"	m	struct:__anon2
+host	Makefile	/^host = x86_64-unknown-linux-gnu$/;"	m
+host	http.h	/^    char* host;         \/* Host Target          *\/$/;"	m	struct:__anon2
+host_alias	Makefile	/^host_alias = $/;"	m
+host_cpu	Makefile	/^host_cpu = x86_64$/;"	m
+host_os	Makefile	/^host_os = linux-gnu$/;"	m
+host_triplet	Makefile	/^host_triplet = x86_64-unknown-linux-gnu$/;"	m
+host_vendor	Makefile	/^host_vendor = unknown$/;"	m
+htmldir	Makefile	/^htmldir = ${docdir}$/;"	m
+includedir	Makefile	/^includedir = ${prefix}\/include$/;"	m
+infodir	Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+install_sh	Makefile	/^install_sh = ${SHELL} \/home\/natel\/coding\/white\/projetos\/orionsocket\/install-sh$/;"	m
+install_sh_DATA	Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+lib_LTLIBRARIES	Makefile	/^lib_LTLIBRARIES = liborionsocket.la$/;"	m
+libdir	Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+liborionsocket_la_LDFLAGS	Makefile	/^liborionsocket_la_LDFLAGS = -version-info 1:9:0$/;"	m
+liborionsocket_la_LIBADD	Makefile	/^liborionsocket_la_LIBADD =$/;"	m
+liborionsocket_la_LINK	Makefile	/^liborionsocket_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \\$/;"	m
+liborionsocket_la_OBJECTS	Makefile	/^liborionsocket_la_OBJECTS = $(am_liborionsocket_la_OBJECTS)$/;"	m
+liborionsocket_la_SOURCES	Makefile	/^liborionsocket_la_SOURCES = socket.c 	\\$/;"	m
+library_include_HEADERS	Makefile	/^library_include_HEADERS = socket.h 		\\$/;"	m
+library_includedir	Makefile	/^library_includedir = $(includedir)\/orion\/socket$/;"	m
+localedir	Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+location	http.h	/^    char* location;         \/* Location.                *\/$/;"	m	struct:__anon3
+lt_ECHO	Makefile	/^lt_ECHO = echo$/;"	m
+mandir	Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+message	http.h	/^    char* message;          \/* Server Message           *\/$/;"	m	struct:__anon3
+method	http.h	/^    _uint8 method;      \/* HTTP Method          *\/$/;"	m	struct:__anon2
+mime_version	http.h	/^    char* mime_version;     \/* MIME-VERSION             *\/$/;"	m	struct:__anon3
+mkdir_p	Makefile	/^mkdir_p = \/bin\/mkdir -p$/;"	m
+mkinstalldirs	Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+name	http.h	/^	char* name;$/;"	m	struct:__anon1
+name	types.h	/^    char* name; $/;"	m	struct:__anon4
+nameValue	types.h	/^} nameValue;$/;"	t	typeref:struct:__anon4
+oldincludedir	Makefile	/^oldincludedir = \/usr\/include$/;"	m
+option	http.h	/^    _uint16 option;    \/* Extra Options        *\/$/;"	m	struct:__anon2
+orion_addCookie	http.c	/^_uint8 orion_addCookie(orion_httpResponse *res, orion_cookie* cookie)$/;"	f
+orion_assemblyHttpRequest	api.h	32;"	d
+orion_buildCookie	http.c	/^void orion_buildCookie(orion_cookie* cookie, char* line)$/;"	f
+orion_buildHttpRequest	http.c	/^void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)$/;"	f
+orion_buildHttpResponse	http.c	/^void orion_buildHttpResponse(orion_httpResponse* res, char* buf)$/;"	f
+orion_cleanupCookie	http.c	/^void orion_cleanupCookie(orion_cookie* cookie)$/;"	f
+orion_cleanupHttpRequest	http.c	/^void orion_cleanupHttpRequest(orion_httpRequest *req)$/;"	f
+orion_cleanupHttpResponse	http.c	/^void orion_cleanupHttpResponse(orion_httpResponse* res)$/;"	f
+orion_cookie	http.h	/^} orion_cookie;$/;"	t	typeref:struct:__anon1
+orion_dump	debug.c	/^ void orion_dump(const unsigned char* data, const unsigned int length)$/;"	f
+orion_getDomain	api.h	37;"	d
+orion_getDomain	socket.c	/^int orion_getDomain(const char* ip, char* buffer)$/;"	f
+orion_getDomainByAddr	api.h	36;"	d
+orion_getDomainByAddr	socket.c	/^int orion_getDomainByAddr(struct addrinfo* addr, char* buffer)$/;"	f
+orion_getHostByName	api.h	35;"	d
+orion_getHostByName	socket.c	/^int orion_getHostByName(const char* name, char* buffer)$/;"	f
+orion_getMethod	http.c	/^_uint8 orion_getMethod(const char* method)$/;"	f
+orion_getNextLine	util.c	/^char* orion_getNextLine(char* buffer)$/;"	f
+orion_getStrMethod	util.c	/^const char* orion_getStrMethod(_uint8 method)$/;"	f
+orion_httpGet	http.c	/^_uint8 orion_httpGet(orion_httpRequest* req, void (* callback)(char*,_uint32), _uint32 count)$/;"	f
+orion_httpReqRes	http.c	/^_uint8 orion_httpReqRes(orion_httpRequest* req, orion_httpResponse** res2)$/;"	f
+orion_httpRequest	api.h	26;"	d
+orion_httpRequest	http.h	/^} orion_httpRequest;$/;"	t	typeref:struct:__anon2
+orion_httpRequestCleanup	api.h	29;"	d
+orion_httpRequestPerform	api.h	34;"	d
+orion_httpRequestPerform	http.c	/^_uint8 orion_httpRequestPerform(orion_httpRequest *req, char** response)$/;"	f
+orion_httpResponse	http.h	/^} orion_httpResponse;$/;"	t	typeref:struct:__anon3
+orion_initCookie	http.c	/^void orion_initCookie(orion_cookie** cookie2)$/;"	f
+orion_initHttpRequest	http.c	/^void orion_initHttpRequest(orion_httpRequest **req2)$/;"	f
+orion_initHttpResponse	http.c	/^void orion_initHttpResponse(orion_httpResponse** res2)$/;"	f
+orion_linearSearchChar	util.c	/^int orion_linearSearchChar(const char* buffer, char c)$/;"	f
+orion_parseResponseLine	http.c	/^void orion_parseResponseLine(orion_httpResponse *res, char* line)$/;"	f
+orion_realloc	util.c	/^void * orion_realloc(void *ptr, size_t size)$/;"	f
+orion_send	socket.c	/^_uint8 orion_send(int socket, char* buffer)$/;"	f
+orion_setCookie	http.c	/^void orion_setCookie(	orion_cookie* cookie, $/;"	f
+orion_setHttpRequestHeader	api.h	30;"	d
+orion_setHttpRequestHeader	http.c	/^_uint8 orion_setHttpRequestHeader(orion_httpRequest *req, const char* name, const char* value)$/;"	f
+orion_setHttpRequestHost	api.h	31;"	d
+orion_setHttpRequestHost	http.c	/^void orion_setHttpRequestHost(orion_httpRequest *req, const char* host, _uint16 port)$/;"	f
+orion_setHttpRequestMethod	http.c	/^void orion_setHttpRequestMethod(orion_httpRequest* req, const char* method)$/;"	f
+orion_setHttpRequestOption	http.c	/^void orion_setHttpRequestOption(orion_httpRequest* req, _uint16 option)$/;"	f
+orion_setHttpRequestPath	http.c	/^void orion_setHttpRequestPath(orion_httpRequest *req, const char* path)$/;"	f
+orion_setHttpRequestQuery	http.c	/^void orion_setHttpRequestQuery(orion_httpRequest *req, const char* query)$/;"	f
+orion_setHttpResponseHeader	http.c	/^void orion_setHttpResponseHeader(orion_httpResponse* res, const char* name, const char* value)$/;"	f
+orion_setUrl	http.c	/^void orion_setUrl(orion_httpRequest* req, const char* url)$/;"	f
+orion_socket	socket.c	/^int orion_socket(int domain, int type, int protocol)$/;"	f
+orion_tcpConnect	api.h	33;"	d
+orion_tcpConnect	socket.c	/^int orion_tcpConnect(const char* host, _uint16 port)$/;"	f
+orionsocket_last_error	socket.c	/^static int orionsocket_last_error = ORIONSOCKET_OK;$/;"	v	file:
+pass	http.h	/^    char* pass;         \/* Password  *\/$/;"	m	struct:__anon2
+path	http.h	/^	char* path;$/;"	m	struct:__anon1
+path	http.h	/^    char* path;         \/* URL Path             *\/$/;"	m	struct:__anon2
+pdfdir	Makefile	/^pdfdir = ${docdir}$/;"	m
+pkgdatadir	Makefile	/^pkgdatadir = $(datadir)\/orionsocket$/;"	m
+pkgincludedir	Makefile	/^pkgincludedir = $(includedir)\/orionsocket$/;"	m
+pkglibdir	Makefile	/^pkglibdir = $(libdir)\/orionsocket$/;"	m
+pkglibexecdir	Makefile	/^pkglibexecdir = $(libexecdir)\/orionsocket$/;"	m
+port	http.h	/^    _uint16 port;       \/* Port Target          *\/$/;"	m	struct:__anon2
+prefix	Makefile	/^prefix = \/usr$/;"	m
+program_transform_name	Makefile	/^program_transform_name = s,x,x,$/;"	m
+proto	http.h	/^	char* proto;$/;"	m	struct:__anon1
+proto	http.h	/^    _uint8 proto;$/;"	m	struct:__anon2
+psdir	Makefile	/^psdir = ${docdir}$/;"	m
+query	http.h	/^    char* query;        \/* Query String         *\/$/;"	m	struct:__anon2
+sbindir	Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+serverName	http.h	/^    char* serverName;       \/* Server Name              *\/$/;"	m	struct:__anon3
+sharedstatedir	Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+srcdir	Makefile	/^srcdir = .$/;"	m
+subdir	Makefile	/^subdir = src$/;"	m
+sysconfdir	Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+target_alias	Makefile	/^target_alias = $/;"	m
+top_build_prefix	Makefile	/^top_build_prefix = ..\/$/;"	m
+top_builddir	Makefile	/^top_builddir = ..$/;"	m
+top_srcdir	Makefile	/^top_srcdir = ..$/;"	m
+transform	Makefile	/^transform = $(program_transform_name)$/;"	m
+value	http.h	/^	char* value;$/;"	m	struct:__anon1
+value	types.h	/^    char* value; $/;"	m	struct:__anon4
+version	http.h	/^    _uint8 version;         \/* HTTP version. 1.0 || 1.1 *\/$/;"	m	struct:__anon3
