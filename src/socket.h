@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -23,40 +23,33 @@
 #define __ORIONSOCKET_
 
 #include <stdint.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+
 #include "types.h"
+#include "err.h"
 
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-#include <netdb.h>
 
-#define ORIONSOCKET_OK              0x00
+#define ORION_OK              0x00
 
 #define ORION_TCP_FAMILY            PF_INET
 #define ORION_TCP_SOCKETTYPE        SOCK_STREAM
 
-#define DNS_MAXLENGTH               255
-#define URL_MAXLENGTH               2048
-#define IPv4_MAXLENGTH              16
+#define ORION_DNS_MAXLENGTH               255
+#define ORION_URL_MAXLENGTH               2048
+#define ORION_IPv4_MAXLENGTH              16
+#define ORION_MAX_ERRORCONNECTION   3
 
 #ifdef ORIONSOCKET_DEBUG
-#define DEBUG_HTTPREQUEST(req)  do {  \
-                                printf("================ DEBUGGING HTTP REQUEST ===================\n"); \
-                                printf("Host: %s\n", req->host); \
-                                printf("Port: %d\n", req->port); \
-                                printf("Method: %s\n", orion_getStrMethod(req->method)); \
-                                int _orionIntdebug; \
-                                for (_orionIntdebug = 0; _orionIntdebug < req->headerLen; _orionIntdebug++) \
-                                    printf("%s: %s\n", req->header[_orionIntdebug].name, req->header[_orionIntdebug].value); \
-                                if (req->cookieLen > 0) \
-                                    printf("Cookie: "); \
-                                for (_orionIntdebug = 0; _orionIntdebug < req->cookieLen; _orionIntdebug++) \
-                                    printf("%s=%s; &", req->cookie[_orionIntdebug].name, req->cookie[_orionIntdebug].value); \
-                                printf("===========================================================\n"); \
-                                } while(0) 
+#define ORION_DEBUG_STR(str)			fprintf(stderr, str)
 #else
-#define DEBUG_HTTPREQUEST(req)
+#define ORION_DEBUG_OUT_STR(out,str)
+#define ORION_DEBUG_STR(fmt)
 #endif
 
 #define ORIONFREE(ptr)          if (ptr) free(ptr)
@@ -64,9 +57,11 @@
 /**
  * Retorna o ip do host dado o dominio.
  */
-extern int orion_getHostByName(const char* addr, char* buffer);
-extern int orion_getDomain(const char* ip, char* buffer);
-extern int orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
-extern int orion_tcpConnect(const char* host, _uint16 port);
-#endif // __APISOCKET_
+extern _i16 orion_getHostByName(const char* addr, char* buffer);
+extern _i16 orion_getDomain(const char* ip, char* buffer);
+extern _i16 orion_getDomainByAddr(struct addrinfo* addr, char* buffer);
+extern int orion_socket(int domain, int type, int protocol); 
+extern int orion_tcpConnect(const char* host, _u16 port);
+extern _u8 orion_send(int socket, char* buffer);
+#endif /* __ORIONSOCKET_ */
 

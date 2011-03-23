@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -22,10 +22,10 @@
 #ifndef __ORIONSOCKET_API_H_
 #define __ORIONSOCKET_API_H_
 
-// Structures
+/* Structures */
 #define orion_httpRequest               orion_httpRequest
 
-// API Functions
+/* API Functions */
 #define orion_httpRequestCleanup        orion_httpRequestCleanup
 #define orion_setHttpRequestHeader      orion_setHttpRequestHeader
 #define orion_setHttpRequestHost        orion_setHttpRequestHost
@@ -36,4 +36,4 @@
 #define orion_getDomainByAddr           orion_getDomainByAddr
 #define orion_getDomain                 orion_getDomain
 
-#endif // __ORIONSOCKET_API_H_
+#endif /* __ORIONSOCKET_API_H_ */

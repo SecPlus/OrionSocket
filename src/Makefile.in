@@ -46,7 +46,8 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/config.h \
+	$(top_builddir)/orion_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -74,8 +75,12 @@ am__installdirs = "$(DESTDIR)$(libdir)" \
 	"$(DESTDIR)$(library_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 liborionsocket_la_LIBADD =
-am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo
+am_liborionsocket_la_OBJECTS = socket.lo http.lo util.lo cookie.lo \
+	debug.lo
 liborionsocket_la_OBJECTS = $(am_liborionsocket_la_OBJECTS)
+liborionsocket_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(liborionsocket_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -206,19 +211,25 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CFLAGS = -Wall -Werror -ggdb
+AM_CFLAGS = -Wall -Wextra -Wno-variadic-macros -Werror -pedantic -fPIC -O2 -std=gnu89 -g
 lib_LTLIBRARIES = liborionsocket.la
 liborionsocket_la_SOURCES = socket.c 	\
 							http.c 		\
-							util.c
+							util.c \
+							cookie.c \
+							debug.c
 
+liborionsocket_la_LDFLAGS = -version-info 1:9:0
 library_includedir = $(includedir)/orion/socket
 library_include_HEADERS = socket.h 		\
 						err.h 			\
 						http.h 			\
 						types.h 		\
 						api.h			\
-						util.h
+						util.h          \
+						debug.h         \
+						cookie.h 	\
+						../orion_config.h
 
 all: all-am
 
@@ -286,7 +297,7 @@ clean-libLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 liborionsocket.la: $(liborionsocket_la_OBJECTS) $(liborionsocket_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(liborionsocket_la_OBJECTS) $(liborionsocket_la_LIBADD) $(LIBS)
+	$(liborionsocket_la_LINK) -rpath $(libdir) $(liborionsocket_la_OBJECTS) $(liborionsocket_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -294,6 +305,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cookie.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/debug.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/http.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/socket.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Plo@am__quote@

@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -25,9 +25,14 @@
 
 #include <stdint.h>
 
-typedef uint8_t _uint8;
-typedef uint16_t _uint16;
-typedef uint32_t _uint32;
+/* Unsigned types */
+typedef uint8_t _u8;
+typedef uint16_t _u16;
+typedef uint32_t _u32;
+
+typedef int8_t _i8;
+typedef int16_t _i16;
+typedef int32_t _i32;
 
 /**
  * Structure Name-Value. \n
@@ -39,5 +44,5 @@ typedef struct
     char* value; 
 } nameValue;
 
-#endif // __ORIONSOCKET_TYPES_H_
+#endif /* __ORIONSOCKET_TYPES_H_ */
 

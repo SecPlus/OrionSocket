@@ -1,0 +1,241 @@
+\hypertarget{structorion__cookie}{
+\section{orion\_\-cookie Struct Reference}
+\label{structorion__cookie}\index{orion\_\-cookie@{orion\_\-cookie}}
+}
+
+
+The \hyperlink{structorion__cookie}{orion\_\-cookie} structure holds one network cookie.  
+
+
+
+
+{\ttfamily \#include $<$http.h$>$}
+
+\subsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+char $\ast$ \hyperlink{structorion__cookie_a5ac083a645d964373f022d03df4849c8}{name}
+\begin{DoxyCompactList}\small\item\em The cookie's name. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_a4e9aec275e566b978a3ccb4e043d8c61}{value}
+\begin{DoxyCompactList}\small\item\em The cookie's value. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_a25dae25c3bf9b28d54eb4df7afb2a491}{comment}
+\begin{DoxyCompactList}\small\item\em A comment about the cookie. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_ac7098a8cde5110cd169c9958dca2d4d0}{domain}
+\begin{DoxyCompactList}\small\item\em Specifies the domain for which the cookie is valid. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_aebc91fcebea283d9fa426edad5d89355}{max\_\-age}
+\begin{DoxyCompactList}\small\item\em Defines the lifetime of the cookie, in seconds. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_a44196e6a5696d10442c29e639437196e}{path}
+\begin{DoxyCompactList}\small\item\em The subset of URLs to which this cookie applies. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_aec238fb4192e50d4e96e474531c99f1b}{secure}
+\begin{DoxyCompactList}\small\item\em The \char`\"{}Secure\char`\"{} attribute (with no value) directs the user agent to use only secure means to contact the server whenever it sends back this cookie. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_a56abfaab87c46691c1ef3ad0df23e864}{version}
+\begin{DoxyCompactList}\small\item\em Identifies which version of the cookie specification. \item\end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{structorion__cookie_adb985222d6fc3d8bfb737c259d138366}{expires}
+\begin{DoxyCompactList}\small\item\em The date for the cookie be discarded. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The \hyperlink{structorion__cookie}{orion\_\-cookie} structure holds one network cookie. From RFC2109
+
+Cookies are informations that the HTTP protocol uses to maintain some persistent information across requests.
+
+The minimum information of a cookie is a name and a value, but they can also store more data. Below is list of all information a cookie can have.
+
+
+\begin{DoxyItemize}
+\item Name\par
+ The cookie's name.\par
+
+\item Value\par
+ The cookie's value.\par
+
+\item Comment\par
+
+\begin{DoxyItemize}
+\item Optional: A comment about the cookie.\par
+
+\end{DoxyItemize}
+\item Domain\par
+
+\begin{DoxyItemize}
+\item Optional: Specifies the domain for which the cookie is valid.\par
+
+\item Default behavior: The request-\/host.\par
+
+\end{DoxyItemize}
+\item Max-\/Age\par
+
+\begin{DoxyItemize}
+\item Optional: Defines the lifetime of the cookie, in seconds. If Max-\/Age=0 then the browser should discard the cookie imediately.\par
+
+\item Default Behavior: Discard the cookie when the user agent exit.\par
+
+\end{DoxyItemize}
+\item Path\par
+
+\begin{DoxyItemize}
+\item Optional: The subset of URLs to which this cookie applies.\par
+
+\item Default Behavior: Defaults to the path of the request URL that generated the Set-\/Cookie response, up to, but not including, the right-\/most /. \par
+
+\end{DoxyItemize}
+\item Secure\par
+
+\begin{DoxyItemize}
+\item Optional: The \char`\"{}Secure\char`\"{} attribute (with no value) directs the user agent to use only secure means to contact the server whenever it sends back this cookie.\par
+
+\item Default behavior: If absent, the user agent may send the cookie over an insecure channel.\par
+
+\end{DoxyItemize}
+\item Version\par
+
+\begin{DoxyItemize}
+\item Required? Identifies which version of the cookie specification.\par
+
+\end{DoxyItemize}
+\item Expires\par
+
+\begin{DoxyItemize}
+\item Optional: The date for the cookie be discarded.\par
+
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{http_8h_a7233006567dd2ae2e3392f1857be4bf6}{orion\_\-addCookie} 
+
+\hyperlink{http_8h_a201e0c2ebbb16ae9ee73ad90bc00719b}{orion\_\-buildCookie} 
+
+\hyperlink{http_8h_ac4bb457d80fc24708ac9daa5efcb3a24}{orion\_\-initCookie} 
+
+\hyperlink{http_8h_af8f1b77f183f69e278654833c4e74f6b}{orion\_\-setCookie} 
+\end{DoxySeeAlso}
+
+
+Definition at line 171 of file http.h.
+
+
+
+\subsection{Field Documentation}
+\hypertarget{structorion__cookie_a25dae25c3bf9b28d54eb4df7afb2a491}{
+\index{orion\_\-cookie@{orion\_\-cookie}!comment@{comment}}
+\index{comment@{comment}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{comment}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf comment}}}
+\label{structorion__cookie_a25dae25c3bf9b28d54eb4df7afb2a491}
+
+
+A comment about the cookie. 
+
+
+
+Definition at line 175 of file http.h.
+
+\hypertarget{structorion__cookie_ac7098a8cde5110cd169c9958dca2d4d0}{
+\index{orion\_\-cookie@{orion\_\-cookie}!domain@{domain}}
+\index{domain@{domain}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{domain}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf domain}}}
+\label{structorion__cookie_ac7098a8cde5110cd169c9958dca2d4d0}
+
+
+Specifies the domain for which the cookie is valid. 
+
+
+
+Definition at line 176 of file http.h.
+
+\hypertarget{structorion__cookie_adb985222d6fc3d8bfb737c259d138366}{
+\index{orion\_\-cookie@{orion\_\-cookie}!expires@{expires}}
+\index{expires@{expires}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{expires}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf expires}}}
+\label{structorion__cookie_adb985222d6fc3d8bfb737c259d138366}
+
+
+The date for the cookie be discarded. 
+
+
+
+Definition at line 183 of file http.h.
+
+\hypertarget{structorion__cookie_aebc91fcebea283d9fa426edad5d89355}{
+\index{orion\_\-cookie@{orion\_\-cookie}!max\_\-age@{max\_\-age}}
+\index{max\_\-age@{max\_\-age}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{max\_\-age}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf max\_\-age}}}
+\label{structorion__cookie_aebc91fcebea283d9fa426edad5d89355}
+
+
+Defines the lifetime of the cookie, in seconds. 
+
+
+
+Definition at line 177 of file http.h.
+
+\hypertarget{structorion__cookie_a5ac083a645d964373f022d03df4849c8}{
+\index{orion\_\-cookie@{orion\_\-cookie}!name@{name}}
+\index{name@{name}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{name}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf name}}}
+\label{structorion__cookie_a5ac083a645d964373f022d03df4849c8}
+
+
+The cookie's name. 
+
+
+
+Definition at line 173 of file http.h.
+
+\hypertarget{structorion__cookie_a44196e6a5696d10442c29e639437196e}{
+\index{orion\_\-cookie@{orion\_\-cookie}!path@{path}}
+\index{path@{path}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{path}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf path}}}
+\label{structorion__cookie_a44196e6a5696d10442c29e639437196e}
+
+
+The subset of URLs to which this cookie applies. 
+
+
+
+Definition at line 178 of file http.h.
+
+\hypertarget{structorion__cookie_aec238fb4192e50d4e96e474531c99f1b}{
+\index{orion\_\-cookie@{orion\_\-cookie}!secure@{secure}}
+\index{secure@{secure}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{secure}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf secure}}}
+\label{structorion__cookie_aec238fb4192e50d4e96e474531c99f1b}
+
+
+The \char`\"{}Secure\char`\"{} attribute (with no value) directs the user agent to use only secure means to contact the server whenever it sends back this cookie. 
+
+
+
+Definition at line 179 of file http.h.
+
+\hypertarget{structorion__cookie_a4e9aec275e566b978a3ccb4e043d8c61}{
+\index{orion\_\-cookie@{orion\_\-cookie}!value@{value}}
+\index{value@{value}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{value}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf value}}}
+\label{structorion__cookie_a4e9aec275e566b978a3ccb4e043d8c61}
+
+
+The cookie's value. 
+
+
+
+Definition at line 174 of file http.h.
+
+\hypertarget{structorion__cookie_a56abfaab87c46691c1ef3ad0df23e864}{
+\index{orion\_\-cookie@{orion\_\-cookie}!version@{version}}
+\index{version@{version}!orion_cookie@{orion\_\-cookie}}
+\subsubsection[{version}]{\setlength{\rightskip}{0pt plus 5cm}char$\ast$ {\bf version}}}
+\label{structorion__cookie_a56abfaab87c46691c1ef3ad0df23e864}
+
+
+Identifies which version of the cookie specification. 
+
+
+
+Definition at line 182 of file http.h.
+
+
+
+The documentation for this struct was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{http_8h}{http.h}\end{DoxyCompactItemize}

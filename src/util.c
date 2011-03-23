@@ -4,7 +4,7 @@
 
    Author: Tiago Natel de Moura <tiago4orion@gmail.com>
 
-   Copyright 2007, 2008 by Tiago Natel de Moura. All Rights Reserved.
+   Copyright 2010, 2011 by Tiago Natel de Moura. All Rights Reserved.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ void * orion_realloc(void *ptr, size_t size)
 		return malloc(size);
 }
 
-const char* orion_getStrMethod(_uint8 method)
+const char* orion_getStrMethod(_u8 method)
 {
     switch (method)
     {
@@ -67,9 +67,9 @@ char* orion_getNextLine(char* buffer)
         return NULL;
 }
 
-int orion_linearSearchChar(const char* buffer, char c)
+_i32 orion_linearSearchChar(const char* buffer, char c)
 {   
-    int i;
+    _u32 i;
     for (i = 0; i < strlen(buffer); i++)
     {
         if (buffer[i] == c)
@@ -77,5 +77,22 @@ int orion_linearSearchChar(const char* buffer, char c)
     }
     
     return -1;
+}
+
+char* orion_ltrim(char* buffer)
+{
+    _u32 count = 0, len, i;
+
+    len = strlen(buffer);
+    while (*buffer == 0x20)
+    {
+        memmove(buffer, buffer+1, strlen(buffer+1));
+        count++;
+    }
+
+    for (i = len - count; i < len; i++)
+        buffer[i] = '\0';
+    
+    return buffer;
 }
 

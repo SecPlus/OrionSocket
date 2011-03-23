@@ -32,9 +32,13 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = i386-unknown-freebsd8.0
-host_triplet = i386-unknown-freebsd8.0
-bin_PROGRAMS = httpRequestPerform$(EXEEXT) tcpConnect$(EXEEXT)
+build_triplet = x86_64-unknown-linux-gnu
+host_triplet = x86_64-unknown-linux-gnu
+bin_PROGRAMS = httpRequestPerform$(EXEEXT) tcpConnect$(EXEEXT) \
+	cookies$(EXEEXT) httpGet$(EXEEXT) httpGet_using_post$(EXEEXT) \
+	httpGet_with_setUrl$(EXEEXT) httpReqRes$(EXEEXT) \
+	parseResponse$(EXEEXT) parseUrl$(EXEEXT) simple$(EXEEXT) \
+	tcpListen$(EXEEXT)
 subdir = examples
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -45,17 +49,45 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
-CONFIG_HEADER = $(top_builddir)/config.h
+CONFIG_HEADER = $(top_builddir)/config.h \
+	$(top_builddir)/orion_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
+am_cookies_OBJECTS = cookies.$(OBJEXT)
+cookies_OBJECTS = $(am_cookies_OBJECTS)
+cookies_LDADD = $(LDADD)
+am_httpGet_OBJECTS = httpGet.$(OBJEXT)
+httpGet_OBJECTS = $(am_httpGet_OBJECTS)
+httpGet_LDADD = $(LDADD)
+am_httpGet_using_post_OBJECTS = httpGet_using_post.$(OBJEXT)
+httpGet_using_post_OBJECTS = $(am_httpGet_using_post_OBJECTS)
+httpGet_using_post_LDADD = $(LDADD)
+am_httpGet_with_setUrl_OBJECTS = httpGet_with_setUrl.$(OBJEXT)
+httpGet_with_setUrl_OBJECTS = $(am_httpGet_with_setUrl_OBJECTS)
+httpGet_with_setUrl_LDADD = $(LDADD)
+am_httpReqRes_OBJECTS = httpReqRes.$(OBJEXT)
+httpReqRes_OBJECTS = $(am_httpReqRes_OBJECTS)
+httpReqRes_LDADD = $(LDADD)
 am_httpRequestPerform_OBJECTS = httpRequestPerform.$(OBJEXT)
 httpRequestPerform_OBJECTS = $(am_httpRequestPerform_OBJECTS)
 httpRequestPerform_LDADD = $(LDADD)
+am_parseResponse_OBJECTS = parseResponse.$(OBJEXT)
+parseResponse_OBJECTS = $(am_parseResponse_OBJECTS)
+parseResponse_LDADD = $(LDADD)
+am_parseUrl_OBJECTS = parseUrl.$(OBJEXT)
+parseUrl_OBJECTS = $(am_parseUrl_OBJECTS)
+parseUrl_LDADD = $(LDADD)
+am_simple_OBJECTS = simple.$(OBJEXT)
+simple_OBJECTS = $(am_simple_OBJECTS)
+simple_LDADD = $(LDADD)
 am_tcpConnect_OBJECTS = tcpConnect.$(OBJEXT)
 tcpConnect_OBJECTS = $(am_tcpConnect_OBJECTS)
 tcpConnect_LDADD = $(LDADD)
+am_tcpListen_OBJECTS = tcpListen.$(OBJEXT)
+tcpListen_OBJECTS = $(am_tcpListen_OBJECTS)
+tcpListen_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -69,18 +101,26 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(httpRequestPerform_SOURCES) $(tcpConnect_SOURCES)
-DIST_SOURCES = $(httpRequestPerform_SOURCES) $(tcpConnect_SOURCES)
+SOURCES = $(cookies_SOURCES) $(httpGet_SOURCES) \
+	$(httpGet_using_post_SOURCES) $(httpGet_with_setUrl_SOURCES) \
+	$(httpReqRes_SOURCES) $(httpRequestPerform_SOURCES) \
+	$(parseResponse_SOURCES) $(parseUrl_SOURCES) $(simple_SOURCES) \
+	$(tcpConnect_SOURCES) $(tcpListen_SOURCES)
+DIST_SOURCES = $(cookies_SOURCES) $(httpGet_SOURCES) \
+	$(httpGet_using_post_SOURCES) $(httpGet_with_setUrl_SOURCES) \
+	$(httpReqRes_SOURCES) $(httpRequestPerform_SOURCES) \
+	$(parseResponse_SOURCES) $(parseUrl_SOURCES) $(simple_SOURCES) \
+	$(tcpConnect_SOURCES) $(tcpListen_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run aclocal-1.11
-AMTAR = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run tar
+ACLOCAL = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run autoconf
-AUTOHEADER = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run autoheader
-AUTOMAKE = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run automake-1.11
-AWK = nawk
+AUTOCONF = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run automake-1.11
+AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -94,16 +134,16 @@ DUMPBIN =
 ECHO_C = 
 ECHO_N = -n
 ECHO_T = 
-EGREP = /usr/bin/grep -E
+EGREP = /bin/grep -E
 EXEEXT = 
-FGREP = /usr/bin/grep -F
-GREP = /usr/bin/grep
+FGREP = /bin/grep -F
+GREP = /bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/bin/ld
+LD = /usr/bin/ld -m elf_x86_64
 LDFLAGS = 
 LIBOBJS = 
 LIBS = 
@@ -111,8 +151,8 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/missing --run makeinfo
-MKDIR_P = /usr/local/bin/gmkdir -p
+MAKEINFO = ${SHELL} /home/natel/coding/white/projetos/orionsocket/missing --run makeinfo
+MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
 NMEDIT = 
 OBJDUMP = objdump
@@ -122,20 +162,21 @@ OTOOL64 =
 PACKAGE = orionsocket
 PACKAGE_BUGREPORT = tiago4orion@gmail.com
 PACKAGE_NAME = orionsocket
-PACKAGE_STRING = orionsocket 1.0.1
+PACKAGE_STRING = orionsocket 1.0.9
 PACKAGE_TARNAME = orionsocket
-PACKAGE_VERSION = 1.0.1
+PACKAGE_URL = 
+PACKAGE_VERSION = 1.0.9
 PATH_SEPARATOR = :
 RANLIB = ranlib
-SED = /usr/bin/sed
+SED = /bin/sed
 SET_MAKE = 
-SHELL = /bin/sh
+SHELL = /bin/bash
 STRIP = strip
-VERSION = 1.0.1
-abs_builddir = /usr/home/i4k/programacao/orion/orionsocket/examples
-abs_srcdir = /usr/home/i4k/programacao/orion/orionsocket/examples
-abs_top_builddir = /usr/home/i4k/programacao/orion/orionsocket
-abs_top_srcdir = /usr/home/i4k/programacao/orion/orionsocket
+VERSION = 1.0.9
+abs_builddir = /home/natel/coding/white/projetos/orionsocket/examples
+abs_srcdir = /home/natel/coding/white/projetos/orionsocket/examples
+abs_top_builddir = /home/natel/coding/white/projetos/orionsocket
+abs_top_srcdir = /home/natel/coding/white/projetos/orionsocket
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
 am__include = include
@@ -144,10 +185,10 @@ am__quote =
 am__tar = ${AMTAR} chof - "$$tardir"
 am__untar = ${AMTAR} xf -
 bindir = ${exec_prefix}/bin
-build = i386-unknown-freebsd8.0
+build = x86_64-unknown-linux-gnu
 build_alias = 
-build_cpu = i386
-build_os = freebsd8.0
+build_cpu = x86_64
+build_os = linux-gnu
 build_vendor = unknown
 builddir = .
 datadir = ${datarootdir}
@@ -155,25 +196,25 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = i386-unknown-freebsd8.0
+host = x86_64-unknown-linux-gnu
 host_alias = 
-host_cpu = i386
-host_os = freebsd8.0
+host_cpu = x86_64
+host_os = linux-gnu
 host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /usr/home/i4k/programacao/orion/orionsocket/install-sh
+install_sh = ${SHELL} /home/natel/coding/white/projetos/orionsocket/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
 localstatedir = ${prefix}/var
 lt_ECHO = echo
 mandir = ${datarootdir}/man
-mkdir_p = /usr/local/bin/gmkdir -p
+mkdir_p = /bin/mkdir -p
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /usr/local
+prefix = /usr
 program_transform_name = s,x,x,
 psdir = ${docdir}
 sbindir = ${exec_prefix}/sbin
@@ -184,10 +225,20 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-AM_CFLAGS = -Wall -ggdb
+INCLUDEDIR = ../src
+AM_CFLAGS = -Wall -Werror -ggdb -I${INCLUDEDIR}
 AM_LDFLAGS = -lorionsocket
 httpRequestPerform_SOURCES = httpRequestPerform.c
 tcpConnect_SOURCES = tcpConnect.c
+cookies_SOURCES = cookies.c
+httpGet_SOURCES = httpGet.c
+httpGet_using_post_SOURCES = httpGet_using_post.c
+httpGet_with_setUrl_SOURCES = httpGet_with_setUrl.c
+httpReqRes_SOURCES = httpReqRes.c
+parseResponse_SOURCES = parseResponse.c
+parseUrl_SOURCES = parseUrl.c
+simple_SOURCES = simple.c
+tcpListen_SOURCES = tcpListen.c
 all: all-am
 
 .SUFFIXES:
@@ -265,12 +316,39 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+cookies$(EXEEXT): $(cookies_OBJECTS) $(cookies_DEPENDENCIES) 
+	@rm -f cookies$(EXEEXT)
+	$(LINK) $(cookies_OBJECTS) $(cookies_LDADD) $(LIBS)
+httpGet$(EXEEXT): $(httpGet_OBJECTS) $(httpGet_DEPENDENCIES) 
+	@rm -f httpGet$(EXEEXT)
+	$(LINK) $(httpGet_OBJECTS) $(httpGet_LDADD) $(LIBS)
+httpGet_using_post$(EXEEXT): $(httpGet_using_post_OBJECTS) $(httpGet_using_post_DEPENDENCIES) 
+	@rm -f httpGet_using_post$(EXEEXT)
+	$(LINK) $(httpGet_using_post_OBJECTS) $(httpGet_using_post_LDADD) $(LIBS)
+httpGet_with_setUrl$(EXEEXT): $(httpGet_with_setUrl_OBJECTS) $(httpGet_with_setUrl_DEPENDENCIES) 
+	@rm -f httpGet_with_setUrl$(EXEEXT)
+	$(LINK) $(httpGet_with_setUrl_OBJECTS) $(httpGet_with_setUrl_LDADD) $(LIBS)
+httpReqRes$(EXEEXT): $(httpReqRes_OBJECTS) $(httpReqRes_DEPENDENCIES) 
+	@rm -f httpReqRes$(EXEEXT)
+	$(LINK) $(httpReqRes_OBJECTS) $(httpReqRes_LDADD) $(LIBS)
 httpRequestPerform$(EXEEXT): $(httpRequestPerform_OBJECTS) $(httpRequestPerform_DEPENDENCIES) 
 	@rm -f httpRequestPerform$(EXEEXT)
 	$(LINK) $(httpRequestPerform_OBJECTS) $(httpRequestPerform_LDADD) $(LIBS)
+parseResponse$(EXEEXT): $(parseResponse_OBJECTS) $(parseResponse_DEPENDENCIES) 
+	@rm -f parseResponse$(EXEEXT)
+	$(LINK) $(parseResponse_OBJECTS) $(parseResponse_LDADD) $(LIBS)
+parseUrl$(EXEEXT): $(parseUrl_OBJECTS) $(parseUrl_DEPENDENCIES) 
+	@rm -f parseUrl$(EXEEXT)
+	$(LINK) $(parseUrl_OBJECTS) $(parseUrl_LDADD) $(LIBS)
+simple$(EXEEXT): $(simple_OBJECTS) $(simple_DEPENDENCIES) 
+	@rm -f simple$(EXEEXT)
+	$(LINK) $(simple_OBJECTS) $(simple_LDADD) $(LIBS)
 tcpConnect$(EXEEXT): $(tcpConnect_OBJECTS) $(tcpConnect_DEPENDENCIES) 
 	@rm -f tcpConnect$(EXEEXT)
 	$(LINK) $(tcpConnect_OBJECTS) $(tcpConnect_LDADD) $(LIBS)
+tcpListen$(EXEEXT): $(tcpListen_OBJECTS) $(tcpListen_DEPENDENCIES) 
+	@rm -f tcpListen$(EXEEXT)
+	$(LINK) $(tcpListen_OBJECTS) $(tcpListen_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -278,8 +356,17 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+include ./$(DEPDIR)/cookies.Po
+include ./$(DEPDIR)/httpGet.Po
+include ./$(DEPDIR)/httpGet_using_post.Po
+include ./$(DEPDIR)/httpGet_with_setUrl.Po
+include ./$(DEPDIR)/httpReqRes.Po
 include ./$(DEPDIR)/httpRequestPerform.Po
+include ./$(DEPDIR)/parseResponse.Po
+include ./$(DEPDIR)/parseUrl.Po
+include ./$(DEPDIR)/simple.Po
 include ./$(DEPDIR)/tcpConnect.Po
+include ./$(DEPDIR)/tcpListen.Po
 
 .c.o:
 	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
