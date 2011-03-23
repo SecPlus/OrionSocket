@@ -1,0 +1,132 @@
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: argument 'char' of command @param is not found in the argument list of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: The following parameters of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer) are not documented:
+  parameter 'req'
+  parameter 'reqBuffer'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:427: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_cleanupHttpResponse(orion_httpResponse *res)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:427: warning: The following parameters of orion_cleanupHttpResponse(orion_httpResponse *res) are not documented:
+  parameter 'res'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument 'void' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument '_uint32' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: The following parameters of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count) are not documented:
+  parameter 'req'
+  parameter 'callback'
+  parameter 'count'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_httpRequestPerform(orion_httpRequest *req, char **response)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: argument 'char' of command @param is not found in the argument list of orion_httpRequestPerform(orion_httpRequest *req, char **response)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: The following parameters of orion_httpRequestPerform(orion_httpRequest *req, char **response) are not documented:
+  parameter 'req'
+  parameter 'response'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:405: warning: argument 'orion_cookie' of command @param is not found in the argument list of orion_initCookie(orion_cookie **cookie)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:405: warning: The following parameters of orion_initCookie(orion_cookie **cookie) are not documented:
+  parameter 'cookie'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:419: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_initHttpResponse(orion_httpResponse **res)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:419: warning: The following parameters of orion_initHttpResponse(orion_httpResponse **res) are not documented:
+  parameter 'res'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_parseResponseLine(orion_httpResponse *res, char *line)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: argument 'char' of command @param is not found in the argument list of orion_parseResponseLine(orion_httpResponse *res, char *line)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: The following parameters of orion_parseResponseLine(orion_httpResponse *res, char *line) are not documented:
+  parameter 'res'
+  parameter 'line'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: The following parameters of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value) are not documented:
+  parameter 'req'
+  parameter 'name'
+  parameter 'value'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: argument '_uint8' of command @param is not found in the argument list of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: The following parameters of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option) are not documented:
+  parameter 'req'
+  parameter 'option'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestPath(orion_httpRequest *req, const char *path)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestPath(orion_httpRequest *req, const char *path)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: The following parameters of orion_setHttpRequestPath(orion_httpRequest *req, const char *path) are not documented:
+  parameter 'req'
+  parameter 'path'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: The following parameters of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query) are not documented:
+  parameter 'req'
+  parameter 'query'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:435: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_setHttpResponseHeader(orion_httpResponse *res, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:435: warning: The following parameters of orion_setHttpResponseHeader(orion_httpResponse *res, const char *name, const char *value) are not documented:
+  parameter 'res'
+  parameter 'name'
+  parameter 'value'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: argument 'char' of command @param is not found in the argument list of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:360: warning: The following parameters of orion_buildHttpRequest(orion_httpRequest *req, char *reqBuffer) are not documented:
+  parameter 'req'
+  parameter 'reqBuffer'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:370: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_buildHttpResponse(orion_httpResponse *res, char *resBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:370: warning: argument 'char' of command @param is not found in the argument list of orion_buildHttpResponse(orion_httpResponse *res, char *resBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:370: warning: argument 'buf' of command @param is not found in the argument list of orion_buildHttpResponse(orion_httpResponse *res, char *resBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:370: warning: argument 'buf' of command @param is not found in the argument list of orion_buildHttpResponse(orion_httpResponse *res, char *resBuffer)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:370: warning: The following parameters of orion_buildHttpResponse(orion_httpResponse *res, char *resBuffer) are not documented:
+  parameter 'resBuffer'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:427: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_cleanupHttpResponse(orion_httpResponse *res)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:427: warning: The following parameters of orion_cleanupHttpResponse(orion_httpResponse *res) are not documented:
+  parameter 'res'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument 'void' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: argument '_uint32' of command @param is not found in the argument list of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:393: warning: The following parameters of orion_httpGet(orion_httpRequest *req, void(*callback)(char *, _uint32), _uint32 count) are not documented:
+  parameter 'req'
+  parameter 'callback'
+  parameter 'count'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_httpRequestPerform(orion_httpRequest *req, char **response)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: argument 'char' of command @param is not found in the argument list of orion_httpRequestPerform(orion_httpRequest *req, char **response)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:380: warning: The following parameters of orion_httpRequestPerform(orion_httpRequest *req, char **response) are not documented:
+  parameter 'req'
+  parameter 'response'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:405: warning: argument 'orion_cookie' of command @param is not found in the argument list of orion_initCookie(orion_cookie **cookie)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:405: warning: The following parameters of orion_initCookie(orion_cookie **cookie) are not documented:
+  parameter 'cookie'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:419: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_initHttpResponse(orion_httpResponse **res)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:419: warning: The following parameters of orion_initHttpResponse(orion_httpResponse **res) are not documented:
+  parameter 'res'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_parseResponseLine(orion_httpResponse *res, char *line)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: argument 'char' of command @param is not found in the argument list of orion_parseResponseLine(orion_httpResponse *res, char *line)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:443: warning: The following parameters of orion_parseResponseLine(orion_httpResponse *res, char *line) are not documented:
+  parameter 'res'
+  parameter 'line'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:341: warning: The following parameters of orion_setHttpRequestHeader(orion_httpRequest *req, const char *name, const char *value) are not documented:
+  parameter 'req'
+  parameter 'name'
+  parameter 'value'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: argument '_uint8' of command @param is not found in the argument list of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:351: warning: The following parameters of orion_setHttpRequestOption(orion_httpRequest *req, _uint16 option) are not documented:
+  parameter 'req'
+  parameter 'option'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestPath(orion_httpRequest *req, const char *path)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestPath(orion_httpRequest *req, const char *path)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:316: warning: The following parameters of orion_setHttpRequestPath(orion_httpRequest *req, const char *path) are not documented:
+  parameter 'req'
+  parameter 'path'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: argument 'orion_httpRequest' of command @param is not found in the argument list of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: argument 'const' of command @param is not found in the argument list of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:329: warning: The following parameters of orion_setHttpRequestQuery(orion_httpRequest *req, const char *query) are not documented:
+  parameter 'req'
+  parameter 'query'
+/home/natel/coding/white/projetos/orionsocket/src/http.h:435: warning: argument 'orion_httpResponse' of command @param is not found in the argument list of orion_setHttpResponseHeader(orion_httpResponse *res, const char *name, const char *value)
+/home/natel/coding/white/projetos/orionsocket/src/http.h:435: warning: The following parameters of orion_setHttpResponseHeader(orion_httpResponse *res, const char *name, const char *value) are not documented:
+  parameter 'res'
+  parameter 'name'
+  parameter 'value'
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: argument 'int' of command @param is not found in the argument list of orion_send(int socket, char *buffer)
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: argument 'char' of command @param is not found in the argument list of orion_send(int socket, char *buffer)
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: The following parameters of orion_send(int socket, char *buffer) are not documented:
+  parameter 'socket'
+  parameter 'buffer'
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: argument 'int' of command @param is not found in the argument list of orion_send(int socket, char *buffer)
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: argument 'char' of command @param is not found in the argument list of orion_send(int socket, char *buffer)
+/home/natel/coding/white/projetos/orionsocket/src/socket.c:286: warning: The following parameters of orion_send(int socket, char *buffer) are not documented:
+  parameter 'socket'
+  parameter 'buffer'

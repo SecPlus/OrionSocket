@@ -1,0 +1,47 @@
+OrionSocket é uma pequena API que facilita a criação de sockets em C.
+Atualmente ela possue apenas uma API HTTP, mas o objetivo é expandi-la para 
+suportar outros tipos de protocolos.
+
+Por exemplo, para uma conexão HTTP com um servidor podemos usar o seguinte
+código:
+
+/*******************************************************************************
+ ** Realiza uma requisição HTTP num servidor remoto usando OrionSocket's
+ ** Author: Tiago Natel de Moura
+ ** Date: 08/06/2010
+ ******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <orion/socket/socket.h>
+#include <orion/socket/http.h>
+
+int main(int argc, char** argv)
+{
+	orion_httpRequest *req = NULL;
+	char *response = NULL;
+	int code;
+	
+	const char* domain = "www.omeuip.com.br";
+    // Initialize the library
+    orion_httpRequestInit(&req);
+    orion_setHttpRequestHost(req, domain, 80);
+	orion_setHttpRequestHeader(req, "Host", domain);
+	orion_setHttpRequestHeader(req, "User-Agent", "Anakin");
+	
+	
+	code = orion_httpRequestPerform(req, &response);
+	
+	if (code == ORIONSOCKET_OK)
+	{
+		printf("%s\n", response);
+		
+		free(response);
+	}
+    
+    // Free's library
+    orion_httpRequestCleanup(req);
+    
+	return 0;
+}
+
