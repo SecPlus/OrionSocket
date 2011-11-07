@@ -497,6 +497,12 @@ void orion_buildHttpRequest(orion_httpRequest* req, char* reqBuffer)
         req->path = strdup("/");
     
     strncat(reqBuffer, req->path, ORION_HTTP_REQUEST_MAXLENGTH-1);
+
+    if (req->query) {
+      strncat(reqBuffer, "?", ORION_HTTP_REQUEST_MAXLENGTH-1);
+      strncat(reqBuffer, req->query, ORION_HTTP_REQUEST_MAXLENGTH-1);
+    }
+    
     strncat(reqBuffer, " ", ORION_HTTP_REQUEST_MAXLENGTH-1);
     strncat(reqBuffer, ORION_HTTP_PROTOCOL, ORION_HTTP_REQUEST_MAXLENGTH-1);
     strncat(reqBuffer, ORIONSOCKET_NL, ORION_HTTP_REQUEST_MAXLENGTH-1);
